@@ -25,6 +25,7 @@ function forum() {
 
 function book() {
 	# only true for fossil, not for sqlite
+	fossil pull -R ${t%%-scm}-book.fossil 
 	blah
 }
 
