@@ -17,18 +17,60 @@ MYHOME="/home/viking/src/c/"
 
 function blah() { # don't do anything }
 
+# Obligatory help function
+function dohelp() {
+    echo "$0: help page"
+	echo "$0 {fossil-scm|sqlite} [code|forum|book]"
+	exit 0
+}
+
 function code() {
+	cd "${MEPATH}" 
 	fossil pull -R ${t%%-scm}.fossil
+	cd -
 }
 
 function forum() {
+	cd "${MEPATH}" 
 	fossil pull -R ${t%%-scm}forum.fossil 
+	cd -
 }
 
 function book() {
 	# only true for fossil, not for sqlite
+	cd "${MEPATH}" 
 	fossil pull -R ${t%%-scm}-book.fossil 
-	blah
+	cd -
+}
+
+function dofossilstuff() {
+	# (roughly) duplicate what fossilstuff did
+    pushd "${MYHOME}"
+    if [ ${#*} -lt 1 ]; then # do we barf or do all?
+        dohelp
+    fi
+	# We haven't exited yet
+	case "${1}" in 
+        "fossil-scm"|"fossil")
+		MEPATH="fossil-scm"
+		case "${2}" in
+			"code") code ;;
+			"forum") forum ;;
+			"book") book ;;
+			"*") help ;; # everything else gets the boot
+		esac
+	    ;;
+        "sqlite")
+		case "${2}" in
+			"code") code ;;
+			"forum") forum ;;
+			"*") help ;; # everything else gets the boot
+		esac
+    ;;
+	"*") # everything else gets the boot
+		help ;;
+    esac
+        
 }
 
 # Takes path arg
@@ -52,6 +94,7 @@ function fossilstuff() {
 	done
 	popd
 }
+
 
 fossilstuff
 
