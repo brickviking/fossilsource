@@ -1,6 +1,7 @@
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
+# v0.3 TODO: split this up like fossilweb.sh
 # Really needs to be run from the source directory first
 
 #FIRSTHOME= ( fossil "/home/viking/src/c"
