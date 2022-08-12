@@ -13,6 +13,8 @@
 # $ME fossil (-c|-f|-b)
 # $ME sqlite (-c|-f)
 
+MYHOME="/home/viking/src/c/"
+
 function blah() { # don't do anything }
 
 function code() {
@@ -31,7 +33,7 @@ function book() {
 
 # Takes path arg
 function fossilstuff() {
-	pushd /home/viking/src/c
+	pushd "${MYHOME}"
 	for t in fossil-scm sqlite; do  # want subshell - saves us a pushd/popd
 		case ${t} in "fossil-scm")
 			cd ${t}
