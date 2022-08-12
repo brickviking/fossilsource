@@ -4,10 +4,29 @@
 # v0.3 TODO: split this up like fossilweb.sh
 # Really needs to be run from the source directory first
 
-#FIRSTHOME= ( fossil "/home/viking/src/c"
-#git "/home/viking/src/c"
-#git "/h3/viking/src/c++/hosts"
-#)
+#########
+# Notes #
+#########
+# Do I really want to run code/forum for _both_ sqlite and fossil, or only
+# one at a time? If so, how do I do this?
+# One possibility is with switches: 
+# $ME fossil (-c|-f|-b)
+# $ME sqlite (-c|-f)
+
+function blah() { # don't do anything }
+
+function code() {
+	fossil pull -R ${t%%-scm}.fossil
+}
+
+function forum() {
+	fossil pull -R ${t%%-scm}forum.fossil 
+}
+
+function book() {
+	# only true for fossil, not for sqlite
+	blah
+}
 
 # Takes path arg
 function fossilstuff() {
