@@ -2,6 +2,7 @@
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
 # v0.3 TODO: split this up like fossilweb.sh
+# v0.4 still working on new fossilstuff function - not live yet
 # Really needs to be run from the source directory first
 
 #########
@@ -43,8 +44,10 @@ function book() {
 	cd -
 }
 
+# New fossilstuff function
 function dofossilstuff() {
-	# (roughly) duplicate what fossilstuff did
+# (roughly) duplicate what fossilstuff did
+# At the moment, only processes one pair of args, then exits.
     pushd "${MYHOME}"
     if [ ${#*} -lt 1 ]; then # do we barf or do all?
         dohelp
@@ -54,6 +57,10 @@ function dofossilstuff() {
         "fossil-scm"|"fossil")
 		MEPATH="fossil-scm"
 		case "${2}" in
+			"all") code
+				forum
+				# Leave out book, we can call that manually
+				;;
 			"code") code ;;
 			"forum") forum ;;
 			"book") book ;;
@@ -62,6 +69,9 @@ function dofossilstuff() {
 	    ;;
         "sqlite")
 		case "${2}" in
+			"all") code
+				forum
+				;;
 			"code") code ;;
 			"forum") forum ;;
 			"*") help ;; # everything else gets the boot
