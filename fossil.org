@@ -44,12 +44,12 @@ try to tangle code into them.
 #+END_EXPORT
 
 * Source files
-These three files are responsible for updating source fossil files, or starting up the internal
-content web servers related to fossil or sqlite.
+These files are responsible for updating source fossil files, or starting up the internal
+content web servers related to fossil, sqlite, tcl and tk.
 
 ** fossilsource.sh
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
-the sqlite-related files.
+the sqlite-related files. Additionally, tcl and tk are available too.
 As of September 2022, that's the following files stored in ${HOME}/src/c/fossil-scm:
 + fossil-scm source (fossil.fossil)
 + fossil-scm fossil (fossilforum.fossil)
@@ -315,6 +315,7 @@ with their running costs, alongside the encryption and compression source that t
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
+# v0.0.2 Sqlite fossil servers adjusted to start on 8200/10/20/30
 # v0.1.0 Starts up what we choose
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
@@ -409,6 +410,7 @@ And the third member of the group, runs servers for the tcl/tk source trees.
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 # v0.1.4 name change about three versions ago to suit tcl instead of fossil
+# v0.1.5 made notes about starting on ports 8300/10/20
 
 TCLHOME="/home/viking/src/c/tcl"
 TKHOME="/home/viking/src/c/tk"
@@ -421,17 +423,17 @@ tcl-code() {
   cd -
 }
 
-tk-code() {
-  cd "${TKHOME}"
-  echo -ne "Starting Tk fossil server: "
-  fossil server --port 8350 tk.fossil &
-  cd -
-}
-
 tcl-tips() {
   cd "${TCLHOME}"
   echo -ne "Starting Tcl Improvement Proposals fossil server: "
   fossil server --port 8310 tips.fossil &
+  cd -
+}
+
+tk-code() {
+  cd "${TKHOME}"
+  echo -ne "Starting Tk fossil server: "
+  fossil server --port 8320 tk.fossil &
   cd -
 }
 
