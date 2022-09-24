@@ -1,0 +1,491 @@
+#+TITLE: fossil scripts
+#+SUBTITLE: for source code maintenance and forum viewing on localhost
+#+AUTHOR: brickviking
+#+DATE: <2022-09-21 Wed>
+#+TAGS: fossil sqlite forum bash
+#+REVISION: 2.3
+#+OPTIONS: _:nil toc:nil num:nil
+#+OPTIONS: ^:{}
+#+STARTUP: showeverything
+
+
+* Introduction
+This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program
+or sqlite. It's currently implemented as bash code, with no real intention to rework it to anything
+else. Hey, if it works, ... right?
+
+* Notes
+We should probably make sure the fossil directory and the sqlite directories exist before we
+try to tangle code into them.
+
+* Changelog
++ 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
+      code.
+  + 1.1 expanded to fossilsource.sh, includes forums, added fossil book a while later.
+  + 1.2 included fossilweb.sh, initially starts up servers to access fossil source and forums
+  + 1.3-1.4 changes
+  + 1.5 added sqlite source code fetching and forums to fossilsource.sh
+  + 1.6 added sqlite web server to fossilweb.sh
+  +  1.7 split off sqliteweb stuff into its own script (sqliteweb.sh)
++  2.0 expanded fossilsource to create functions for fetching individual components.
+  +  2.1 added docsrc (sqlite) to fossilsource.sh and sqliteweb.sh
+  +  2.2 added sqllogictests to fossilsource.sh and sqliteweb.sh
+
+    +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
+        enough.
+#+BEGIN_EXPORT latex
+\newpage
+#+END_EXPORT
+
+#+TOC: headlines 2
+
+#+BEGIN_EXPORT latex
+\newpage
+#+END_EXPORT
+
+* Source files
+These three files are responsible for updating source fossil files, or starting up the internal
+content web servers related to fossil or sqlite.
+
+** fossilsource.sh
+This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
+the sqlite-related files.
+As of September 2022, that's the following files stored in ${HOME}/src/c/fossil-scm:
++ fossil-scm source (fossil.fossil)
++ fossil-scm fossil (fossilforum.fossil)
++ fossil-scm book (fossil-book.fossil)
+
+Sqlite files are stored in ${HOME}/src/c/sqlite/:
++ Sqlite source: (sqlite.fossil)
++ Sqlite forum: (sqliteforum.fossil)
++ Sqlite document collation source (docsrc.fossil)
++ Logic tests for sqlite (sqllogictest.fossil)
+
+Tcl and Tk files are stored in ${HOME}/src/c/tcl and tk respectively
+
+The code is currently in process of being converted to parse parameters.
+
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource.sh :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.1 iterate through my fossils
+# v0.2 Add in some git projects
+# v0.3 Added in some more sqlite-related items
+# v0.3a TODO: split this up like fossilweb.sh
+# v0.4 still working on new fossilstuff function - not live yet
+# v0.5 newfossilstuff got the axe. I've got to build a function to
+#      cycle through $1
+# v0.6 I added tips to Tcl (Tcl Improvement Proposals)
+# v0.6a Added extra line between downloads
+# Really needs to be run from the source directory first
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
+
+#########
+# Notes #
+#########
+# fossil has source code, forums and a book.
+# sqlite has source code, forums, docsrc and a testing harness
+# tcl and tk each have source code, and tcl has proposals (tcl-tip)
+
+MYHOME="/home/viking/src/c/"
+
+# Obligatory help function
+function dohelp() {
+  echo "$0: help page"
+  echo "$0 fossil{-scm} [code|forum|book]: fetches named section"
+  echo "$0 fossil{-scm} all: fetches code, forum and book"
+  echo "$0 sqlite [code|forum|docsrc|tests]: fetches named section"
+  echo "$0 sqlite all: fetches code, forum, docsrc and test scripts"
+  echo "$0 tcl-code: fetches code"
+  echo "$0 tcl-tip: fetches proposals"
+  echo "$0 tk-code: fetches code"
+  echo "$0 {all}: fetches everything"
+  exit 0
+}
+
+function fossil-code() {
+  fossil pull -R fossil.fossil
+  echo "==== fossil-code...done ==="
+}
+
+function fossil-forum() {
+  fossil pull -R fossilforum.fossil 
+  echo "==== fossil-forum...done ==="
+}
+
+# fossil only. Rarely updated  
+function fossil-book() {
+  fossil pull -R fossil-book.fossil 
+  echo "==== fossil-book...done ==="
+}
+
+function fossil-all() {
+  cd fossil-scm;
+  t=fossil
+  "${t}"-code
+  "${t}"-forum
+  "${t}"-book
+  cd -
+}
+
+function sqlite-code() {
+  fossil pull -R sqlite.fossil
+  echo "==== sqlite-code...done ==="
+}
+
+function sqlite-forum() {
+  fossil pull -R sqliteforum.fossil 
+  echo "==== sqlite-forum...done ==="
+}
+
+# Rarely updated.
+function sqlite-docsrc() {
+  fossil pull -R docsrc.fossil 
+  echo "==== sqlite-docsrc...done ==="
+}
+
+# Rarely updated.
+function sqlite-tests() {
+  fossil pull -R sqllogictest.fossil 
+  echo "==== sqlite-tests...done ==="
+}
+
+function sqlite-all() {
+  t="sqlite"
+  cd "${t}"
+  "${t}"-code
+  "${t}"-forum
+  "${t}"-docsrc
+  "${t}"-tests
+  unset $t
+  cd .. # gets us back to ${MYHOME}
+}
+
+# Updates tcl sourcecode
+function tcl-code() {
+  fossil pull -R tcl.fossil 
+  echo "==== tcl-code...done ==="
+}
+
+# Updates tcl TIP database
+function tcl-tips() {
+  fossil pull -R tips.fossil 
+  echo "==== tcl-tips...done ==="
+}
+
+# Updates tk sourcecode
+function tk-code() {
+  fossil pull -R tk.fossil 
+  echo "==== tk code...done ==="
+}
+
+# Updates both tcl and tk sources
+function tcl-all() {
+  cd tcl
+  tcl-code
+  tcl-tips   # TCL Improvement Proposals
+  cd ../tk
+  tk-code
+  cd .. # gets us back to ${MYHOME}
+}
+
+function all() { # These each have a cd in them
+  fossil-all
+  sqlite-all
+  tcl-all
+}
+# Takes path arg
+
+pushd "${MYHOME}"
+if [ ${#*} -lt 1 ]; then # I want it all
+	all # sleep is built in between stages
+else #iterate, chuck it in if keyword isn't recognised.
+  for t in ${*}; do
+# TODO: this does everything. Might not be what we want
+    case "${t}" in "fossil") # does effectively fossil-all
+      cd "${t}-scm" # Yes, the directory name has -scm appended
+#      "${t}"-book    # should comment this out, doesn't get updated very often
+      "${t}"-code
+      "${t}"-forum
+      cd -
+    ;;
+    "book")
+      cd fossil-scm
+      fossil-book 
+      cd -
+    ;;
+    "sqlite") 
+      cd "${t}"
+      "${t}"-code
+      "${t}"-forum
+      "${t}"-docsrc
+      "${t}"-tests
+      cd -
+    ;;
+    "tcl")
+      cd "${t}"
+      "${t}"-code
+      "${t}"-tips    # TCL Improvement Proposal
+      cd -
+    ;;
+    "tk") cd "${t}"
+      ${t}-code  # Only the code at the moment.
+    ;;
+    esac # end of case ${t}
+  done
+fi
+popd
+
+
+#+END_SRC
+
+** fossilweb.sh
+This starts up the web servers related to fossil code, forums and the fossil book.
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilweb.sh :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
+# v0.1.0 Starts up what we choose
+# v0.1.2 Removed book from "all" as this very rarely gets updated
+# v0.1.3 TODO: Add code to check for already running servers, dump if so
+
+FOSSILHOME="/home/viking/src/c/fossil-scm"
+
+# First the source code
+code() {
+  echo -ne "Starting fossil code server: "
+  fossil server --port 8100 fossil.fossil &
+}
+
+# Now the forums
+forum() {
+  echo -ne "Starting fossil forum server: "
+  fossil server --port 8110 fossilforum.fossil &
+}
+
+# and last, the book files. need ui for this
+book() {
+  echo -ne "Starting fossil book server: "
+  fossil server --port 8120 fossil-book.fossil &
+}
+
+# Everything except book. Seems a bit redundant.
+all() {
+  code
+  sleep 5
+  forum
+  sleep 5
+  # book # doesn't really need this, so we'll call it specifically
+}
+
+# Better provide help, can't call it help because of the builtin
+dohelp() {
+  echo "$0: help screen. Starts fossil server from files on commandline"
+  echo "$0 [all|code|forum|book] ..."
+  exit 0
+}
+
+# Change to correct directory
+pushd "${FOSSILHOME}"
+
+if [ ${#*} -lt 1 ]; then # I want it all
+  all # sleep is built in between stages
+else #iterate, chuck it in if keyword isn't recognised.
+  for t in ${*}; do
+    case $t in "-h"|"--help") dohelp ;;
+      "code") code ;;
+      "forum") forum ;;
+      "book") book ;;
+      "all") all ;; # doesn't include book, call that separately
+      *) dohelp ;; # This exits, no matter what the state of other ${*}
+		esac
+		sleep 5 # Allow each server to start up before anything else happens
+	done
+fi
+
+# We all done sah.
+popd
+
+#+END_SRC
+
+** sqliteweb.sh
+This starts up the web servers related to sqlite code, forums, docsrc and testing code. As yet,
+sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
+the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
+with their running costs, alongside the encryption and compression source that they can supply.
+
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
+# v0.1.0 Starts up what we choose
+# v0.1.2 Removed book from "all" as this very rarely gets updated
+# v0.1.3 TODO: Add code to check for already running servers, dump if so
+# v0.1.4 name change about three versions ago to suit sqlite instead of fossil
+# v0.1.5 Added, then removed TCL Improvement Proposals (TIP), shifted to tclweb.sh
+
+SQLITEHOME="/home/viking/src/c/sqlite"
+
+# First the source code
+code() {
+  echo -ne "Starting SQlite3 code fossil server: "
+  fossil server --port 8200 sqlite.fossil &
+}
+
+# Now the forums
+forum() {
+  echo -ne "Starting SQlite3 forum fossil server: "
+  fossil server --port 8210 sqliteforum.fossil &
+}
+
+# and the doc source files
+docsrc() {
+  echo -ne "Starting SQlite3 docsrc fossil server: "
+  fossil server --port 8220 docsrc.fossil &
+}
+
+# and the SQL Logic Tests
+tests() {
+  echo -ne "Starting SQlite3 test code fossil server: "
+  fossil server --port 8230 sqllogictest.fossil &
+}
+
+# Everything
+all() {
+  code
+  sleep 5
+  forum
+  sleep 5
+  docsrc
+  sleep 5
+  tests
+  sleep 5
+}
+
+# Better provide help, can't call it help because of the builtin
+dohelp() {
+  echo "$0: help screen. Starts fossil server from files on commandline"
+  echo "$0 [all|code|forum|docsrc|test] ..."
+  echo "all: launch everything below, spaced out by five seconds"
+  echo "code: sqlite source code"
+  echo "forum: sqlite forums - read-only"
+  echo "docsrc: source for generating sqlite document tree"
+  echo "tests: sql logic test harness"
+  exit 0
+}
+
+# Change to correct directory
+pushd "${SQLITEHOME}"
+
+if [ ${#*} -lt 1 ]; then # I want it all
+  all # sleep is built in between stages
+else #iterate, chuck it in if keyword isn't recognised.
+  for t in ${*}; do
+    case $t in "-h"|"--help") dohelp ;;
+      "code") code ;;
+      "forum") forum ;;
+      "docsrc") docsrc ;;
+      "tests") tests ;;
+      "all") code
+        forum
+        docsrc
+        tests
+       ;;
+      *) dohelp ;; # This exits, no matter what the state of other ${*}
+    esac
+    sleep 5 # Allow each server to start up before anything else happens
+  done
+fi
+
+# We all done sah.
+popd
+
+#+END_SRC
+
+** tclweb.sh
+And the third member of the group, runs servers for the tcl/tk source trees.
+
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/tclweb.sh :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
+# v0.1.0 Starts up what we choose
+# v0.1.2 Removed book from "all" as this very rarely gets updated
+# v0.1.3 TODO: Add code to check for already running servers, dump if so
+# v0.1.4 name change about three versions ago to suit tcl instead of fossil
+
+TCLHOME="/home/viking/src/c/tcl"
+TKHOME="/home/viking/src/c/tk"
+
+# First the source code
+tcl-code() {
+  cd "${TCLHOME}"
+  echo -ne "Starting Tcl fossil server: "
+  fossil server --port 8300 tcl.fossil &
+  cd -
+}
+
+tk-code() {
+  cd "${TKHOME}"
+  echo -ne "Starting Tk fossil server: "
+  fossil server --port 8350 tk.fossil &
+  cd -
+}
+
+tcl-tips() {
+  cd "${TCLHOME}"
+  echo -ne "Starting Tcl Improvement Proposals fossil server: "
+  fossil server --port 8310 tips.fossil &
+  cd -
+}
+
+# Everything
+all() {
+  tcl-code
+  sleep 5
+  tcl-tips
+  sleep 5
+  tk-code
+  sleep 5
+}
+
+# Better provide help, can't call it help because of the builtin
+dohelp() {
+	echo "$0: help screen. Starts fossil server for Tcl code from files on commandline"
+  echo "$0 [all|tcl-code|tcl-tip|tk-code]"
+  echo "all: launch all servers, spaced out by five seconds"
+  echo "tcl-code: tcl source code"
+  echo "tcl-tips: Tcl Improvement Proposals"
+  echo "tk-code: tk source code"
+#	echo "forum: tcl forums - read-only"
+#	echo "docsrc: source for generating tcl document tree"
+#	echo "tests: sql logic test harness"
+	exit 0
+}
+
+# Change to correct directory
+pushd "${TCLHOME}"
+
+if [ ${#*} -lt 1 ]; then # I want it all
+	all # sleep is built in between stages
+else #iterate, chuck it in if keyword isn't recognised.
+  for t in ${*}; do
+    case $t in "-h"|"--help") dohelp ;;
+      "tcl-code") tcl-code ;;
+      "tcl-tips"|"tips") tcl-tips ;;
+      "tk-code") tk-code ;;
+      "all") all ;;
+      "*") dohelp ;; # This exits, no matter what the state of other ${*}
+    esac
+    sleep 5 # Allow each server to start up before anything else happens
+  done
+fi
+
+# We all done sah.
+popd
+
+#+END_SRC
+
+* Further directions
+( or, future thoughts )
+These scripts are mostly finished with, there's only the conversion of the fossilsource.sh to
+parameters to really be done. Most of the hard work was already done in the sqliteweb.sh and
+fossilweb.sh scripts, so the improvements from those scripts are making their way back to
+fossilsource.sh now.
+
