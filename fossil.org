@@ -18,6 +18,7 @@ else. Hey, if it works, ... right?
 * Notes
 We should probably make sure the fossil directory and the sqlite directories exist before we
 try to tangle code into them.
+I have also added org-auto-tangle, so rendering this on platforms without that 
 
 * Changelog
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
