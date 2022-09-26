@@ -132,8 +132,9 @@ if [ ${#*} -lt 1 ]; then # I want it all
 	all # sleep is built in between stages
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
-# TODO: this does everything. Might not be what we want
-    case "${t}" in "fossil") # does effectively fossil-all
+    case "${t}" in "help"|"-h")
+      dohelp ;; # exits
+      "fossil") # does effectively fossil-all
       cd "${t}-scm" # Yes, the directory name has -scm appended
 #      "${t}"-book    # should comment this out, doesn't get updated very often
       "${t}"-code
