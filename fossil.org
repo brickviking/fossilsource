@@ -35,6 +35,7 @@ I have also added org-auto-tangle, so rendering this on platforms without that
 
     +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
         enough.
+    +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into tclweb.sh
 #+BEGIN_EXPORT latex
 \newpage
 #+END_EXPORT
