@@ -471,9 +471,9 @@ if [ ${#*} -lt 1 ]; then # I want it all
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case $t in "-h"|"--help") dohelp ;;
-      "tcl-code") tcl-code ;;
+      "tcl-code"|"tcl") tcl-code ;;
       "tcl-tips"|"tips") tcl-tips ;;
-      "tk-code") tk-code ;;
+      "tk-code"|"tk") tk-code ;;
       "all") all ;;
       "*") dohelp ;; # This exits, no matter what the state of other ${*}
     esac
