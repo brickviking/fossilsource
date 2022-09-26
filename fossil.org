@@ -7,7 +7,7 @@
 #+OPTIONS: _:nil toc:nil num:nil
 #+OPTIONS: ^:{}
 #+STARTUP: showeverything
-#+auto_tangle
+#+auto_tangle: t
 
 
 * Introduction
