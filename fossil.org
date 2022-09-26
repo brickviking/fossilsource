@@ -18,7 +18,7 @@ else. Hey, if it works, ... right?
 * Notes
 We should probably make sure the fossil directory and the sqlite directories exist before we
 try to tangle code into them.
-I have also added org-auto-tangle, so rendering this on platforms without that 
+I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
 
 * Changelog
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
@@ -490,8 +490,8 @@ popd
 
 * Further directions
 ( or, future thoughts )
-These scripts are mostly finished with, there's only the conversion of the fossilsource.sh to
-parameters to really be done. Most of the hard work was already done in the sqliteweb.sh and
-fossilweb.sh scripts, so the improvements from those scripts are making their way back to
-fossilsource.sh now.
+These scripts are mostly finished with, and the conversion of the fossilsource.sh to
+parsing parameters is now done. Most of the hard work was already done in the sqliteweb.sh and
+fossilweb.sh scripts, so the improvements from those scripts have made their way back to
+fossilsource.sh.
 
