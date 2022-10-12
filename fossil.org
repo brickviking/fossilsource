@@ -3,7 +3,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2022-09-21 Wed>
 #+TAGS: fossil sqlite forum bash
-#+REVISION: 2.3
+#+REVISION: 2.6
 #+OPTIONS: _:nil toc:nil num:nil
 #+OPTIONS: ^:{}
 #+STARTUP: showeverything
@@ -33,9 +33,11 @@ I have also added org-auto-tangle, so rendering this on platforms without that m
   +  2.1 added docsrc (sqlite) to fossilsource.sh and sqliteweb.sh
   +  2.2 added sqllogictests to fossilsource.sh and sqliteweb.sh
 
-    +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
+  +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
         enough.
-    +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into tclweb.sh
+  +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into tclweb.sh
+  +  2.5 Added libfossil
+  +  2.6 Corrected some mistakes
 #+BEGIN_EXPORT latex
 \newpage
 #+END_EXPORT
@@ -50,7 +52,7 @@ I have also added org-auto-tangle, so rendering this on platforms without that m
 These files are responsible for updating source fossil files, or starting up the internal
 content web servers related to fossil, sqlite, tcl and tk.
 
-** fossilsource.sh
+** fossilsource
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
 the sqlite-related files. Additionally, tcl and tk are available too.
 As of September 2022, that's the following files stored in ${HOME}/src/c/fossil-scm:
@@ -66,9 +68,10 @@ Sqlite files are stored in ${HOME}/src/c/sqlite/:
 
 Tcl and Tk files are stored in ${HOME}/src/c/tcl and tk respectively
 
+libfossil is in its own directory too(${HOME}/src/c/libfossil, which contains the sourcecode and forum fossils.
 The code is currently in process of being converted to parse parameters.
 
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource.sh :tangle-mode (identity #o755)
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
@@ -79,8 +82,11 @@ The code is currently in process of being converted to parse parameters.
 #      cycle through $1
 # v0.6 I added tips to Tcl (Tcl Improvement Proposals)
 # v0.6a Added extra line between downloads
+# v0.7 add libfossil, correct mistakes
+# v0.8 TODO: create a rarely section for docsrc, book and others
 # Really needs to be run from the source directory first
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
+# leave libfossil out of the main loop, but call them specifically, just like fossil-book
 
 #########
 # Notes #
@@ -96,11 +102,13 @@ function dohelp() {
   echo "$0: help page"
   echo "$0 fossil{-scm} [code|forum|book]: fetches named section"
   echo "$0 fossil{-scm} all: fetches code, forum and book"
-  echo "$0 sqlite [code|forum|docsrc|tests]: fetches named section"
-  echo "$0 sqlite all: fetches code, forum, docsrc and test scripts"
+  echo "$0 sqlite: fetches all sqlite fossils"
+  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd}: fetches code, forum, docsrc, althttpd and test scripts"
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
   echo "$0 tk-code: fetches code"
+  echo "======= TODO"
+  echo "$0 libfossil: fetches libfossil and libfossil-forum"
   echo "$0 {all}: fetches everything"
   exit 0
 }
@@ -122,11 +130,28 @@ function fossil-book() {
 }
 
 function fossil-all() {
-  cd fossil-scm;
+  cd fossil-scm # Yes, the directory name has -scm appended
   t=fossil
   "${t}"-code
   "${t}"-forum
-  "${t}"-book
+#  "${t}"-book # Shifted to rarely()
+  cd ..
+}
+
+function libfossil-code() {
+  fossil pull -R libfossil.fossil
+  echo "==== libfossil...done ==="
+}
+
+function libfossil-forum {
+  fossil pull -R libfossil-forum.fossil
+  echo "==== libfossil-forum...done ==="
+}
+
+function libfossil-all {
+  cd libfossil
+  libfossil-code
+  libfossil-forum
   cd -
 }
 
@@ -152,13 +177,19 @@ function sqlite-tests() {
   echo "==== sqlite-tests...done ==="
 }
 
+function sqlite-althttpd() {
+  fossil pull -R althttpd.fossil 
+  echo "==== sqlite-althttpd...done ==="
+}
+
 function sqlite-all() {
   t="sqlite"
   cd "${t}"
   "${t}"-code
   "${t}"-forum
   "${t}"-docsrc
-  "${t}"-tests
+  "${t}"-althttpd
+#  "${t}"-tests # shifted to rarely()
   unset $t
   cd .. # gets us back to ${MYHOME}
 }
@@ -185,16 +216,24 @@ function tk-code() {
 function tcl-all() {
   cd tcl
   tcl-code
-  tcl-tips   # TCL Improvement Proposals
+  tcl-tips   # TCL Improvement Proposals, rarely updated
   cd ../tk
   tk-code
   cd .. # gets us back to ${MYHOME}
 }
 
+function rarely() { # these don't get updated very often, if at all
+  cd fossil-scm
+  fossil-book
+  cd ../sqlite
+  sqlite-tests
+  cd ..
+}
+
 function all() { # These each have a cd in them
-  fossil-all
-  sqlite-all
-  tcl-all
+  fossil-all # code, forum, not book
+  sqlite-all # code, forum, althttpd, not tests
+  tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
 }
 # Takes path arg
 
@@ -205,34 +244,50 @@ else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case "${t}" in "help"|"-h")
       dohelp ;; # exits
-      "fossil") # does effectively fossil-all
-      cd "${t}-scm" # Yes, the directory name has -scm appended
-#      "${t}"-book    # should comment this out, doesn't get updated very often
-      "${t}"-code
-      "${t}"-forum
-      cd -
+      "all") all ;; # Yeah, I know I said it above
+      "fossil"|"sqlite"|"tcl")
+          "${t}"-all
+    ;;
+    "fossil-forum"|"fossil-code"|"fossil-book")
+      cd "fossil-scm"
+      "${t}" # calls the function directly. I'll have to see if this works.
+      cd ..
+    ;;
+    "libfossil"|"libfossil-all")
+      libfossil-all # should do libfossil-code and libfossil-forum
     ;;
     "book")
       cd fossil-scm
       fossil-book 
       cd -
     ;;
-    "sqlite") 
-      cd "${t}"
-      "${t}"-code
-      "${t}"-forum
-      "${t}"-docsrc
-      "${t}"-tests
+ "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd") 
+      cd sqlite
+      "${t}"
       cd -
     ;;
-    "tcl")
-      cd "${t}"
-      "${t}"-code
-      "${t}"-tips    # TCL Improvement Proposal
+    "althttpd"|"httpd") 
+        cd sqlite
+        sqlite-althttpd
+        cd ..
+    ;;
+    "tcl"|"tcl-all")
+      tcl-all
+    ;;
+    "tcl-code"|"tcl-tips")
+      cd tcl
+      "${t}"
       cd -
     ;;
-    "tk") cd "${t}"
-      ${t}-code  # Only the code at the moment.
+    "tk")
+      cd "${t}"
+      "${t}"-code  # Only the code at the moment.
+      cd -
+    ;;
+    "tk-code") 
+      cd tk; pwd
+      "${t}"
+      cd -
     ;;
     esac # end of case ${t}
   done
@@ -243,7 +298,7 @@ popd
 #+END_SRC
 
 ** fossilweb.sh
-This starts up the web servers related to fossil code, forums and the fossil book.
+This starts up the web servers related to fossil code, forums and the fossil book. It—along with tcl-web/tkweb and sqliteweb have all been condensed into one fossil-driven front end. The only real liability is that I may or may not be able to run multiple tabs each with its own server. I'll have to try that. fossil tends to spawn its subprocesses in a separate tab each time.
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
@@ -485,6 +540,19 @@ fi
 
 # We all done sah.
 popd
+
+#+END_SRC
+
+** fossilserve
+This effectively replaces the twelve ports taken up by the individual servers and replaces them with a front listing, which is probably how the fossil creators intend it to be used. 
+
+#+BEGIN_SRC bash /home/viking/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.1 Initial release
+# we don't exactly need a home, just a straight up fossil invoke
+# from the / we can invoke a server (in a new tab) for every fossil we have
+
+fossil server --port 8100 --skin darkmode / &
 
 #+END_SRC
 
