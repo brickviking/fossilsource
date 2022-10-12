@@ -1,0 +1,6 @@
+#!/bin/bash
+# v0.1 Initial release
+# we don't exactly need a home, just a straight up fossil invoke
+# from the / we can invoke a server (in a new tab) for every fossil we have
+
+fossil server --port 8100 --skin darkmode / &
