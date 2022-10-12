@@ -1,0 +1,221 @@
+#!/bin/bash
+# v0.1 iterate through my fossils
+# v0.2 Add in some git projects
+# v0.3 Added in some more sqlite-related items
+# v0.3a TODO: split this up like fossilweb.sh
+# v0.4 still working on new fossilstuff function - not live yet
+# v0.5 newfossilstuff got the axe. I've got to build a function to
+#      cycle through $1
+# v0.6 I added tips to Tcl (Tcl Improvement Proposals)
+# v0.6a Added extra line between downloads
+# v0.7 add libfossil, correct mistakes
+# v0.8 TODO: create a rarely section for docsrc, book and others
+# Really needs to be run from the source directory first
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
+# leave libfossil out of the main loop, but call them specifically, just like fossil-book
+
+#########
+# Notes #
+#########
+# fossil has source code, forums and a book.
+# sqlite has source code, forums, docsrc and a testing harness
+# tcl and tk each have source code, and tcl has proposals (tcl-tip)
+
+MYHOME="/home/viking/src/c/"
+
+# Obligatory help function
+function dohelp() {
+  echo "$0: help page"
+  echo "$0 fossil{-scm} [code|forum|book]: fetches named section"
+  echo "$0 fossil{-scm} all: fetches code, forum and book"
+  echo "$0 sqlite: fetches all sqlite fossils"
+  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd}: fetches code, forum, docsrc, althttpd and test scripts"
+  echo "$0 tcl-code: fetches code"
+  echo "$0 tcl-tip: fetches proposals"
+  echo "$0 tk-code: fetches code"
+  echo "======= TODO"
+  echo "$0 libfossil: fetches libfossil and libfossil-forum"
+  echo "$0 {all}: fetches everything"
+  exit 0
+}
+
+function fossil-code() {
+  fossil pull -R fossil.fossil
+  echo "==== fossil-code...done ==="
+}
+
+function fossil-forum() {
+  fossil pull -R fossilforum.fossil 
+  echo "==== fossil-forum...done ==="
+}
+
+# fossil only. Rarely updated  
+function fossil-book() {
+  fossil pull -R fossil-book.fossil 
+  echo "==== fossil-book...done ==="
+}
+
+function fossil-all() {
+  cd fossil-scm # Yes, the directory name has -scm appended
+  t=fossil
+  "${t}"-code
+  "${t}"-forum
+#  "${t}"-book # Shifted to rarely()
+  cd ..
+}
+
+function libfossil-code() {
+  fossil pull -R libfossil.fossil
+  echo "==== libfossil...done ==="
+}
+
+function libfossil-forum {
+  fossil pull -R libfossil-forum.fossil
+  echo "==== libfossil-forum...done ==="
+}
+
+function libfossil-all {
+  cd libfossil
+  libfossil-code
+  libfossil-forum
+  cd -
+}
+
+function sqlite-code() {
+  fossil pull -R sqlite.fossil
+  echo "==== sqlite-code...done ==="
+}
+
+function sqlite-forum() {
+  fossil pull -R sqliteforum.fossil 
+  echo "==== sqlite-forum...done ==="
+}
+
+# Rarely updated.
+function sqlite-docsrc() {
+  fossil pull -R docsrc.fossil 
+  echo "==== sqlite-docsrc...done ==="
+}
+
+# Rarely updated.
+function sqlite-tests() {
+  fossil pull -R sqllogictest.fossil 
+  echo "==== sqlite-tests...done ==="
+}
+
+function sqlite-althttpd() {
+  fossil pull -R althttpd.fossil 
+  echo "==== sqlite-althttpd...done ==="
+}
+
+function sqlite-all() {
+  t="sqlite"
+  cd "${t}"
+  "${t}"-code
+  "${t}"-forum
+  "${t}"-docsrc
+  "${t}"-althttpd
+#  "${t}"-tests # shifted to rarely()
+  unset $t
+  cd .. # gets us back to ${MYHOME}
+}
+
+# Updates tcl sourcecode
+function tcl-code() {
+  fossil pull -R tcl.fossil 
+  echo "==== tcl-code...done ==="
+}
+
+# Updates tcl TIP database
+function tcl-tips() {
+  fossil pull -R tips.fossil 
+  echo "==== tcl-tips...done ==="
+}
+
+# Updates tk sourcecode
+function tk-code() {
+  fossil pull -R tk.fossil 
+  echo "==== tk code...done ==="
+}
+
+# Updates both tcl and tk sources
+function tcl-all() {
+  cd tcl
+  tcl-code
+  tcl-tips   # TCL Improvement Proposals, rarely updated
+  cd ../tk
+  tk-code
+  cd .. # gets us back to ${MYHOME}
+}
+
+function rarely() { # these don't get updated very often, if at all
+  cd fossil-scm
+  fossil-book
+  cd ../sqlite
+  sqlite-tests
+  cd ..
+}
+
+function all() { # These each have a cd in them
+  fossil-all # code, forum, not book
+  sqlite-all # code, forum, althttpd, not tests
+  tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
+}
+# Takes path arg
+
+pushd "${MYHOME}"
+if [ ${#*} -lt 1 ]; then # I want it all
+	all # sleep is built in between stages
+else #iterate, chuck it in if keyword isn't recognised.
+  for t in ${*}; do
+    case "${t}" in "help"|"-h")
+      dohelp ;; # exits
+      "all") all ;; # Yeah, I know I said it above
+      "fossil"|"sqlite"|"tcl")
+          "${t}"-all
+    ;;
+    "fossil-forum"|"fossil-code"|"fossil-book")
+      cd "fossil-scm"
+      "${t}" # calls the function directly. I'll have to see if this works.
+      cd ..
+    ;;
+    "libfossil"|"libfossil-all")
+      libfossil-all # should do libfossil-code and libfossil-forum
+    ;;
+    "book")
+      cd fossil-scm
+      fossil-book 
+      cd -
+    ;;
+ "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd") 
+      cd sqlite
+      "${t}"
+      cd -
+    ;;
+    "althttpd"|"httpd") 
+        cd sqlite
+        sqlite-althttpd
+        cd ..
+    ;;
+    "tcl"|"tcl-all")
+      tcl-all
+    ;;
+    "tcl-code"|"tcl-tips")
+      cd tcl
+      "${t}"
+      cd -
+    ;;
+    "tk")
+      cd "${t}"
+      "${t}"-code  # Only the code at the moment.
+      cd -
+    ;;
+    "tk-code") 
+      cd tk; pwd
+      "${t}"
+      cd -
+    ;;
+    esac # end of case ${t}
+  done
+fi
+popd
