@@ -65,6 +65,7 @@ Sqlite files are stored in ${HOME}/src/c/sqlite/:
 + Sqlite forum: (sqliteforum.fossil)
 + Sqlite document collation source (docsrc.fossil)
 + Logic tests for sqlite (sqllogictest.fossil)
++ Wasm/JS documents (wasm.fossil)
 
 Tcl and Tk files are stored in ${HOME}/src/c/tcl and tk respectively
 
@@ -107,6 +108,7 @@ function dohelp() {
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
   echo "$0 tk-code: fetches code"
+  echo "$0 wasm: fetches wasm-related code"
   echo "======= TODO"
   echo "$0 libfossil: fetches libfossil and libfossil-forum"
   echo "$0 {all}: fetches everything"
@@ -182,14 +184,21 @@ function sqlite-althttpd() {
   echo "==== sqlite-althttpd...done ==="
 }
 
+# Rarely updated.
+function sqlite-wasm() {
+  fossil pull -R wasm.fossil
+  echo "==== sqlite-wasm...done ==="
+}
+
 function sqlite-all() {
   t="sqlite"
   cd "${t}"
   "${t}"-code
   "${t}"-forum
   "${t}"-docsrc
-  "${t}"-althttpd
+#  "${t}"-althttpd # shifted to rarely()
 #  "${t}"-tests # shifted to rarely()
+#  "${t}-wasm # put into rarely()
   unset $t
   cd .. # gets us back to ${MYHOME}
 }
@@ -222,11 +231,14 @@ function tcl-all() {
   cd .. # gets us back to ${MYHOME}
 }
 
-function rarely() { # these don't get updated very often, if at all
+# these don't get updated very often, if at all
+function rarely() { 
   cd fossil-scm
   fossil-book
   cd ../sqlite
   sqlite-tests
+  sqlite-althttpd
+  sqlite-wasm
   cd ..
 }
 
@@ -244,7 +256,9 @@ else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case "${t}" in "help"|"-h")
       dohelp ;; # exits
-      "all") all ;; # Yeah, I know I said it above
+      # I should cover this if I want all the ones I don't normally cover
+      "rarely") rarely ;; 
+      "all") all ;; # Yeah, I know I said it above, but here I specify it.
       "fossil"|"sqlite"|"tcl")
           "${t}"-all
     ;;
@@ -261,7 +275,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       fossil-book 
       cd -
     ;;
- "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd") 
+ "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
       cd sqlite
       "${t}"
       cd -
@@ -366,7 +380,7 @@ popd
 #+END_SRC
 
 ** sqliteweb.sh
-This starts up the web servers related to sqlite code, forums, docsrc and testing code. As yet,
+This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As yet,
 sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
 the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
 with their running costs, alongside the encryption and compression source that they can supply.
@@ -380,6 +394,8 @@ with their running costs, alongside the encryption and compression source that t
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 # v0.1.4 name change about three versions ago to suit sqlite instead of fossil
 # v0.1.5 Added, then removed TCL Improvement Proposals (TIP), shifted to tclweb.sh
+# v0.1.6 Added wasm/js server. This should by rights not be in all,
+#        but I'll leave it there for now.
 
 SQLITEHOME="/home/viking/src/c/sqlite"
 
@@ -407,6 +423,11 @@ tests() {
   fossil server --port 8230 sqllogictest.fossil &
 }
 
+wasm() {
+  echo -ne "Starting SQlite3 wasm/JS fossil server: "
+  fossil server --port 8240 wasm.fossil &
+}
+
 # Everything
 all() {
   code
@@ -417,17 +438,20 @@ all() {
   sleep 5
   tests
   sleep 5
+  wasm
+  sleep 5
 }
 
 # Better provide help, can't call it help because of the builtin
 dohelp() {
   echo "$0: help screen. Starts fossil server from files on commandline"
-  echo "$0 [all|code|forum|docsrc|test] ..."
+  echo "$0 [all|code|forum|docsrc|test|wasm] ..."
   echo "all: launch everything below, spaced out by five seconds"
   echo "code: sqlite source code"
   echo "forum: sqlite forums - read-only"
   echo "docsrc: source for generating sqlite document tree"
   echo "tests: sql logic test harness"
+  echo "wasm: sqlite3 wasm/js code reference"
   exit 0
 }
 
@@ -443,10 +467,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       "forum") forum ;;
       "docsrc") docsrc ;;
       "tests") tests ;;
+      "wasm") wasm ;;
       "all") code
         forum
         docsrc
         tests
+        wasm
        ;;
       *) dohelp ;; # This exits, no matter what the state of other ${*}
     esac

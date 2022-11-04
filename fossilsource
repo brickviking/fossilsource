@@ -33,6 +33,7 @@ function dohelp() {
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
   echo "$0 tk-code: fetches code"
+  echo "$0 wasm: fetches wasm-related code"
   echo "======= TODO"
   echo "$0 libfossil: fetches libfossil and libfossil-forum"
   echo "$0 {all}: fetches everything"
@@ -108,14 +109,21 @@ function sqlite-althttpd() {
   echo "==== sqlite-althttpd...done ==="
 }
 
+# Rarely updated.
+function sqlite-wasm() {
+  fossil pull -R wasm.fossil
+  echo "==== sqlite-wasm...done ==="
+}
+
 function sqlite-all() {
   t="sqlite"
   cd "${t}"
   "${t}"-code
   "${t}"-forum
   "${t}"-docsrc
-  "${t}"-althttpd
+#  "${t}"-althttpd # shifted to rarely()
 #  "${t}"-tests # shifted to rarely()
+#  "${t}-wasm # put into rarely()
   unset $t
   cd .. # gets us back to ${MYHOME}
 }
@@ -148,11 +156,14 @@ function tcl-all() {
   cd .. # gets us back to ${MYHOME}
 }
 
-function rarely() { # these don't get updated very often, if at all
+# these don't get updated very often, if at all
+function rarely() { 
   cd fossil-scm
   fossil-book
   cd ../sqlite
   sqlite-tests
+  sqlite-althttpd
+  sqlite-wasm
   cd ..
 }
 
@@ -170,7 +181,9 @@ else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case "${t}" in "help"|"-h")
       dohelp ;; # exits
-      "all") all ;; # Yeah, I know I said it above
+      # I should cover this if I want all the ones I don't normally cover
+      "rarely") rarely ;; 
+      "all") all ;; # Yeah, I know I said it above, but here I specify it.
       "fossil"|"sqlite"|"tcl")
           "${t}"-all
     ;;
@@ -187,7 +200,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       fossil-book 
       cd -
     ;;
- "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd") 
+ "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
       cd sqlite
       "${t}"
       cd -
