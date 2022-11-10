@@ -6,6 +6,8 @@
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 # v0.1.4 name change about three versions ago to suit sqlite instead of fossil
 # v0.1.5 Added, then removed TCL Improvement Proposals (TIP), shifted to tclweb.sh
+# v0.1.6 Added wasm/js server. This should by rights not be in all,
+#        but I'll leave it there for now.
 
 SQLITEHOME="/home/viking/src/c/sqlite"
 
@@ -33,6 +35,11 @@ tests() {
   fossil server --port 8230 sqllogictest.fossil &
 }
 
+wasm() {
+  echo -ne "Starting SQlite3 wasm/JS fossil server: "
+  fossil server --port 8240 wasm.fossil &
+}
+
 # Everything
 all() {
   code
@@ -43,17 +50,20 @@ all() {
   sleep 5
   tests
   sleep 5
+  wasm
+  sleep 5
 }
 
 # Better provide help, can't call it help because of the builtin
 dohelp() {
   echo "$0: help screen. Starts fossil server from files on commandline"
-  echo "$0 [all|code|forum|docsrc|test] ..."
+  echo "$0 [all|code|forum|docsrc|test|wasm] ..."
   echo "all: launch everything below, spaced out by five seconds"
   echo "code: sqlite source code"
   echo "forum: sqlite forums - read-only"
   echo "docsrc: source for generating sqlite document tree"
   echo "tests: sql logic test harness"
+  echo "wasm: sqlite3 wasm/js code reference"
   exit 0
 }
 
@@ -69,10 +79,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       "forum") forum ;;
       "docsrc") docsrc ;;
       "tests") tests ;;
+      "wasm") wasm ;;
       "all") code
         forum
         docsrc
         tests
+        wasm
        ;;
       *) dohelp ;; # This exits, no matter what the state of other ${*}
     esac
