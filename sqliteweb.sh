@@ -7,8 +7,8 @@
 # v0.1.4 name change about three versions ago to suit sqlite instead of fossil
 # v0.1.5 Added, then removed TCL Improvement Proposals (TIP), shifted to tclweb.sh
 # v0.1.6 Added wasm/js server. This should by rights not be in all,
-#        but I'll leave it there for now.
-
+#        but I'll leave it there for now, as there's recent traffic.
+# v0.1.7 TODO: Added althttpd fossil and streamlined the case switch.
 SQLITEHOME="/home/viking/src/c/sqlite"
 
 # First the source code
@@ -40,6 +40,11 @@ wasm() {
   fossil server --port 8240 wasm.fossil &
 }
 
+althttpd() {
+  echo -ne "Starting SQlite3 althttpd.fossil server: "
+  fossil server --port 8250 althttpd.fossil &
+}
+
 # Everything
 all() {
   code
@@ -52,18 +57,21 @@ all() {
   sleep 5
   wasm
   sleep 5
+  althttpd
+  sleep 5
 }
 
 # Better provide help, can't call it help because of the builtin
 dohelp() {
   echo "$0: help screen. Starts fossil server from files on commandline"
-  echo "$0 [all|code|forum|docsrc|test|wasm] ..."
+  echo "$0 [all|code|forum|docsrc|test|wasm|althttpd] ..."
   echo "all: launch everything below, spaced out by five seconds"
   echo "code: sqlite source code"
   echo "forum: sqlite forums - read-only"
   echo "docsrc: source for generating sqlite document tree"
   echo "tests: sql logic test harness"
   echo "wasm: sqlite3 wasm/js code reference"
+  echo "althttpd: sqlite3 althttpd reference"
   exit 0
 }
 
@@ -75,17 +83,8 @@ if [ ${#*} -lt 1 ]; then # I want it all
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case $t in "-h"|"--help") dohelp ;;
-      "code") code ;;
-      "forum") forum ;;
-      "docsrc") docsrc ;;
-      "tests") tests ;;
-      "wasm") wasm ;;
-      "all") code
-        forum
-        docsrc
-        tests
-        wasm
-       ;;
+      "code"|"forum"|"docsrc"|"tests"|"wasm"|"althttpd") "${t}" ;;
+      "all") all ;; # Streamlined a bit
       *) dohelp ;; # This exits, no matter what the state of other ${*}
     esac
     sleep 5 # Allow each server to start up before anything else happens
