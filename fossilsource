@@ -9,17 +9,19 @@
 # v0.6 I added tips to Tcl (Tcl Improvement Proposals)
 # v0.6a Added extra line between downloads
 # v0.7 add libfossil, correct mistakes
-# v0.8 TODO: create a rarely section for docsrc, book and others
-# Really needs to be run from the source directory first
-# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
-# leave libfossil out of the main loop, but call them specifically, just like fossil-book
+# v0.8 create a rarely section for docsrc, book and others
+# v0.9 Added sqlite-wasm to the rarely section, also added althttpd
+# v0.10 Moved sqlite-wasm back out of rarely, due to activity.
 
 #########
 # Notes #
 #########
+# Really needs to be run from the source directory first
 # fossil has source code, forums and a book.
-# sqlite has source code, forums, docsrc and a testing harness
+# sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness
 # tcl and tk each have source code, and tcl has proposals (tcl-tip)
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
+# leave libfossil out of the main loop, but call them specifically, just like fossil-book, sqlite-wasm and sqlite-testing
 
 MYHOME="/home/viking/src/c/"
 
@@ -29,11 +31,14 @@ function dohelp() {
   echo "$0 fossil{-scm} [code|forum|book]: fetches named section"
   echo "$0 fossil{-scm} all: fetches code, forum and book"
   echo "$0 sqlite: fetches all sqlite fossils"
-  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd}: fetches code, forum, docsrc, althttpd and test scripts"
+  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd and test scripts"
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
   echo "$0 tk-code: fetches code"
+  echo "$0 althttpd: fetches althttpd code"
   echo "$0 wasm: fetches wasm-related code"
+  echo "=== Rarely-updated stuff"
+  echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite}-]all"
   echo "======= TODO"
   echo "$0 libfossil: fetches libfossil and libfossil-forum"
   echo "$0 {all}: fetches everything"
@@ -92,13 +97,17 @@ function sqlite-forum() {
   echo "==== sqlite-forum...done ==="
 }
 
-# Rarely updated.
+function sqlite-wasm() {
+  fossil pull -R wasm.fossil
+  echo "==== sqlite-wasm...done ==="
+}
+
+### These fossils are rarely updated. ###
 function sqlite-docsrc() {
   fossil pull -R docsrc.fossil 
   echo "==== sqlite-docsrc...done ==="
 }
 
-# Rarely updated.
 function sqlite-tests() {
   fossil pull -R sqllogictest.fossil 
   echo "==== sqlite-tests...done ==="
@@ -109,21 +118,16 @@ function sqlite-althttpd() {
   echo "==== sqlite-althttpd...done ==="
 }
 
-# Rarely updated.
-function sqlite-wasm() {
-  fossil pull -R wasm.fossil
-  echo "==== sqlite-wasm...done ==="
-}
-
+# Does everything not in "rarely" section
 function sqlite-all() {
   t="sqlite"
   cd "${t}"
   "${t}"-code
   "${t}"-forum
   "${t}"-docsrc
+  "${t}"-wasm
 #  "${t}"-althttpd # shifted to rarely()
 #  "${t}"-tests # shifted to rarely()
-#  "${t}-wasm # put into rarely()
   unset $t
   cd .. # gets us back to ${MYHOME}
 }
@@ -163,7 +167,6 @@ function rarely() {
   cd ../sqlite
   sqlite-tests
   sqlite-althttpd
-  sqlite-wasm
   cd ..
 }
 
@@ -187,6 +190,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       "fossil"|"sqlite"|"tcl")
           "${t}"-all
     ;;
+# All fossil-related stuff
     "fossil-forum"|"fossil-code"|"fossil-book")
       cd "fossil-scm"
       "${t}" # calls the function directly. I'll have to see if this works.
@@ -200,7 +204,9 @@ else #iterate, chuck it in if keyword isn't recognised.
       fossil-book 
       cd -
     ;;
- "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
+
+# All sqlite-related stuff
+"sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
       cd sqlite
       "${t}"
       cd -
@@ -210,6 +216,16 @@ else #iterate, chuck it in if keyword isn't recognised.
         sqlite-althttpd
         cd ..
     ;;
+    "docsrc")
+        cd sqlite
+        sqlite-docsrc
+        cd ..
+    "wasm")
+        cd sqlite
+        sqlite-wasm
+        cd ..
+    ;;
+# All tcl/tk-related stuff
     "tcl"|"tcl-all")
       tcl-all
     ;;
