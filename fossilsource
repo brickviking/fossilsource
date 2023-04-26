@@ -104,6 +104,7 @@ function libfossil-all {
   cd libfossil
   libfossil-code
   libfossil-forum
+  fnc
   cd -
 }
 
@@ -236,7 +237,6 @@ function rarely() {
 # wanderinghorse - a.k.a. libfossil
   cd ../libfossil
   cwal
-  fnc
   fsl
   cd ..
 }
