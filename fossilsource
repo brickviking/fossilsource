@@ -16,6 +16,7 @@
 # v0.12 Adding params to fossil.
 # v0.13 Changed out MYHOME and other vars to FOSHOME etc.
 # v0.14 Added sqlite-cloudsqlite, tidied up help
+# v0.15 Put in fnc, should have been in there a while. Poor thing.
 #########
 # Notes #
 #########
@@ -33,6 +34,7 @@ function dohelp() {
   echo "$0 fossil{-scm} [code|forum|book|pikchr]: fetches named section"
   echo "$0 fossil{-scm} all: fetches code, and forum (not book)"
   echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and libfossil-forum"
+  echo "$0 [fsl|fnc]: fetches fsl or fnc"
   echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
   echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
   echo "$0 tcl-code: fetches code"
@@ -120,6 +122,11 @@ function cson {
 # Shell-based front end to fossil, append to rarely. Hasn't been updated since 2019.
 function fsl {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fsl.fossil
+}
+
+# ncurses client for fossil
+function fnc {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
 }
 
 # This is spectacularly unlikely to update further, but is here for completeness' sake
@@ -221,8 +228,6 @@ function rarely() {
   cd fossil-scm
   fossil-book
   pikchr
-  cd ../fsl
-  fsl
 # sqlite stuff
   cd ../sqlite
   sqlite-tests
@@ -231,6 +236,8 @@ function rarely() {
 # wanderinghorse - a.k.a. libfossil
   cd ../libfossil
   cwal
+  fnc
+  fsl
   cd ..
 }
 
