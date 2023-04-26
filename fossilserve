@@ -2,6 +2,8 @@
 # v0.1 Initial release
 # we don't exactly need a home, just a straight up fossil invoke
 # from the / we can invoke a server (in a new tab) for every fossil we have
+#
+# TODO: we don't test for already-running fossil. -test is now ancient.
 
 if [[ "$1" == "-test" ]]; then
   fossil-test server --port 8100 / &

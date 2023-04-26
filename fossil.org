@@ -91,6 +91,7 @@ predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but
 updated since 2018 and doesn't want to compile on my system, though I don't know why. As a
 result, I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
 EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember how.
+In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
 Future plans: 
  + include a verbose switch.
@@ -473,6 +474,7 @@ This starts up the web servers related to fossil code, forums and the fossil boo
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 
+# TODO: we need to bring this back up to date. It's been a really long time since July 2022
 FOSSILHOME="/home/viking/src/c/fossil-scm"
 
 # First the source code
@@ -533,10 +535,12 @@ popd
 #+END_SRC
 
 ** sqliteweb.sh
+-- Now superfluous --
 This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As yet,
 sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
 the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
 with their running costs, alongside the encryption and compression source that they can supply.
+These have been replaced with a front end on 8100 that points to every fossil on my system.
 
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
@@ -638,7 +642,8 @@ popd
 #+END_SRC
 
 ** tclweb.sh
-And the third member of the group, runs servers for the tcl/tk source trees.
+And the third member of the group, runs servers for the tcl/tk source trees. Once again, replaced
+by front end on :8100.
 
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/tclweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
@@ -729,6 +734,8 @@ This effectively replaces the twelve ports taken up by the individual servers an
 # v0.1 Initial release
 # we don't exactly need a home, just a straight up fossil invoke
 # from the / we can invoke a server (in a new tab) for every fossil we have
+#
+# TODO: we don't test for already-running fossil. -test is now ancient.
 
 if [[ "$1" == "-test" ]]; then
   fossil-test server --port 8100 / &
