@@ -133,7 +133,7 @@ function dohelp() {
   echo "$0: help page"
   echo "$0 fossil{-scm} [code|forum|book|pikchr]: fetches named section"
   echo "$0 fossil{-scm} all: fetches code, and forum (not book)"
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and libfossil-forum"
+  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
   echo "$0 [fsl|fnc]: fetches fsl or fnc"
   echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
   echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
