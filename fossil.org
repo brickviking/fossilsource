@@ -402,8 +402,13 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd ..
     ;;
     "fsl" ) 
-      cd fsl
+      cd "libfossil"
       fsl  # Seems a bit redundant to make this a full function call
+      cd -
+    ;;
+    "fnc" ) 
+      cd "libfossil"
+      fnc  # Seems a bit redundant to make this a full function call
       cd -
     ;;
     "book")
