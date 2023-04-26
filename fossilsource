@@ -162,7 +162,7 @@ function sqlite-althttpd() {
 }
 
 function sqlite-cloud() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite-cloudsqlite.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil 
   echo "==== sqlite-cloudsqlite...done ==="
 }
 
