@@ -3,4 +3,8 @@
 # we don't exactly need a home, just a straight up fossil invoke
 # from the / we can invoke a server (in a new tab) for every fossil we have
 
-fossil server --port 8100 --skin darkmode / &
+if [[ "$1" == "-test" ]]; then
+  fossil-test server --port 8100 / &
+else # either there's no $1 or $1 holds something that's not -test
+  fossil server --port 8100 / &
+fi
