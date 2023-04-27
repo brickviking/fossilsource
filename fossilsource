@@ -47,9 +47,6 @@ function dohelp() {
   echo "$0 Currently, this includes the following fossil and sqlite projects:"
   echo " fossil-book, pikchr, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
   echo " and cwal. This list will need modifying on occasion"
-# wanderinghorse - a.k.a. libfossil
-  cd ../libfossil
-  cwal
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
   echo "$0 {all}: fetches fossil all, sqlite all"
