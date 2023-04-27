@@ -750,6 +750,42 @@ else # either there's no $1 or $1 holds something that's not -test
 fi
 #+END_SRC
 
+** fossilgitcreate
+This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
+to run fossil git import yet, as it hasn't been fully developed.
+*** Problems:
+This doesn't deal at all with any branching. I don't yet know how to do that, but I've no doubt I can
+probably coerce both git and fossil to do branch wrangling.
+I could possibly write this easier in tcl if I knew how.
+*** Source file
+My concept is as follows:
+
++ Create a new fossil file in the directory we wish to import from. (This can and should be changed later)
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilgitcreate :tangle-mode (identity #o644)
+#!/bin/bash
+# Creates new fossil from git tree. There'll be a corresponding one for fossilgitadd. Soon.
+#
+# v0.0.1 Initial cut at problem
+
+# Let's get a repo going. Later we'll ask for the name of this repo ($1 etc)
+REPONAME=chooseyournewreponame.fossil
+fossil init ${REPONAME} --template ${HOME}/fossils/skeleton.fossil
+# Add correct password to setup user, probably ${USER}. We should add a daily-use user later with caps of ay.
+fossil user password ${USER} "whateveryoulike" -R ${REPONAME}
+# Now we "open" a new dir. Gotta coerce fossil to open in a not-empty directory.
+fossil open -R ${REPONAME} --force
+
+# Now we stash the current state, we'll need to come back to here at the end.
+git stash create "CurrentState"
+#+END_SRC
++ Add user if not set from template
++ Run git log, look for very first entry. check that out.
++ fossil add all the files that turn up, excluding the fossil file itself, the .git hierarchy and the .fslckout, obviously.
++ loop through all the other git leaves
+  + adding them to fossil one by one
+  + with the commit message duplicating the one held by git.
++ close out the fossil, as the last git commit should now be at HEAD
+
 * Further directions
 ( or, future thoughts )
 These scripts are mostly finished with, and the conversion of the fossilsource.sh to
