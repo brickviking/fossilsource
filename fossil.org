@@ -14,7 +14,7 @@
 
 * Introduction
 This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program
-or sqlite. It's currently implemented as bash code, with no real intention to rework it to anything
+or sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to anything
 else. Hey, if it works, ... right?
 
 * Notes
@@ -51,6 +51,8 @@ Decide whether to keep fsl and fuel in, as they haven't been updated in quite so
   +  2.9 Added pikchr to fossilsource, putting it into rarely. Tweaked REVISION in header.
   +  2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource. 
           Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it compiled at some stage, though I've no idea how.
+  +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
+  +  2.12 Added a new function to cover cloudsqlite.
 #+BEGIN_EXPORT latex
 \newpage
 #+END_EXPORT
@@ -791,5 +793,5 @@ git stash create "CurrentState"
 These scripts are mostly finished with, and the conversion of the fossilsource.sh to
 parsing parameters is now done. Most of the hard work was already done in the sqliteweb.sh and
 fossilweb.sh scripts, so the improvements from those scripts have made their way back to
-fossilsource.sh.
-fossil|sqlite|tclweb have all been pretty much superseded by fossilserve, as it just shows a directory of all my fossils and lets me choose, instead of running up an individual server for the thing I want.
+fossilsource.
+fossilweb, sqliteweb, and tclweb have all been pretty much superseded by fossilserve, as it just shows a directory of all my fossils and lets me choose, instead of running up an individual server on a separate port for the thing I want.
