@@ -1,7 +1,7 @@
 #+TITLE: fossil scripts
 #+SUBTITLE: for source code maintenance and forum viewing on localhost
 #+AUTHOR: brickviking
-#+DATE: <2023-04-27 Thu>
+#+DATE: <2023-04-29 Saturday 1:00>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk httpd
 #+REVISION: 2.12
 #+OPTIONS: _:nil
