@@ -1,4 +1,4 @@
-% Created 2023-04-29 Sat 01:01
+% Created 2023-04-29 Sat 11:05
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -32,49 +32,53 @@
 
 
 \section*{Introduction}
-\label{sec:orgd1ee123}
+\label{sec:orgbfeddb6}
 
-This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program
-or sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to anything
-else. Hey, if it works, \ldots{} right?
+This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program or
+sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to
+anything else. Hey, if it works, \ldots{} right?
 
 \section*{Notes}
-\label{sec:org1eb5751}
+\label{sec:orgcef4552}
 
-We should probably make sure the fossil directory and the sqlite directories exist before we
-try to tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
-I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
+We should probably make sure the fossil directory and the sqlite directories exist before we try to
+tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
 
-Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export your
-file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very good looking
-at the moment.
+I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two
+issues.
+
+Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export
+your file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very
+good looking at the moment.
 
 \section*{TODO-things}
-\label{sec:org8a09195}
+\label{sec:orgb7e1679}
 
 \subsection*{Relevancy of certain packages (a.k.a. how often are they updated)}
-\label{sec:org28aca34}
+\label{sec:orge96ff60}
 
 Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for fuel,
 2019 for fsl)
 
 \subsection*{Update fossilsource to do initial fetching}
-\label{sec:orgffbe92c}
+\label{sec:orgec45382}
 
-That's rather going to depend upon what use people have for the respective code. If you don't need it
-for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you happen to
-be interested in the state of play for the sqlite3 project, then this is how you'd do it. So.
+That's rather going to depend upon what use people have for the respective code. If you don't need
+it for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you
+happen to be interested in the state of play for the sqlite3 project, then this is how you'd do
+it. So.
 
 \subsubsection*{Do we add a clone flag to fossilsource?}
-\label{sec:org27c4d57}
+\label{sec:orgcace875}
 
-We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I don't
-then you fetch them like normal (i.e. `fossil clone \url{https://blahdeblah.kom} yourfossilname.fossil`), and make
-sure that fossilsource can update them later. At the moment the concept of where I have the fossils is most
-definitely baked in, and this would need to change in any event. That'll be a point for "Future Directions" too.
+We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I
+don't then you fetch them like normal (i.e. `fossil clone \url{https://blahdeblah.kom}
+yourfossilname.fossil`), and make sure that fossilsource can update them later. At the moment the
+concept of where I have the fossils is most definitely baked in, and this would need to change in
+any event. That'll be a point for "Future Directions" too.
 
 \section*{Changelog}
-\label{sec:org1178f9e}
+\label{sec:org5d21243}
 
 \begin{itemize}
 \item 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
@@ -94,14 +98,18 @@ code.
 
 \item 2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
 enough.
-\item 2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into tclweb.sh
+\item 2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into
+tclweb.sh
 \item 2.5 Added libfossil
 \item 2.6 Corrected some mistakes
 \item 2.7 Added wasm to fossilsource, changed things around a wee bit
 \item 2.8 Also added althttpd to sqliteweb, tidied up case switch on \$@
 \item 2.9 Added pikchr to fossilsource, putting it into rarely. Tweaked REVISION in header.
-\item 2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource. 
-Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it compiled at some stage, though I've no idea how.
+\item 2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource.  
+\begin{itemize}
+\item Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it
+compiled at some stage, though I've no idea how.
+\end{itemize}
 \item 2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
 \item 2.12 Added a new function to cover cloudsqlite.
 \end{itemize}
@@ -114,17 +122,20 @@ Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have
 \newpage
 
 \section*{Source files}
-\label{sec:orgc2ed861}
+\label{sec:org8f543bd}
 
-These files are responsible for updating source fossil files, or starting up the internal
-content web servers related to fossil, sqlite, tcl and tk.
+These files are responsible for updating source fossil files, or starting up the internal content
+web servers related to fossil, sqlite, tcl and tk and some other projects. The main ones you want to
+look at are fossilsource and fossilweb, as the others are only there from earlier stages of the
+project.
+
 
 \subsection*{fossilsource}
-\label{sec:org655a90e}
+\label{sec:orgb5d8fe1}
 
-This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
-the sqlite-related files. Additionally, tcl and tk are available too.
-As of November 2022, that's the following files stored in \$\{HOME\}/src/c/fossil-scm:
+This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
+sqlite-related files. Additionally, tcl and tk are available too. As of November 2022, that's the
+following files stored in \$\{HOME\}/src/c/fossil-scm:
 \begin{itemize}
 \item fossil-scm source (fossil.fossil)
 \item fossil-scm fossil (fossilforum.fossil)
@@ -143,15 +154,16 @@ Sqlite files are stored in \$\{HOME\}/src/c/sqlite/:
 
 Tcl and Tk files are stored in \$\{HOME\}/src/c/tcl and tk respectively.
 
-libfossil is in \$\{HOME\}/src/c/libfossil, which contains the sourcecode and forum fossils.
-The code is currently in the process of being converted to parse parameters.
+libfossil is in \$\{HOME\}/src/c/libfossil, which contains the sourcecode and forum fossils.  The code
+is currently in the process of being converted to parse parameters.
 
 As of March 2023, several outlier projects were added, such as fsl, pikchr, cvstrac (direct fossil
 predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but it hasn't been
-updated since 2018 and doesn't want to compile on my system, though I don't know why. As a
-result, I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
+updated since 2018 and doesn't want to compile on my system, though I don't know why. As a result,
+I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
 
-EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember how.
+EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember
+how.
 
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
@@ -163,6 +175,7 @@ Future plans:
 \end{itemize}
 
 \texttt{======} Beginning of fossilsource \texttt{======}
+
 \begin{verbatim}
 #!/bin/bash
 # v0.1 iterate through my fossils
@@ -532,12 +545,46 @@ popd
 
 
 \end{verbatim}
+
 \texttt{======} End of fossilsource \texttt{======}
 
-\subsection*{fossilweb.sh}
-\label{sec:orgccba62f}
+\subsection*{fossilserve}
+\label{sec:org9c17a63}
 
-This starts up the web servers related to fossil code, forums and the fossil book. It—along with tcl-web/tkweb and sqliteweb have all been condensed into one fossil-driven front end. The only real liability is that I may or may not be able to run multiple tabs each with its own server. I'll have to try that. fossil tends to spawn its subprocesses in a separate tab each time.
+This effectively replaces the twelve ports taken up by the individual servers and replaces them with
+a front listing, which is probably how the fossil creators intend it to be used. It also replaces
+fossilweb.sh, sqliteweb.sh and tclweb.sh, but those are left in this file to show a road marker of
+where I got to before creating the master fossil server. It's also a heck of a lot shorter than any
+of the other individual shell scripts.
+
+\texttt{======} Beginning of fossilserve \texttt{======}
+
+\begin{verbatim}
+#!/bin/bash
+# v0.1 Initial release
+# we don't exactly need a home, just a straight up fossil invoke
+# from the / we can invoke a server (in a new tab) for every fossil we have
+#
+# TODO: we don't test for already-running fossil. -test is now ancient.
+
+if [[ "$1" == "-test" ]]; then
+  fossil-test server --port 8100 / &
+else # either there's no $1 or $1 holds something that's not -test
+  fossil server --port 8100 / &
+fi
+\end{verbatim}
+
+\texttt{======} End of fossilserve \texttt{======}
+
+\subsection*{fossilweb.sh}
+\label{sec:orgbc55749}
+
+This has been replaced with a front end on 8100 that points to every fossil on my system.
+
+This starts up the web servers related to fossil code, forums and the fossil book. It—along with
+tcl-web/tkweb and sqliteweb—have all been condensed into one fossil-driven front end. The only real
+liability is that I may or may not be able to run multiple tabs each with its own server. I'll have
+to try that. fossil tends to spawn its subprocesses in a separate tab each time.
 
 \texttt{======} Beginning of fossilweb.sh (superceded) \texttt{======}
 
@@ -548,7 +595,8 @@ This starts up the web servers related to fossil code, forums and the fossil boo
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 
-# TODO: we need to bring this back up to date. It's been a really long time since July 2022
+# TODO: we need to bring this back up to date. It's been a really long
+#       time since July 2022
 # Forget it, server mode works far better.
 FOSSILHOME="/home/viking/src/c/fossil-scm"
 
@@ -609,14 +657,19 @@ popd
 
 \end{verbatim}
 
+\texttt{======} End of fossilweb.sh \texttt{======}
+
 \subsection*{sqliteweb.sh}
-\label{sec:org3f627ec}
--- Now superfluous --
-This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As yet,
-sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
+\label{sec:org009b5f5}
+
+This has been replaced with a front end on 8100 that points to every fossil on my system.
+
+This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As
+yet, sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
 the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
 with their running costs, alongside the encryption and compression source that they can supply.
-These have been replaced with a front end on 8100 that points to every fossil on my system.
+
+\texttt{======} Beginning of sqliteweb.sh (superceded) \texttt{======}
 
 \begin{verbatim}
 #!/bin/bash
@@ -717,10 +770,15 @@ popd
 
 \end{verbatim}
 
+\texttt{======} End of sqliteweb.sh \texttt{======}
+
 \subsection*{tclweb.sh}
-\label{sec:orgba787cf}
-And the third member of the group, runs servers for the tcl/tk source trees. Once again, replaced
-by front end on :8100.
+\label{sec:org9a7cac1}
+
+And the third member of the group, runs servers for the tcl/tk source trees. This has been replaced
+with a front end on port 8100 that points to every fossil on my system.
+
+\texttt{======} Beginning of tclweb.sh \texttt{======}
 
 \begin{verbatim}
 #!/bin/bash
@@ -803,41 +861,28 @@ popd
 
 \end{verbatim}
 
-\subsection*{fossilserve}
-\label{sec:org7710993}
-This effectively replaces the twelve ports taken up by the individual servers and replaces them with a front listing, which is probably how the fossil creators intend it to be used. 
+\texttt{======} End of tclweb.sh \texttt{======}
 
-\begin{verbatim}
-#!/bin/bash
-# v0.1 Initial release
-# we don't exactly need a home, just a straight up fossil invoke
-# from the / we can invoke a server (in a new tab) for every fossil we have
-#
-# TODO: we don't test for already-running fossil. -test is now ancient.
-
-if [[ "$1" == "-test" ]]; then
-  fossil-test server --port 8100 / &
-else # either there's no $1 or $1 holds something that's not -test
-  fossil server --port 8100 / &
-fi
-\end{verbatim}
 
 \subsection*{fossilgitcreate}
-\label{sec:org8b13636}
+\label{sec:org827a595}
 This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
 to run fossil git import yet, as it hasn't been fully developed.
 \subsubsection*{Problems:}
-\label{sec:org078e998}
+\label{sec:org6fd7cc8}
 This doesn't deal at all with any branching. I don't yet know how to do that, but I've no doubt I can
 probably coerce both git and fossil to do branch wrangling.
 I could possibly write this easier in tcl if I knew how.
 \subsubsection*{Source file}
-\label{sec:orgd66fd6a}
+\label{sec:orged64274}
 My concept is as follows:
 
 \begin{itemize}
 \item Create a new fossil file in the directory we wish to import from. (This can and should be changed later)
 \end{itemize}
+
+\texttt{======} Beginning of fossilgitcreate (doesn't do anything yet) \texttt{======}
+
 \begin{verbatim}
 #!/bin/bash
 # Creates new fossil from git tree. There'll be a corresponding one for fossilgitadd. Soon.
@@ -855,6 +900,10 @@ fossil open -R ${REPONAME} --force
 # Now we stash the current state, we'll need to come back to here at the end.
 git stash create "CurrentState"
 \end{verbatim}
+
+\texttt{======} End of fossilgitcreate \texttt{======}
+
+Further notes for extra lines in the script:
 \begin{itemize}
 \item Add user if not set from template
 \item Run git log, look for very first entry. check that out.
@@ -868,11 +917,26 @@ git stash create "CurrentState"
 \end{itemize}
 
 \section*{Further directions}
-\label{sec:org3dba31d}
+\label{sec:org0433889}
+
 ( or, future thoughts )
-These scripts are mostly finished with, and the conversion of the fossilsource.sh to
-parsing parameters is now done. Most of the hard work was already done in the sqliteweb.sh and
-fossilweb.sh scripts, so the improvements from those scripts have made their way back to
-fossilsource.
-fossilweb, sqliteweb, and tclweb have all been pretty much superseded by fossilserve, as it just shows a directory of all my fossils and lets me choose, instead of running up an individual server on a separate port for the thing I want.
+
+These scripts are mostly finished with, and the conversion of fossilsource to parsing parameters is
+now done. Most of the hard work was already done in the sqliteweb.sh and fossilweb.sh scripts, so
+the improvements from those scripts have made their way back to fossilsource.
+
+fossilweb.sh, sqliteweb.sh, and tclweb.sh have all been pretty much superseded by fossilserve, as it
+just shows a directory of all my fossils and lets me choose, instead of running up an individual
+server on a separate port for the thing I want. As this may not be what you want, I provide the
+other scripts here as a model on which to create your own. I haven't quite kept these up to date the
+same way as fossilserve. It's something I should get to, in case you do acually want to just run one
+or two of the fossils on their own ports.
+
+\section*{Postscript and credits}
+\label{sec:orgc6f6467}
+
+I'd love to thank the guys that created the sqlite project and all the other satellite projects that
+go along for the ride, the most well known being fossil, upon which development is based. You set up
+a fossil, put files into it, and they're then backed by a sqlite3 database inside the fossil,
+complete with all the other advantages that an all-in-one solution provides.
 \end{document}
