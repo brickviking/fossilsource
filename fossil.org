@@ -26,7 +26,16 @@ I have also added org-auto-tangle, so rendering this on platforms without that m
 ** Relevancy of certain packages (a.k.a. how often are they updated)
 Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for fuel,
 2019 for fsl)
+** Update fossilsource to do initial fetching
+That's rather going to depend upon what use people have for the respective code. If you don't need it
+for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you happen to
+be interested in the state of play for the sqlite3 project, then this is how you'd do it. So.
 
+*** Do we add a clone flag to fossilsource?
+We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I don't
+then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom yourfossilname.fossil`), and make
+sure that fossilsource can update them later. At the moment the concept of where I have the fossils is most
+definitely baked in, and this would need to change in any event. That'll be a point for "Future Directions" too.
 
 * Changelog
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
@@ -98,6 +107,7 @@ In April 2023, fnc was added in, though it had been on my system a while. Poor t
 Future plans: 
  + include a verbose switch.
  + add other switch processing.
+ + (perhaps) add initial cloning.
 
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
