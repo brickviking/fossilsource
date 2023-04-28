@@ -22,6 +22,7 @@ else. Hey, if it works, ... right?
 
 We should probably make sure the fossil directory and the sqlite directories exist before we
 try to tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
+
 I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
 
 Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export your
@@ -126,6 +127,7 @@ Future plans:
  + (perhaps) add initial cloning.
 
 ======== Beginning of fossilsource ========
+
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 iterate through my fossils
@@ -495,9 +497,12 @@ popd
 
 
 #+END_SRC
+
 ======== End of fossilsource ========
 
 ** fossilweb.sh
+
+These have been replaced with a front end on 8100 that points to every fossil on my system.
 
 This starts up the web servers related to fossil code, forums and the fossil book. It—along with tcl-web/tkweb and sqliteweb have all been condensed into one fossil-driven front end. The only real liability is that I may or may not be able to run multiple tabs each with its own server. I'll have to try that. fossil tends to spawn its subprocesses in a separate tab each time.
 
@@ -510,7 +515,8 @@ This starts up the web servers related to fossil code, forums and the fossil boo
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 
-# TODO: we need to bring this back up to date. It's been a really long time since July 2022
+# TODO: we need to bring this back up to date. It's been a really long
+#       time since July 2022
 # Forget it, server mode works far better.
 FOSSILHOME="/home/viking/src/c/fossil-scm"
 
@@ -571,13 +577,18 @@ popd
 
 #+END_SRC
 
+======== End of fossilweb.sh ========
+
 ** sqliteweb.sh
--- Now superfluous --
+
+These have been replaced with a front end on 8100 that points to every fossil on my system.
+
 This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As yet,
 sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
 the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
 with their running costs, alongside the encryption and compression source that they can supply.
-These have been replaced with a front end on 8100 that points to every fossil on my system.
+
+======== Beginning of sqliteweb.sh (superceded) ========
 
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
@@ -678,9 +689,16 @@ popd
 
 #+END_SRC
 
+======== End of sqliteweb.sh ========
+
 ** tclweb.sh
+
+These have been replaced with a front end on 8100 that points to every fossil on my system.
+
 And the third member of the group, runs servers for the tcl/tk source trees. Once again, replaced
 by front end on :8100.
+
+======== Beginning of tclweb.sh ========
 
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/tclweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
@@ -763,8 +781,13 @@ popd
 
 #+END_SRC
 
+======== End of tclweb.sh ========
+
 ** fossilserve
-This effectively replaces the twelve ports taken up by the individual servers and replaces them with a front listing, which is probably how the fossil creators intend it to be used. 
+
+This effectively replaces the twelve ports taken up by the individual servers and replaces them with a front listing, which is probably how the fossil creators intend it to be used. It also replaces fossilweb.sh, sqliteweb.sh and tclweb.sh, but those are left in this file to show a road marker of where I got to before creating the master fossil server. It's also a heck of a lot shorter than any of the other individual shell scripts.
+
+======== Beginning of fossilserve ========
 
 #+BEGIN_SRC bash /home/viking/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
 #!/bin/bash
@@ -781,6 +804,8 @@ else # either there's no $1 or $1 holds something that's not -test
 fi
 #+END_SRC
 
+======== End of fossilserve ========
+
 ** fossilgitcreate
 This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
 to run fossil git import yet, as it hasn't been fully developed.
@@ -792,6 +817,9 @@ I could possibly write this easier in tcl if I knew how.
 My concept is as follows:
 
 + Create a new fossil file in the directory we wish to import from. (This can and should be changed later)
+
+======== Beginning of fossilgitcreate (doesn't do anything yet) ========
+
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilgitcreate :tangle-mode (identity #o644)
 #!/bin/bash
 # Creates new fossil from git tree. There'll be a corresponding one for fossilgitadd. Soon.
@@ -809,6 +837,10 @@ fossil open -R ${REPONAME} --force
 # Now we stash the current state, we'll need to come back to here at the end.
 git stash create "CurrentState"
 #+END_SRC
+
+======== End of fossilgitcreate ========
+
+Further notes for extra lines in the script:
 + Add user if not set from template
 + Run git log, look for very first entry. check that out.
 + fossil add all the files that turn up, excluding the fossil file itself, the .git hierarchy and the .fslckout, obviously.
@@ -818,9 +850,18 @@ git stash create "CurrentState"
 + close out the fossil, as the last git commit should now be at HEAD
 
 * Further directions
+
 ( or, future thoughts )
+
 These scripts are mostly finished with, and the conversion of the fossilsource.sh to
 parsing parameters is now done. Most of the hard work was already done in the sqliteweb.sh and
 fossilweb.sh scripts, so the improvements from those scripts have made their way back to
 fossilsource.
+
 fossilweb, sqliteweb, and tclweb have all been pretty much superseded by fossilserve, as it just shows a directory of all my fossils and lets me choose, instead of running up an individual server on a separate port for the thing I want.
+
+* Postscript and credits
+
+I'd love to thank the guys that created the sqlite project and all the other satellite projects that go along for the ride, the most well known being fossil, upon which development is based. You set up a fossil, put files into it, and they're then backed by a sqlite3 database inside the fossil, complete with all the other advantages that an all-in-one solution provides.
+
+
