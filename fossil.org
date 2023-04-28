@@ -1,3 +1,5 @@
+# -*- mode: org fill-column: 100; -*-
+# vim: set ai tw=100 
 #+TITLE: fossil scripts
 #+SUBTITLE: for source code maintenance and forum viewing on localhost
 #+AUTHOR: brickviking
