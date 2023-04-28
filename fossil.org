@@ -14,20 +14,21 @@
 
 * Introduction
 
-This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program
-or sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to anything
-else. Hey, if it works, ... right?
+This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program or
+sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to
+anything else. Hey, if it works, ... right?
 
 * Notes
 
-We should probably make sure the fossil directory and the sqlite directories exist before we
-try to tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
+We should probably make sure the fossil directory and the sqlite directories exist before we try to
+tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
 
-I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
+I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two
+issues.
 
-Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export your
-file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very good looking
-at the moment.
+Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export
+your file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very
+good looking at the moment.
 
 * TODO-things
 
@@ -38,16 +39,18 @@ Decide whether to keep fsl and fuel in, as they haven't been updated in quite so
 
 ** Update fossilsource to do initial fetching
 
-That's rather going to depend upon what use people have for the respective code. If you don't need it
-for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you happen to
-be interested in the state of play for the sqlite3 project, then this is how you'd do it. So.
+That's rather going to depend upon what use people have for the respective code. If you don't need
+it for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you
+happen to be interested in the state of play for the sqlite3 project, then this is how you'd do
+it. So.
 
 *** Do we add a clone flag to fossilsource?
 
-We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I don't
-then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom yourfossilname.fossil`), and make
-sure that fossilsource can update them later. At the moment the concept of where I have the fossils is most
-definitely baked in, and this would need to change in any event. That'll be a point for "Future Directions" too.
+We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I
+don't then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom
+yourfossilname.fossil`), and make sure that fossilsource can update them later. At the moment the
+concept of where I have the fossils is most definitely baked in, and this would need to change in
+any event. That'll be a point for "Future Directions" too.
 
 * Changelog
 
@@ -64,15 +67,17 @@ definitely baked in, and this would need to change in any event. That'll be a po
   +  2.2 added sqllogictests to fossilsource.sh and sqliteweb.sh
 
   +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
-        enough.
-  +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into tclweb.sh
+    enough.
+  +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into
+    tclweb.sh
   +  2.5 Added libfossil
   +  2.6 Corrected some mistakes
   +  2.7 Added wasm to fossilsource, changed things around a wee bit
   +  2.8 Also added althttpd to sqliteweb, tidied up case switch on $@
   +  2.9 Added pikchr to fossilsource, putting it into rarely. Tweaked REVISION in header.
-  +  2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource. 
-          Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it compiled at some stage, though I've no idea how.
+  +  2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource.  
+     +  Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it
+        compiled at some stage, though I've no idea how.
   +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
   +  2.12 Added a new function to cover cloudsqlite.
 #+BEGIN_EXPORT latex
@@ -87,14 +92,17 @@ definitely baked in, and this would need to change in any event. That'll be a po
 
 * Source files
 
-These files are responsible for updating source fossil files, or starting up the internal
-content web servers related to fossil, sqlite, tcl and tk.
+These files are responsible for updating source fossil files, or starting up the internal content
+web servers related to fossil, sqlite, tcl and tk and some other projects. The main ones you want to
+look at are fossilsource and fossilweb, as the others are only there from earlier stages of the
+project.
+
 
 ** fossilsource
 
-This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
-the sqlite-related files. Additionally, tcl and tk are available too.
-As of November 2022, that's the following files stored in ${HOME}/src/c/fossil-scm:
+This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
+sqlite-related files. Additionally, tcl and tk are available too. As of November 2022, that's the
+following files stored in ${HOME}/src/c/fossil-scm:
  + fossil-scm source (fossil.fossil)
  + fossil-scm fossil (fossilforum.fossil)
  + fossil-scm book (fossil-book.fossil)
@@ -109,15 +117,16 @@ Sqlite files are stored in ${HOME}/src/c/sqlite/:
 
 Tcl and Tk files are stored in ${HOME}/src/c/tcl and tk respectively.
 
-libfossil is in ${HOME}/src/c/libfossil, which contains the sourcecode and forum fossils.
-The code is currently in the process of being converted to parse parameters.
+libfossil is in ${HOME}/src/c/libfossil, which contains the sourcecode and forum fossils.  The code
+is currently in the process of being converted to parse parameters.
 
 As of March 2023, several outlier projects were added, such as fsl, pikchr, cvstrac (direct fossil
 predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but it hasn't been
-updated since 2018 and doesn't want to compile on my system, though I don't know why. As a
-result, I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
+updated since 2018 and doesn't want to compile on my system, though I don't know why. As a result,
+I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
 
-EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember how.
+EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember
+how.
 
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
@@ -500,11 +509,41 @@ popd
 
 ======== End of fossilsource ========
 
+** fossilserve
+
+This effectively replaces the twelve ports taken up by the individual servers and replaces them with
+a front listing, which is probably how the fossil creators intend it to be used. It also replaces
+fossilweb.sh, sqliteweb.sh and tclweb.sh, but those are left in this file to show a road marker of
+where I got to before creating the master fossil server. It's also a heck of a lot shorter than any
+of the other individual shell scripts.
+
+======== Beginning of fossilserve ========
+
+#+BEGIN_SRC bash /home/viking/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
+#!/bin/bash
+# v0.1 Initial release
+# we don't exactly need a home, just a straight up fossil invoke
+# from the / we can invoke a server (in a new tab) for every fossil we have
+#
+# TODO: we don't test for already-running fossil. -test is now ancient.
+
+if [[ "$1" == "-test" ]]; then
+  fossil-test server --port 8100 / &
+else # either there's no $1 or $1 holds something that's not -test
+  fossil server --port 8100 / &
+fi
+#+END_SRC
+
+======== End of fossilserve ========
+
 ** fossilweb.sh
 
-These have been replaced with a front end on 8100 that points to every fossil on my system.
+This has been replaced with a front end on 8100 that points to every fossil on my system.
 
-This starts up the web servers related to fossil code, forums and the fossil book. It—along with tcl-web/tkweb and sqliteweb have all been condensed into one fossil-driven front end. The only real liability is that I may or may not be able to run multiple tabs each with its own server. I'll have to try that. fossil tends to spawn its subprocesses in a separate tab each time.
+This starts up the web servers related to fossil code, forums and the fossil book. It—along with
+tcl-web/tkweb and sqliteweb—have all been condensed into one fossil-driven front end. The only real
+liability is that I may or may not be able to run multiple tabs each with its own server. I'll have
+to try that. fossil tends to spawn its subprocesses in a separate tab each time.
 
 ======== Beginning of fossilweb.sh (superceded) ========
 
@@ -581,10 +620,10 @@ popd
 
 ** sqliteweb.sh
 
-These have been replaced with a front end on 8100 that points to every fossil on my system.
+This has been replaced with a front end on 8100 that points to every fossil on my system.
 
-This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As yet,
-sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
+This starts up the web servers related to sqlite code, forums, docsrc, wasm/js and testing code. As
+yet, sqlite.org have not released TH3 as free open source code, so I'm unable to completely fulfil
 the "docsrc" requirements. TH3 is most definitely commercial, and probably contributes to helping
 with their running costs, alongside the encryption and compression source that they can supply.
 
@@ -693,10 +732,8 @@ popd
 
 ** tclweb.sh
 
-These have been replaced with a front end on 8100 that points to every fossil on my system.
-
-And the third member of the group, runs servers for the tcl/tk source trees. Once again, replaced
-by front end on :8100.
+And the third member of the group, runs servers for the tcl/tk source trees. This has been replaced
+with a front end on port 8100 that points to every fossil on my system.
 
 ======== Beginning of tclweb.sh ========
 
@@ -783,28 +820,6 @@ popd
 
 ======== End of tclweb.sh ========
 
-** fossilserve
-
-This effectively replaces the twelve ports taken up by the individual servers and replaces them with a front listing, which is probably how the fossil creators intend it to be used. It also replaces fossilweb.sh, sqliteweb.sh and tclweb.sh, but those are left in this file to show a road marker of where I got to before creating the master fossil server. It's also a heck of a lot shorter than any of the other individual shell scripts.
-
-======== Beginning of fossilserve ========
-
-#+BEGIN_SRC bash /home/viking/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
-#!/bin/bash
-# v0.1 Initial release
-# we don't exactly need a home, just a straight up fossil invoke
-# from the / we can invoke a server (in a new tab) for every fossil we have
-#
-# TODO: we don't test for already-running fossil. -test is now ancient.
-
-if [[ "$1" == "-test" ]]; then
-  fossil-test server --port 8100 / &
-else # either there's no $1 or $1 holds something that's not -test
-  fossil server --port 8100 / &
-fi
-#+END_SRC
-
-======== End of fossilserve ========
 
 ** fossilgitcreate
 This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
@@ -853,15 +868,22 @@ Further notes for extra lines in the script:
 
 ( or, future thoughts )
 
-These scripts are mostly finished with, and the conversion of the fossilsource.sh to
-parsing parameters is now done. Most of the hard work was already done in the sqliteweb.sh and
-fossilweb.sh scripts, so the improvements from those scripts have made their way back to
-fossilsource.
+These scripts are mostly finished with, and the conversion of fossilsource to parsing parameters is
+now done. Most of the hard work was already done in the sqliteweb.sh and fossilweb.sh scripts, so
+the improvements from those scripts have made their way back to fossilsource.
 
-fossilweb, sqliteweb, and tclweb have all been pretty much superseded by fossilserve, as it just shows a directory of all my fossils and lets me choose, instead of running up an individual server on a separate port for the thing I want.
+fossilweb.sh, sqliteweb.sh, and tclweb.sh have all been pretty much superseded by fossilserve, as it
+just shows a directory of all my fossils and lets me choose, instead of running up an individual
+server on a separate port for the thing I want. As this may not be what you want, I provide the
+other scripts here as a model on which to create your own. I haven't quite kept these up to date the
+same way as fossilserve. It's something I should get to, in case you do acually want to just run one
+or two of the fossils on their own ports.
 
 * Postscript and credits
 
-I'd love to thank the guys that created the sqlite project and all the other satellite projects that go along for the ride, the most well known being fossil, upon which development is based. You set up a fossil, put files into it, and they're then backed by a sqlite3 database inside the fossil, complete with all the other advantages that an all-in-one solution provides.
+I'd love to thank the guys that created the sqlite project and all the other satellite projects that
+go along for the ride, the most well known being fossil, upon which development is based. You set up
+a fossil, put files into it, and they're then backed by a sqlite3 database inside the fossil,
+complete with all the other advantages that an all-in-one solution provides.
 
 
