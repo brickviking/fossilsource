@@ -19,8 +19,12 @@ else. Hey, if it works, ... right?
 
 * Notes
 We should probably make sure the fossil directory and the sqlite directories exist before we
-try to tangle code into them.
+try to tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
 I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
+
+Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export your
+file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very good looking
+at the moment.
 
 * TODO-things
 ** Relevancy of certain packages (a.k.a. how often are they updated)
