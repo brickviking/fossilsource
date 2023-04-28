@@ -13,11 +13,13 @@
 
 
 * Introduction
+
 This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program
 or sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to anything
 else. Hey, if it works, ... right?
 
 * Notes
+
 We should probably make sure the fossil directory and the sqlite directories exist before we
 try to tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
 I have also added org-auto-tangle, so rendering this on platforms without that may cause one or two issues.
@@ -27,21 +29,27 @@ file to a .tex file, then you can run pdflatex on this file to produce a pdf. It
 at the moment.
 
 * TODO-things
+
 ** Relevancy of certain packages (a.k.a. how often are they updated)
+
 Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for fuel,
 2019 for fsl)
+
 ** Update fossilsource to do initial fetching
+
 That's rather going to depend upon what use people have for the respective code. If you don't need it
 for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you happen to
 be interested in the state of play for the sqlite3 project, then this is how you'd do it. So.
 
 *** Do we add a clone flag to fossilsource?
+
 We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I don't
 then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom yourfossilname.fossil`), and make
 sure that fossilsource can update them later. At the moment the concept of where I have the fossils is most
 definitely baked in, and this would need to change in any event. That'll be a point for "Future Directions" too.
 
 * Changelog
+
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
       code.
   + 1.1 expanded to fossilsource.sh, includes forums, added fossil book a while later.
@@ -77,10 +85,12 @@ definitely baked in, and this would need to change in any event. That'll be a po
 #+END_EXPORT
 
 * Source files
+
 These files are responsible for updating source fossil files, or starting up the internal
 content web servers related to fossil, sqlite, tcl and tk.
 
 ** fossilsource
+
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
 the sqlite-related files. Additionally, tcl and tk are available too.
 As of November 2022, that's the following files stored in ${HOME}/src/c/fossil-scm:
@@ -105,7 +115,9 @@ As of March 2023, several outlier projects were added, such as fsl, pikchr, cvst
 predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but it hasn't been
 updated since 2018 and doesn't want to compile on my system, though I don't know why. As a
 result, I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
+
 EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember how.
+
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
 Future plans: 
@@ -113,6 +125,7 @@ Future plans:
  + add other switch processing.
  + (perhaps) add initial cloning.
 
+======== Beginning of fossilsource ========
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 iterate through my fossils
@@ -482,9 +495,14 @@ popd
 
 
 #+END_SRC
+======== End of fossilsource ========
 
 ** fossilweb.sh
+
 This starts up the web servers related to fossil code, forums and the fossil book. It—along with tcl-web/tkweb and sqliteweb have all been condensed into one fossil-driven front end. The only real liability is that I may or may not be able to run multiple tabs each with its own server. I'll have to try that. fossil tends to spawn its subprocesses in a separate tab each time.
+
+======== Beginning of fossilweb.sh (superceded) ========
+
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
