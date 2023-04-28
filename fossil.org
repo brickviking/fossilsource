@@ -141,7 +141,7 @@ Future plans:
 
 FOSHOME="/home/viking/src/c/"
 # Obligatory help function
-function dohelp() {
+function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0: help page"
   echo "$0 fossil{-scm} [code|forum|book|pikchr]: fetches named section"
   echo "$0 fossil{-scm} all: fetches code, and forum (not book)"
