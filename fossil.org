@@ -65,6 +65,33 @@ yourfossilname.fossil`), and make sure that fossilsource can update them later. 
 concept of where I have the fossils is most definitely baked in, and this would need to change in
 any event. That'll be a point for "Future Directions" too.
 
+*** Do we then create a set of directories where each of the major categories are stored?
+
+This partially depends upon if you cluster your fossils together, rather than giving each fossil its
+own unique place to live separate from any of the other fossils. People have often created one place
+to put all their fossils, or at most two and then used `fossil all ....` where you put in your
+command, oblivious to where they may be stored. In the end, if the fossil has ended up in the
+`${HOME}/.fossil` file (a list of repositories and their correlating checkouts) fossil will find it
+just fine if you're just updating. I don't know if that also works for starting up a ui or server on
+a particular fossil that doesn't live in the directory you're in at the moment. That might be
+something I have to SIAS.
+
+**** List of possible variations
+
+1) One single place, somewhere in ${HOME}.
+  +  This would possibly be one of ~/fossils, ~/Repositories, ~/Documents/fossils or some variation
+    on that. You can create a checkout anywhere on the filesystem, and just point it at the original
+    fossil back home in fossils/, things will "just work"™.
+2) A few categories (my personal current choice).
+  +  I've subdivided ~/src/c/ into fossil-scm, sqlite, libfossil, tcl and tk. Some of the fossils
+live in each of those subdirectories, for example, fossil-scm holds anything related to fossil
+itself, sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
+related fossils (libfossil, libfossil-forum and fsl/fnc), and of course tcl and tk have their own
+individual subdirectories.
+3) Everything has its own directory, separate from anything else, i.e.:
+  +  ${HOME}/src/fossil-scm/fossil.fossil,
+  +  ${HOME}/src/fossil-book/fossil-book.fossil,
+  +  ${HOME}/src/cvstrac/cvstrac.fossil and so on.
 
 * Changelog
 
