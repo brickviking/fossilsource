@@ -20,6 +20,17 @@ This is a set of homebaked scripts to fetch fossil-related source code such as t
 sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to
 anything else. Hey, if it works, ... right?
 
+#+BEGIN_EXPORT latex
+\newpage
+#+END_EXPORT
+
+#+TOC: headlines 2
+
+#+BEGIN_EXPORT latex
+\newpage
+#+END_EXPORT
+
+
 * Notes
 
 We should probably make sure the fossil directory and the sqlite directories exist before we try to
@@ -44,15 +55,16 @@ Decide whether to keep fsl and fuel in, as they haven't been updated in quite so
 That's rather going to depend upon what use people have for the respective code. If you don't need
 it for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you
 happen to be interested in the state of play for the sqlite3 project, then this is how you'd do
-it. So.
+it. So…
 
 *** Do we add a clone flag to fossilsource?
 
 We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I
-don't then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom
+don't add it, then you fetch them like normal (i.e. `fossil clone https://blahdeblah.kom
 yourfossilname.fossil`), and make sure that fossilsource can update them later. At the moment the
 concept of where I have the fossils is most definitely baked in, and this would need to change in
 any event. That'll be a point for "Future Directions" too.
+
 
 * Changelog
 
@@ -82,16 +94,6 @@ any event. That'll be a point for "Future Directions" too.
         compiled at some stage, though I've no idea how.
   +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
   +  2.12 Added a new function to cover cloudsqlite.
-#+BEGIN_EXPORT latex
-\newpage
-#+END_EXPORT
-
-#+TOC: headlines 2
-
-#+BEGIN_EXPORT latex
-\newpage
-#+END_EXPORT
-
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -101,7 +103,6 @@ project.
 
 
 ** fossilsource
-
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
 sqlite-related files. Additionally, tcl and tk are available too. As of November 2022, that's the
 following files stored in ${HOME}/src/c/fossil-scm:
@@ -139,7 +140,9 @@ Future plans:
 
 ======== Beginning of fossilsource ========
 
+#+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
+
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
