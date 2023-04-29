@@ -1,4 +1,4 @@
-% Created 2023-04-29 Sat 11:05
+% Created 2023-04-29 Sat 20:26
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -32,14 +32,22 @@
 
 
 \section*{Introduction}
-\label{sec:orgbfeddb6}
+\label{sec:orga42943a}
 
 This is a set of homebaked scripts to fetch fossil-related source code such as the fossil program or
 sqlite3 database. It's currently implemented as bash code, with no real intention to rework it to
 anything else. Hey, if it works, \ldots{} right?
 
+\newpage
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+
+
 \section*{Notes}
-\label{sec:orgcef4552}
+\label{sec:orgd05a96a}
 
 We should probably make sure the fossil directory and the sqlite directories exist before we try to
 tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
@@ -52,33 +60,75 @@ your file to a .tex file, then you can run pdflatex on this file to produce a pd
 good looking at the moment.
 
 \section*{TODO-things}
-\label{sec:orgb7e1679}
+\label{sec:orgbd5103a}
 
 \subsection*{Relevancy of certain packages (a.k.a. how often are they updated)}
-\label{sec:orge96ff60}
+\label{sec:orge43b07a}
 
 Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for fuel,
 2019 for fsl)
 
 \subsection*{Update fossilsource to do initial fetching}
-\label{sec:orgec45382}
+\label{sec:org572c4f6}
 
 That's rather going to depend upon what use people have for the respective code. If you don't need
 it for study/learning/testing, generally you won't have bothered with fossil anyhow. But if you
 happen to be interested in the state of play for the sqlite3 project, then this is how you'd do
-it. So.
+it. So…
 
 \subsubsection*{Do we add a clone flag to fossilsource?}
-\label{sec:orgcace875}
+\label{sec:orgbb158d3}
 
 We either add one or we don't. If I do, then I have to make sure it's reasonably rock-solid. If I
-don't then you fetch them like normal (i.e. `fossil clone \url{https://blahdeblah.kom}
+don't add it, then you fetch them like normal (i.e. `fossil clone \url{https://blahdeblah.kom}
 yourfossilname.fossil`), and make sure that fossilsource can update them later. At the moment the
 concept of where I have the fossils is most definitely baked in, and this would need to change in
 any event. That'll be a point for "Future Directions" too.
 
+\subsubsection*{Do we then create a set of directories where each of the major categories are stored?}
+\label{sec:org1d19aa8}
+
+This partially depends upon if you cluster your fossils together, rather than giving each fossil its
+own unique place to live separate from any of the other fossils. People have often created one place
+to put all their fossils, or at most two and then used `fossil all \ldots{}.` where you put in your
+command, oblivious to where they may be stored. In the end, if the fossil has ended up in the
+`\$\{HOME\}/.fossil` file (a list of repositories and their correlating checkouts) fossil will find it
+just fine if you're just updating. I don't know if that also works for starting up a ui or server on
+a particular fossil that doesn't live in the directory you're in at the moment. That might be
+something I have to SIAS.
+
+\begin{itemize}
+\item List of possible variations
+\label{sec:orgab7f3d6}
+
+\begin{enumerate}
+\item One single place, somewhere in \$\{HOME\}.
+\begin{itemize}
+\item This would possibly be one of \textasciitilde{}/fossils, \textasciitilde{}/Repositories, \textasciitilde{}/Documents/fossils or some variation
+on that. You can create a checkout anywhere on the filesystem, and just point it at the original
+fossil back home in fossils/, things will "just work"™.
+\end{itemize}
+\item A few categories (my personal current choice).
+\begin{itemize}
+\item I've subdivided \textasciitilde{}/src/c/ into fossil-scm, sqlite, libfossil, tcl and tk. Some of the fossils
+\end{itemize}
+\end{enumerate}
+live in each of those subdirectories, for example, fossil-scm holds anything related to fossil
+itself, sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
+related fossils (libfossil, libfossil-forum and fsl/fnc), and of course tcl and tk have their own
+individual subdirectories.
+\begin{enumerate}
+\item Everything has its own directory, separate from anything else, i.e.:
+\begin{itemize}
+\item \$\{HOME\}/src/fossil-scm/fossil.fossil,
+\item \$\{HOME\}/src/fossil-book/fossil-book.fossil,
+\item \$\{HOME\}/src/cvstrac/cvstrac.fossil and so on.
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+
 \section*{Changelog}
-\label{sec:org5d21243}
+\label{sec:orgd729168}
 
 \begin{itemize}
 \item 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
@@ -114,15 +164,8 @@ compiled at some stage, though I've no idea how.
 \item 2.12 Added a new function to cover cloudsqlite.
 \end{itemize}
 \end{itemize}
-\newpage
-
-\setcounter{tocdepth}{2}
-\tableofcontents
-
-\newpage
-
 \section*{Source files}
-\label{sec:org8f543bd}
+\label{sec:orgfc8574d}
 
 These files are responsible for updating source fossil files, or starting up the internal content
 web servers related to fossil, sqlite, tcl and tk and some other projects. The main ones you want to
@@ -131,8 +174,7 @@ project.
 
 
 \subsection*{fossilsource}
-\label{sec:orgb5d8fe1}
-
+\label{sec:org4031d62}
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
 sqlite-related files. Additionally, tcl and tk are available too. As of November 2022, that's the
 following files stored in \$\{HOME\}/src/c/fossil-scm:
@@ -177,6 +219,7 @@ Future plans:
 \texttt{======} Beginning of fossilsource \texttt{======}
 
 \begin{verbatim}
+
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
@@ -549,7 +592,7 @@ popd
 \texttt{======} End of fossilsource \texttt{======}
 
 \subsection*{fossilserve}
-\label{sec:org9c17a63}
+\label{sec:org6e1dfb1}
 
 This effectively replaces the twelve ports taken up by the individual servers and replaces them with
 a front listing, which is probably how the fossil creators intend it to be used. It also replaces
@@ -577,7 +620,7 @@ fi
 \texttt{======} End of fossilserve \texttt{======}
 
 \subsection*{fossilweb.sh}
-\label{sec:orgbc55749}
+\label{sec:org01a4fdb}
 
 This has been replaced with a front end on 8100 that points to every fossil on my system.
 
@@ -660,7 +703,7 @@ popd
 \texttt{======} End of fossilweb.sh \texttt{======}
 
 \subsection*{sqliteweb.sh}
-\label{sec:org009b5f5}
+\label{sec:orgdcb7d03}
 
 This has been replaced with a front end on 8100 that points to every fossil on my system.
 
@@ -773,7 +816,7 @@ popd
 \texttt{======} End of sqliteweb.sh \texttt{======}
 
 \subsection*{tclweb.sh}
-\label{sec:org9a7cac1}
+\label{sec:org2d1b130}
 
 And the third member of the group, runs servers for the tcl/tk source trees. This has been replaced
 with a front end on port 8100 that points to every fossil on my system.
@@ -865,16 +908,16 @@ popd
 
 
 \subsection*{fossilgitcreate}
-\label{sec:org827a595}
+\label{sec:org678628d}
 This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
 to run fossil git import yet, as it hasn't been fully developed.
 \subsubsection*{Problems:}
-\label{sec:org6fd7cc8}
+\label{sec:orgc980185}
 This doesn't deal at all with any branching. I don't yet know how to do that, but I've no doubt I can
 probably coerce both git and fossil to do branch wrangling.
 I could possibly write this easier in tcl if I knew how.
 \subsubsection*{Source file}
-\label{sec:orged64274}
+\label{sec:org6fdebe8}
 My concept is as follows:
 
 \begin{itemize}
@@ -917,7 +960,7 @@ Further notes for extra lines in the script:
 \end{itemize}
 
 \section*{Further directions}
-\label{sec:org0433889}
+\label{sec:org50908c5}
 
 ( or, future thoughts )
 
@@ -933,7 +976,7 @@ same way as fossilserve. It's something I should get to, in case you do acually 
 or two of the fossils on their own ports.
 
 \section*{Postscript and credits}
-\label{sec:orgc6f6467}
+\label{sec:orgdd7b7bd}
 
 I'd love to thank the guys that created the sqlite project and all the other satellite projects that
 go along for the ride, the most well known being fossil, upon which development is based. You set up
