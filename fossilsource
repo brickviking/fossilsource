@@ -288,7 +288,6 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
 # All fossil-related stuff
     "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr"|"fuel")
-      cd "fossil-scm"
       "${t}" # calls the function directly. I'll have to see if this works.
       cd ..
     ;;
