@@ -121,6 +121,8 @@ individual subdirectories.
         compiled at some stage, though I've no idea how.
   +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
   +  2.12 Added a new function to cover cloudsqlite.
+  +  2.13 Forgot to tack on some lines for fnc/fsl et al, mainly the ====done stuff
+
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -226,6 +228,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   exit 0
 }
 
+##### fossil-scm and related stuff
 function fossil-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
   echo "==== fossil-code...done ==="
@@ -236,13 +239,13 @@ function fossil-forum() {
   echo "==== fossil-forum...done ==="
 }
 
-# fossil only. Rarely updated  
+# Rarely updated
 function fossil-book() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-book.fossil 
   echo "==== fossil-book...done ==="
 }
 
-# Should go into Rarely
+# Rarely updated
 function pikchr() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
   echo "==== pikchr...done ===="
@@ -269,6 +272,12 @@ function libfossil-forum {
   echo "==== libfossil-forum...done ==="
 }
 
+# ncurses client for fossil
+function fnc {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
+  echo "==== fnc...done ==="
+}
+
 function libfossil-all {
   cd libfossil
   libfossil-code
@@ -280,11 +289,13 @@ function libfossil-all {
 # Scripting engine without a language. Not sure where to put this.
 function cwal {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cwal.fossil
+  echo "==== cwal...done ==="
 }
 
 # cson - old, but seemingly still in use
 function cson {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cson.fossil
+  echo "==== cson...done ==="
 }
 
 ###### end of wanderinghorse stuff
@@ -292,11 +303,7 @@ function cson {
 # Shell-based front end to fossil, append to rarely. Hasn't been updated since 2019.
 function fsl {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fsl.fossil
-}
-
-# ncurses client for fossil
-function fnc {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
+  echo "==== fsl...done ==="
 }
 
 # This is spectacularly unlikely to update further, but is here for completeness' sake
@@ -304,9 +311,10 @@ function fuel {
   cd fossil-scm
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-fuel.fossil
   cd -
+  echo "==== fuel...done ==="
 }
 
-# sqlite-hosted or sqlite-related projects
+##### sqlite-hosted or sqlite-related projects
 function sqlite-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
   echo "==== sqlite-code...done ==="
@@ -398,6 +406,7 @@ function rarely() {
   cd fossil-scm
   fossil-book
   pikchr
+  fuel # really really rare chance to update
 # sqlite stuff
   cd ../sqlite
   sqlite-tests
@@ -452,7 +461,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"-all
     ;;
 # All fossil-related stuff
-    "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr")
+    "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr"|"fuel")
       cd "fossil-scm"
       "${t}" # calls the function directly. I'll have to see if this works.
       cd ..
