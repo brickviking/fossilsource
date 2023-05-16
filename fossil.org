@@ -154,11 +154,10 @@ is currently in the process of being converted to parse parameters.
 
 As of March 2023, several outlier projects were added, such as fsl, pikchr, cvstrac (direct fossil
 predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but it hasn't been
-updated since 2018 and doesn't want to compile on my system, though I don't know why. As a result,
-I'll stick a stanza in, but won't provide a way to update it from fossilsource. It's dead, Jim.
+updated since 2018 and doesn't want to compile on my system, though I don't know why. It's dead, Jim.
 
 EDIT: I got a copy to compile and run (it at least showed me a GUI), though I can't quite remember
-how.
+how. As a result, I'll stick a stanza in for updating it from fossilsource.
 
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
