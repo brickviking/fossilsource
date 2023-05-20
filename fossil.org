@@ -170,7 +170,6 @@ Future plans:
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
-
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
@@ -307,9 +306,7 @@ function fsl {
 
 # This is spectacularly unlikely to update further, but is here for completeness' sake
 function fuel {
-  cd fossil-scm
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-fuel.fossil
-  cd -
   echo "==== fuel...done ==="
 }
 
@@ -349,7 +346,6 @@ function sqlite-cloud() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil 
   echo "==== sqlite-cloudsqlite...done ==="
 }
-
 
 # Does everything not in "rarely" section
 function sqlite-all() {
@@ -440,7 +436,7 @@ FOSCMDPARAMS=("-R")
 
 FOSCMD="pull" # default value unless it gets changed by -u
 if [ ${#*} -lt 1 ]; then # I want it all
-	all # sleep is built in between stages
+  all # sleep is built in between stages
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case "${t}" in 
@@ -456,36 +452,14 @@ else #iterate, chuck it in if keyword isn't recognised.
       # I should cover this if I want all the ones I don't normally cover
     "rarely") rarely ;; 
     "all") all ;; # Yeah, I know I said it above, but here I specify it.
-    "fossil"|"sqlite"|"tcl")
+    "fossil"|"sqlite"|"tcl"|"libfossil")
       "${t}"-all
     ;;
 # All fossil-related stuff
     "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr"|"fuel")
+      cd fossil-scm
       "${t}" # calls the function directly. I'll have to see if this works.
       cd ..
-    ;;
-    "libfossil"|"libfossil-all")
-      libfossil-all # should do libfossil-code and libfossil-forum
-    ;;
-    "cwal")
-      cd "libfossil"
-      cwal
-      cd ..
-    ;;
-    "cson")
-      cd "libfossil"
-      cson
-      cd ..
-    ;;
-    "fsl" ) 
-      cd "libfossil"
-      fsl  # Seems a bit redundant to make this a full function call
-      cd -
-    ;;
-    "fnc" ) 
-      cd "libfossil"
-      fnc  # Seems a bit redundant to make this a full function call
-      cd -
     ;;
     "book")
       cd fossil-scm
@@ -493,6 +467,15 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd -
     ;;
 
+# All wanderinghorse stuff
+    "libfossil-all")
+      libfossil-all # should do libfossil-code and libfossil-forum
+    ;;
+    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc")
+      cd libfossil
+      ${t} # Seems a bit redundant to make this a full function call
+      cd ..
+    ;;
 # All sqlite-related stuff
 "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
       cd sqlite
