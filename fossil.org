@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2023-04-29 Saturday 1:00>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk httpd
-#+REVISION: 2.12
+#+REVISION: 2.15
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -122,6 +122,8 @@ individual subdirectories.
   +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
   +  2.12 Added a new function to cover cloudsqlite.
   +  2.13 Forgot to tack on some lines for fnc/fsl et al, mainly the ====done stuff
+  +  2.14 Added pikmojicon, rearranged locations as pikchr etc are libfossil, not fossil-scm
+  +  2.15 Preliminary stubs put in for fossilmake/fossildoc
 
 * Source files
 
@@ -130,6 +132,12 @@ web servers related to fossil, sqlite, tcl and tk and some other projects. The m
 look at are fossilsource and fossilweb, as the others are only there from earlier stages of the
 project.
 
+** fossils covered to date
+At the moment, I have the following fossils installed in my system, with one or two of them being
+pushed to git repositories in my gitea instance.
+*** Fossil-scm and related
+  +  fossil-scm, fossil-forum, fossil-book
+    
 
 ** fossilsource
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
@@ -170,361 +178,371 @@ Future plans:
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
 #+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
-#!/bin/bash
-# v0.1 iterate through my fossils
-# v0.2 Add in some git projects
-# v0.3 Added in some more sqlite-related items
-# v0.3a TODO: split this up like fossilweb.sh
-# v0.4 still working on new fossilstuff function - not live yet
-# v0.5 newfossilstuff got the axe. I've got to build a function to
-#      cycle through $1
-# v0.6 I added tips to Tcl (Tcl Improvement Proposals)
-# v0.6a Added extra line between downloads
-# v0.7 add libfossil, correct mistakes
-# v0.8 create a rarely section for docsrc, book and others
-# v0.9 Added sqlite-wasm to the rarely section, also added althttpd
-# v0.10 Moved sqlite-wasm back out of rarely, due to activity.
-# v0.11 Added pikchr into rarely
-# v0.12 Adding params to fossil.
-# v0.13 Changed out MYHOME and other vars to FOSHOME etc.
-# v0.14 Added sqlite-cloudsqlite, tidied up help
-# v0.15 Put in fnc, should have been in there a while. Poor thing.
-#########
-# Notes #
-#########
-# Really needs to be run from the source directory first
-# fossil has source code, forums, pikchr and a book.
-# sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness
-# tcl and tk each have source code, and tcl has proposals (tcl-tip)
-# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
-# leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
+  #!/bin/bash
+  # v0.1 iterate through my fossils
+  # v0.2 Add in some git projects
+  # v0.3 Added in some more sqlite-related items
+  # v0.3a TODO: split this up like fossilweb.sh
+  # v0.4 still working on new fossilstuff function - not live yet
+  # v0.5 newfossilstuff got the axe. I've got to build a function to
+  #      cycle through $1
+  # v0.6 I added tips to Tcl (Tcl Improvement Proposals)
+  # v0.6a Added extra line between downloads
+  # v0.7 add libfossil, correct mistakes
+  # v0.8 create a rarely section for docsrc, book and others
+  # v0.9 Added sqlite-wasm to the rarely section, also added althttpd
+  # v0.10 Moved sqlite-wasm back out of rarely, due to activity.
+  # v0.11 Added pikchr into rarely
+  # v0.12 Adding params to fossil.
+  # v0.13 Changed out MYHOME and other vars to FOSHOME etc.
+  # v0.14 Added sqlite-cloudsqlite, tidied up help
+  # v0.15 Put in fnc, should have been in there a while. Poor thing.
+  # v0.16 Added in pikmojicon, pretty rarely used
+  #########
+  # Notes #
+  #########
+  # Really needs to be run from the source directory first
+  # fossil has source code, forums, pikchr and a book.
+  # sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness
+  # tcl and tk each have source code, and tcl has proposals (tcl-tip)
+  # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
+  # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
 
-FOSHOME="/home/viking/src/c/"
-# Obligatory help function
-function dohelp() { # needed renaming, as "help" already exists somewhere else
-  echo "$0: help page"
-  echo "$0 fossil{-scm} [code|forum|book|pikchr]: fetches named section"
-  echo "$0 fossil{-scm} all: fetches code, and forum (not book)"
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
-  echo "$0 [fsl|fnc]: fetches fsl or fnc"
-  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
-  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
-  echo "$0 tcl-code: fetches code"
-  echo "$0 tcl-tip: fetches proposals"
-  echo "$0 tk-code: fetches code"
-  echo "$0 althttpd: fetches althttpd code"
-  echo "$0 wasm: fetches wasm-related code"
-  echo "=== Rarely-updated stuff"
-  echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite}-]all"
-  echo "$0 Currently, this includes the following fossil and sqlite projects:"
-  echo " fossil-book, pikchr, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
-  echo " and cwal. This list will need modifying on occasion"
-  echo "======= TODO"
-  echo "$0 fsl: fetch from the fsl project"
-  echo "$0 {all}: fetches fossil all, sqlite all"
-# Need a section in here for pull
-  exit 0
-}
+  FOSHOME="/home/viking/src/c/"
+  # Obligatory help function
+  function dohelp() { # needed renaming, as "help" already exists somewhere else
+    echo "$0: help page"
+    echo "$0 ### fossil stuff"
+    echo "$0 fossil-[code|forum|book]: fetches named section"
+    echo "$0 fossil: fetches code and forum"
+    echo "$0 ### wanderinghorse stuff"
+    echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
+    echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
+    echo "$0 ### sqlite stuff"
+    echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
+    echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
+    echo "$0 ### tcl/tk"
+    echo "$0 tcl-code: fetches code"
+    echo "$0 tcl-tip: fetches proposals"
+    echo "$0 tk-code: fetches code"
+    echo "$0 althttpd: fetches althttpd code"
+    echo "$0 wasm: fetches wasm-related code"
+    echo "=== Rarely-updated stuff"
+    echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
+    echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
+    echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
+    echo " and cwal. This list will need modifying on occasion"
+    echo "======= TODO"
+    echo "$0 fsl: fetch from the fsl project"
+    echo "$0 {all}: fetches fossil all, sqlite all"
+  # Need a section in here for pull
+    exit 0
+  }
 
-##### fossil-scm and related stuff
-function fossil-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
-  echo "==== fossil-code...done ==="
-}
+  ##### fossil-scm and related stuff
+  function fossil-code() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
+    echo "==== fossil-code...done ==="
+  }
 
-function fossil-forum() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossilforum.fossil 
-  echo "==== fossil-forum...done ==="
-}
+  function fossil-forum() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossilforum.fossil 
+    echo "==== fossil-forum...done ==="
+  }
 
-# Rarely updated
-function fossil-book() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-book.fossil 
-  echo "==== fossil-book...done ==="
-}
+  # Rarely updated
+  function fossil-book() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-book.fossil 
+    echo "==== fossil-book...done ==="
+  }
 
-# Rarely updated
-function pikchr() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
-  echo "==== pikchr...done ===="
-}
+  function fossil-all() { # Excludes fossil-book and pikchr
+    cd fossil-scm # Yes, the directory name has -scm appended
+    t=fossil
+    ${t}-code
+    sleep 5
+    ${t}-forum
+    cd ..
+  }
 
-function fossil-all() {
-  cd fossil-scm # Yes, the directory name has -scm appended
-  t=fossil
-  ${t}-code
-  sleep 5
-  ${t}-forum
-#  ${t}-book # Shifted to rarely()
-  cd ..
-}
+  ###### wanderinghorse items
+  function libfossil-code() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil.fossil
+    echo "==== libfossil...done ==="
+  }
 
-###### wanderinghorse items
-function libfossil-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil.fossil
-  echo "==== libfossil...done ==="
-}
+  function libfossil-forum {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
+    echo "==== libfossil-forum...done ==="
+  }
 
-function libfossil-forum {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
-  echo "==== libfossil-forum...done ==="
-}
+  # ncurses client for fossil
+  function fnc {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
+    echo "==== fnc...done ==="
+  }
 
-# ncurses client for fossil
-function fnc {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
-  echo "==== fnc...done ==="
-}
+  # Rarely updated
+  function pikchr() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
+    echo "==== pikchr...done ===="
+  }
 
-function libfossil-all {
-  cd libfossil
-  libfossil-code
-  libfossil-forum
-  fnc
-  cd -
-}
+  function pikmojicon() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikmojicon.fossil
+    echo "==== pikmojicon...done ===="
+  }
 
-# Scripting engine without a language. Not sure where to put this.
-function cwal {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cwal.fossil
-  echo "==== cwal...done ==="
-}
+  function libfossil-all {
+    cd libfossil
+    libfossil-code
+    libfossil-forum
+    fnc
+    cd -
+  }
 
-# cson - old, but seemingly still in use
-function cson {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cson.fossil
-  echo "==== cson...done ==="
-}
+  # Scripting engine without a language. Not sure where to put this.
+  function cwal {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cwal.fossil
+    echo "==== cwal...done ==="
+  }
 
-###### end of wanderinghorse stuff
+  # cson - old, but seemingly still in use
+  function cson {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cson.fossil
+    echo "==== cson...done ==="
+  }
 
-# Shell-based front end to fossil, append to rarely. Hasn't been updated since 2019.
-function fsl {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fsl.fossil
-  echo "==== fsl...done ==="
-}
+  ###### end of wanderinghorse stuff
 
-# This is spectacularly unlikely to update further, but is here for completeness' sake
-function fuel {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-fuel.fossil
-  echo "==== fuel...done ==="
-}
+  # Shell-based front end to fossil, append to rarely. Hasn't been updated since 2019.
+  function fsl {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fsl.fossil
+    echo "==== fsl...done ==="
+  }
 
-##### sqlite-hosted or sqlite-related projects
-function sqlite-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
-  echo "==== sqlite-code...done ==="
-}
+  # This is spectacularly unlikely to update further, but is here for completeness' sake
+  function fuel {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-fuel.fossil
+    echo "==== fuel...done ==="
+  }
 
-function sqlite-forum() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqliteforum.fossil 
-  echo "==== sqlite-forum...done ==="
-}
+  ##### sqlite-hosted or sqlite-related projects
+  function sqlite-code() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
+    echo "==== sqlite-code...done ==="
+  }
 
-function sqlite-wasm() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} wasm.fossil
-  echo "==== sqlite-wasm...done ==="
-}
+  function sqlite-forum() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqliteforum.fossil 
+    echo "==== sqlite-forum...done ==="
+  }
 
-### These fossils are rarely updated. ###
-function sqlite-docsrc() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} docsrc.fossil 
-  echo "==== sqlite-docsrc...done ==="
-}
+  function sqlite-wasm() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} wasm.fossil
+    echo "==== sqlite-wasm...done ==="
+  }
 
-function sqlite-tests() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqllogictest.fossil 
-  echo "==== sqlite-tests...done ==="
-}
+  ### These fossils are rarely updated. ###
+  function sqlite-docsrc() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} docsrc.fossil 
+    echo "==== sqlite-docsrc...done ==="
+  }
 
-function sqlite-althttpd() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} althttpd.fossil 
-  echo "==== sqlite-althttpd...done ==="
-}
+  function sqlite-tests() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqllogictest.fossil 
+    echo "==== sqlite-tests...done ==="
+  }
 
-function sqlite-cloud() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil 
-  echo "==== sqlite-cloudsqlite...done ==="
-}
+  function sqlite-althttpd() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} althttpd.fossil 
+    echo "==== sqlite-althttpd...done ==="
+  }
 
-# Does everything not in "rarely" section
-function sqlite-all() {
-  t="sqlite"
-  cd ${t}
-  ${t}-code
-  sleep 5
-  ${t}-forum
-  sleep 5
-  ${t}-docsrc
-  sleep 5
-  ${t}-wasm
-#  ${t}-althttpd # shifted to rarely()
-#  ${t}-tests # shifted to rarely()
-#  ${t}-cloud # shifted to rarely()
-  unset $t
-  cd .. # gets us back to ${MYHOME}
-}
+  function sqlite-cloud() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil 
+    echo "==== sqlite-cloudsqlite...done ==="
+  }
 
-# Updates tcl sourcecode
-function tcl-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tcl.fossil 
-  echo "==== tcl-code...done ==="
-}
+  # Does everything not in "rarely" section
+  function sqlite-all() {
+    t="sqlite"
+    cd ${t}
+    ${t}-code
+    sleep 5
+    ${t}-forum
+    sleep 5
+    ${t}-docsrc
+    sleep 5
+    ${t}-wasm
+  #  ${t}-althttpd # shifted to rarely()
+  #  ${t}-tests # shifted to rarely()
+  #  ${t}-cloud # shifted to rarely()
+    unset $t
+    cd .. # gets us back to ${MYHOME}
+  }
 
-# Updates tcl TIP database
-function tcl-tips() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tips.fossil 
-  echo "==== tcl-tips...done ==="
-}
+  # Updates tcl sourcecode
+  function tcl-code() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tcl.fossil 
+    echo "==== tcl-code...done ==="
+  }
 
-# Updates tk sourcecode
-function tk-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tk.fossil 
-  echo "==== tk code...done ==="
-}
+  # Updates tcl TIP database
+  function tcl-tips() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tips.fossil 
+    echo "==== tcl-tips...done ==="
+  }
 
-# Updates both tcl and tk sources
-function tcl-all() {
-  cd tcl
-  tcl-code
-  sleep 5
-  tcl-tips   # TCL Improvement Proposals, rarely updated
-  sleep 5
-  cd ../tk
-  tk-code
-  cd .. # gets us back to ${MYHOME}
-}
+  # Updates tk sourcecode
+  function tk-code() {
+    fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tk.fossil 
+    echo "==== tk code...done ==="
+  }
 
-# these don't get updated very often, if at all
-function rarely() { 
-# fossil stuff
-  cd fossil-scm
-  fossil-book
-  pikchr
-  fuel # really really rare chance to update
-# sqlite stuff
-  cd ../sqlite
-  sqlite-tests
-  sqlite-althttpd
-  sqlite-cloud
-# wanderinghorse - a.k.a. libfossil
-  cd ../libfossil
-  cwal
-  fsl
-  cd ..
-}
+  # Updates both tcl and tk sources
+  function tcl-all() {
+    cd tcl
+    tcl-code
+    sleep 5
+    tcl-tips   # TCL Improvement Proposals, rarely updated
+    sleep 5
+    cd ../tk
+    tk-code
+    cd .. # gets us back to ${MYHOME}
+  }
 
-function all() { # These each have a cd in them
-# Note: does not include fsl/libfossil
-  fossil-all # code, forum, not book
-  sleep 5
-  sqlite-all # code, forum, althttpd, not tests
-  sleep 5
-  tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
-}
-# Takes path arg
+  # these don't get updated very often, if at all
+  function rarely() { 
+  # fossil stuff
+    cd fossil-scm
+    fossil-book
+    fuel # really really rare chance to update
+  # sqlite stuff
+    cd ../sqlite
+    sqlite-tests
+    sqlite-althttpd
+    sqlite-cloud
+  # wanderinghorse - a.k.a. libfossil
+    cd ../libfossil
+    cwal
+    fsl
+    pikchr
+    pikmojicon
+    cd ..
+  }
 
-pushd "${FOSHOME}"
-# Let's add something to FOSCMD to make the operation specific
-# the caseloop below processes in order. -u needs to be first if
-# we want to sync unversioned artifacts
-declare FOSCMDPARAMS
-# Was here for getting everything and breadcrumbing where I was
-# FOSCMDPARAMS=("-v" "--verily" "-R")
-# Strip it back a bit, I think.
-FOSCMDPARAMS=("-R")
+  function all() { # These each have a cd in them
+  # Note: does not include fsl/libfossil
+    fossil-all # code, forum, not book
+    sleep 5
+    sqlite-all # code, forum, althttpd, not tests
+    sleep 5
+    tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
+  }
+  # Takes path arg
 
-FOSCMD="pull" # default value unless it gets changed by -u
-if [ ${#*} -lt 1 ]; then # I want it all
-  all # sleep is built in between stages
-else #iterate, chuck it in if keyword isn't recognised.
-  for t in ${*}; do
-    case "${t}" in 
-    "-u"|"--unversioned")
-      # sync can't push without user perms on remote, but can still pull unversioned artifacts
-      FOSCMDPARAMS=("-u" "-v" "--verily" "-R")
-      FOSCMD="sync"
-#      dohelp 
-    ;;
-    "help"|"-h")
-      dohelp 
-    ;; # exits
-      # I should cover this if I want all the ones I don't normally cover
-    "rarely") rarely ;; 
-    "all") all ;; # Yeah, I know I said it above, but here I specify it.
-    "fossil"|"sqlite"|"tcl"|"libfossil")
-      "${t}"-all
-    ;;
-# All fossil-related stuff
-    "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr"|"fuel")
-      cd fossil-scm
-      "${t}" # calls the function directly. I'll have to see if this works.
-      cd ..
-    ;;
-    "book")
-      cd fossil-scm
-      fossil-book 
-      cd -
-    ;;
+  pushd "${FOSHOME}"
+  # Let's add something to FOSCMD to make the operation specific
+  # the caseloop below processes in order. -u needs to be first if
+  # we want to sync unversioned artifacts
+  declare FOSCMDPARAMS
+  # Was here for getting everything and breadcrumbing where I was
+  # FOSCMDPARAMS=("-v" "--verily" "-R")
+  # Strip it back a bit, I think.
+  FOSCMDPARAMS=("-R")
 
-# All wanderinghorse stuff
-    "libfossil-all")
-      libfossil-all # should do libfossil-code and libfossil-forum
-    ;;
-    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc")
-      cd libfossil
-      ${t} # Seems a bit redundant to make this a full function call
-      cd ..
-    ;;
-# All sqlite-related stuff
-"sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
-      cd sqlite
-      "${t}"
-      cd -
-    ;;
-    "althttpd"|"httpd") 
-        cd sqlite
-        sqlite-althttpd
+  FOSCMD="pull" # default value unless it gets changed by -u
+  if [ ${#*} -lt 1 ]; then # I want it all
+    all # sleep is built in between stages
+  else #iterate, chuck it in if keyword isn't recognised.
+    for t in ${*}; do
+      case "${t}" in 
+      "-u"|"--unversioned")
+        # sync can't push without user perms on remote, but can still pull unversioned artifacts
+        FOSCMDPARAMS=("-u" "-v" "--verily" "-R")
+        FOSCMD="sync"
+  #      dohelp 
+      ;;
+      "help"|"-h")
+        dohelp # exits
+      ;;
+        # I should cover this if I want all the ones I don't normally cover
+      "rarely") rarely ;; 
+      "all") all ;; # Yeah, I know I said it above, but here I specify it.
+      "fossil"|"sqlite"|"tcl"|"libfossil")
+        "${t}"-all
+      ;;
+  # All fossil-related stuff
+      "fossil-forum"|"fossil-code"|"fossil-book"|"fuel")
+        cd fossil-scm
+        "${t}" # calls the function directly. I'll have to see if this works.
         cd ..
-    ;;
-    "docsrc")
-        cd sqlite
-        sqlite-docsrc
+      ;;
+      "book")
+        cd fossil-scm
+        fossil-book 
+        cd -
+      ;;
+
+  # All wanderinghorse stuff
+      "libfossil-all")
+        libfossil-all # should do libfossil-code and libfossil-forum
+      ;;
+      "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
+        cd libfossil
+        ${t} # Seems a bit redundant to make this a full function call
         cd ..
-    ;;
-    "wasm")
+      ;;
+  # All sqlite-related stuff
+  "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
         cd sqlite
-        sqlite-wasm
-        cd ..
-    ;;
-    "cloud"|"cloudsqlite"|"sqlite-cloud")
-        cd sqlite
-        sqlite-cloud
-        cd ..
-    ;;
-# All tcl/tk-related stuff
-    "tcl"|"tcl-all")
-      tcl-all
-    ;;
-    "tcl-code"|"tcl-tips")
-      cd tcl
-      "${t}"
-      cd -
-    ;;
-    "tk")
-      cd "${t}"
-      "${t}"-code  # Only the code at the moment.
-      cd -
-    ;;
-    "tk-code") 
-      cd tk; pwd
-      "${t}"
-      cd -
-    ;;
-    esac # end of case ${t}
-  done
-fi
-popd
+        "${t}"
+        cd -
+      ;;
+      "althttpd"|"httpd") # whoops, is this duplicated with the above section?
+          cd sqlite
+          sqlite-althttpd
+          cd ..
+      ;;
+      "docsrc")
+          cd sqlite
+          sqlite-docsrc
+          cd ..
+      ;;
+      "wasm")
+          cd sqlite
+          sqlite-wasm
+          cd ..
+      ;;
+      "cloud"|"cloudsqlite"|"sqlite-cloud")
+          cd sqlite
+          sqlite-cloud
+          cd ..
+      ;;
+  # All tcl/tk-related stuff
+      "tcl"|"tcl-all")
+        tcl-all
+      ;;
+      "tcl-code"|"tcl-tips")
+        cd tcl
+        "${t}"
+        cd -
+      ;;
+      "tk")
+        cd "${t}"
+        "${t}"-code  # Only the code at the moment.
+        cd -
+      ;;
+      "tk-code") 
+        cd tk; pwd
+        "${t}"
+        cd -
+      ;;
+      esac # end of case ${t}
+    done
+  fi
+  popd
 
 
 #+END_SRC
@@ -862,9 +880,12 @@ My concept is as follows:
 # Creates new fossil from git tree. There'll be a corresponding one for fossilgitadd. Soon.
 #
 # v0.0.1 Initial cut at problem
+# v0.0.2 Switch out baked-in value for a variable
+
 
 # Let's get a repo going. Later we'll ask for the name of this repo ($1 etc)
 REPONAME=chooseyournewreponame.fossil
+REPO_PASSWORD=${REPO_PASSWORD:~whateveryoulike} # choose default password unless we pass it in via $1
 fossil init ${REPONAME} --template ${HOME}/fossils/skeleton.fossil
 # Add correct password to setup user, probably ${USER}. We should add a daily-use user later with caps of ay.
 fossil user password ${USER} "whateveryoulike" -R ${REPONAME}
@@ -886,6 +907,55 @@ Further notes for extra lines in the script:
   + with the commit message duplicating the one held by git.
 + close out the fossil, as the last git commit should now be at HEAD
 
+
+** fossilmake
+
+This is a script that changes into the relevant directory and re-creates the compiled binary,
+presumably after a fossil update operation to get things right. At least for the moment I can simply
+hack-and-cut from fossilsource, as that has enough bits in it where it visits every relevant fossil
+I have here. All I'd then have to do is to strip out those bits I don't need, either because they
+don't update any more (cvstrac) or they don't have an executable as an output. Instead, they have a
+document such as a pdf. I could still create these, but the impetus would then shift to a separate
+fossildoc tool that collects relevant docs together under one script that runs much like fossilmake
+does.
+
+I'll make this non-executable for the moment until I have some code in here.
+
+#+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilmake :tangle-mode (identity #o644)
+#!/bin/bash
+#
+# v0.0.1 Absolute first cut at fossilmake
+# A prototype maker of fossil projects
+
+MYNAME=fossilmake
+
+#+END_SRC
+
+
+** fossildoc
+
+Preliminary stub to create the docs for each relevant project. At this stage, those are just the
+doctree for fossil-book and sqlite-docs, with a suitable upload to my local fossil for the sqlite
+docs. As for other docs, I'll have to trawl through the other projects to find them, if they're not
+already wrapped up inside fossil wikis. If they're there, then do I bother to crowbar them out or leave
+them in their original wrappers? Thinking about it for ten seconds leads me to the conclusion that
+fossil wikis are generally best if anything is embedded in the text such as TH1 or pikchr.`
+
+Again, I'll make this non-executable for the moment until I have some code in here.
+
+#+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
+#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossildoc :tangle-mode (identity #o644)
+#!/bin/bash
+#
+# v0.0.1 Absolute first cut at fossildoc
+# A prototype maker of docs for fossil projects
+
+MYNAME=fossildoc
+
+
+#+END_SRC
+
 * Further directions
 
 ( or, future thoughts )
@@ -901,11 +971,19 @@ other scripts here as a model on which to create your own. I haven't quite kept 
 same way as fossilserve. It's something I should get to, in case you do acually want to just run one
 or two of the fossils on their own ports.
 
+Thinking on something Stephan said in one of his forum posts on the many forums he's a part of, got
+me thinking about a simple script to handle making some of the extracted code bases I do have here.
+Simple stuff like pikchr and the like is pretty much wander in, make and copy to destination. With
+the slightly more complex cases, I'd want to perhaps provide some localised default values for
+compiling them instead of the OOTB values.
+
+I could jokingly call it fossilmake.
+
 * Postscript and credits
 
 I'd love to thank the guys that created the sqlite project and all the other satellite projects that
-go along for the ride, the most well known being fossil, upon which development is based. You set up
-a fossil, put files into it, and they're then backed by a sqlite3 database inside the fossil,
-complete with all the other advantages that an all-in-one solution provides.
+go along for the ride, the most well known being the fossil SCM, upon which development is
+based. You set up a fossil, put files into it, and they're then backed by a sqlite3 database inside
+the fossil, complete with all the other advantages that an all-in-one solution provides.
 
 

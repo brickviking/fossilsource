@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# v0.0.1 Absolute first cut at fossilmake
+# A prototype maker of fossil projects
+
+MYNAME=fossilmake
