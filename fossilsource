@@ -17,6 +17,7 @@
 # v0.13 Changed out MYHOME and other vars to FOSHOME etc.
 # v0.14 Added sqlite-cloudsqlite, tidied up help
 # v0.15 Put in fnc, should have been in there a while. Poor thing.
+# v0.16 Added in pikmojicon, pretty rarely used
 #########
 # Notes #
 #########
@@ -31,21 +32,25 @@ FOSHOME="/home/viking/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0: help page"
-  echo "$0 fossil{-scm} [code|forum|book|pikchr]: fetches named section"
-  echo "$0 fossil{-scm} all: fetches code, and forum (not book)"
+  echo "$0 ### fossil stuff"
+  echo "$0 fossil-[code|forum|book]: fetches named section"
+  echo "$0 fossil: fetches code and forum"
+  echo "$0 ### wanderinghorse stuff"
   echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
-  echo "$0 [fsl|fnc]: fetches fsl or fnc"
+  echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
+  echo "$0 ### sqlite stuff"
   echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
   echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
+  echo "$0 ### tcl/tk"
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
   echo "$0 tk-code: fetches code"
   echo "$0 althttpd: fetches althttpd code"
   echo "$0 wasm: fetches wasm-related code"
   echo "=== Rarely-updated stuff"
-  echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite}-]all"
-  echo "$0 Currently, this includes the following fossil and sqlite projects:"
-  echo " fossil-book, pikchr, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
+  echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
+  echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
+  echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
   echo " and cwal. This list will need modifying on occasion"
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
@@ -71,19 +76,12 @@ function fossil-book() {
   echo "==== fossil-book...done ==="
 }
 
-# Rarely updated
-function pikchr() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
-  echo "==== pikchr...done ===="
-}
-
-function fossil-all() {
+function fossil-all() { # Excludes fossil-book and pikchr
   cd fossil-scm # Yes, the directory name has -scm appended
   t=fossil
   ${t}-code
   sleep 5
   ${t}-forum
-#  ${t}-book # Shifted to rarely()
   cd ..
 }
 
@@ -102,6 +100,17 @@ function libfossil-forum {
 function fnc {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fnc.fossil
   echo "==== fnc...done ==="
+}
+
+# Rarely updated
+function pikchr() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
+  echo "==== pikchr...done ===="
+}
+
+function pikmojicon() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikmojicon.fossil
+  echo "==== pikmojicon...done ===="
 }
 
 function libfossil-all {
@@ -186,7 +195,7 @@ function sqlite-all() {
   ${t}-docsrc
   sleep 5
   ${t}-wasm
-#  ${t}-althttpd # shifted to rarely()
+  ${t}-althttpd # shifted from rarely()
 #  ${t}-tests # shifted to rarely()
 #  ${t}-cloud # shifted to rarely()
   unset $t
@@ -228,17 +237,17 @@ function rarely() {
 # fossil stuff
   cd fossil-scm
   fossil-book
-  pikchr
   fuel # really really rare chance to update
 # sqlite stuff
   cd ../sqlite
   sqlite-tests
-  sqlite-althttpd
   sqlite-cloud
 # wanderinghorse - a.k.a. libfossil
   cd ../libfossil
   cwal
   fsl
+  pikchr
+  pikmojicon
   cd ..
 }
 
@@ -275,8 +284,8 @@ else #iterate, chuck it in if keyword isn't recognised.
 #      dohelp 
     ;;
     "help"|"-h")
-      dohelp 
-    ;; # exits
+      dohelp # exits
+    ;;
       # I should cover this if I want all the ones I don't normally cover
     "rarely") rarely ;; 
     "all") all ;; # Yeah, I know I said it above, but here I specify it.
@@ -284,7 +293,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"-all
     ;;
 # All fossil-related stuff
-    "fossil-forum"|"fossil-code"|"fossil-book"|"pikchr"|"fuel")
+    "fossil-forum"|"fossil-code"|"fossil-book"|"fuel")
       cd fossil-scm
       "${t}" # calls the function directly. I'll have to see if this works.
       cd ..
@@ -299,7 +308,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libfossil-all")
       libfossil-all # should do libfossil-code and libfossil-forum
     ;;
-    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc")
+    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
@@ -310,7 +319,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"
       cd -
     ;;
-    "althttpd"|"httpd") 
+    "althttpd"|"httpd") # whoops, is this duplicated with the above section?
         cd sqlite
         sqlite-althttpd
         cd ..
