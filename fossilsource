@@ -66,13 +66,13 @@ function fossil-code() {
 }
 
 function fossil-forum() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossilforum.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossilforum.fossil
   echo "==== fossil-forum...done ==="
 }
 
 # Rarely updated
 function fossil-book() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-book.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-book.fossil
   echo "==== fossil-book...done ==="
 }
 
@@ -155,7 +155,7 @@ function sqlite-code() {
 }
 
 function sqlite-forum() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqliteforum.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqliteforum.fossil
   echo "==== sqlite-forum...done ==="
 }
 
@@ -206,19 +206,19 @@ function sqlite-all() {
 
 # Updates tcl sourcecode
 function tcl-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tcl.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tcl.fossil
   echo "==== tcl-code...done ==="
 }
 
 # Updates tcl TIP database
 function tcl-tips() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tips.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tips.fossil
   echo "==== tcl-tips...done ==="
 }
 
 # Updates tk sourcecode
 function tk-code() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tk.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tk.fossil
   echo "==== tk code...done ==="
 }
 
@@ -235,7 +235,7 @@ function tcl-all() {
 }
 
 # these don't get updated very often, if at all
-function rarely() { 
+function rarely() {
 # fossil stuff
   cd fossil-scm
   fossil-book
@@ -278,18 +278,18 @@ if [ ${#*} -lt 1 ]; then # I want it all
   all # sleep is built in between stages
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
-    case "${t}" in 
+    case "${t}" in
     "-u"|"--unversioned")
       # sync can't push without user perms on remote, but can still pull unversioned artifacts
       FOSCMDPARAMS=("-u" "-v" "--verily" "-R")
       FOSCMD="sync"
-#      dohelp 
+#      dohelp
     ;;
     "help"|"-h")
       dohelp # exits
     ;;
       # I should cover this if I want all the ones I don't normally cover
-    "rarely") rarely ;; 
+    "rarely") rarely ;;
     "all") all ;; # Yeah, I know I said it above, but here I specify it.
     "fossil"|"sqlite"|"tcl"|"libfossil")
       "${t}"-all
@@ -302,7 +302,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
     "book")
       cd fossil-scm
-      fossil-book 
+      fossil-book
       cd -
     ;;
 
@@ -355,7 +355,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"-code  # Only the code at the moment.
       cd -
     ;;
-    "tk-code") 
+    "tk-code")
       cd tk; pwd
       "${t}"
       cd -
