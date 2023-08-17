@@ -39,8 +39,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
   echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
   echo "$0 ### sqlite stuff"
-  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm)"
-  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm}: fetches code, forum, docsrc, althttpd or test scripts"
+  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)"
+  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}: fetches code, forum, docsrc, althttpd or test scripts"
   echo "$0 ### tcl/tk"
   echo "$0 tcl-code: fetches code"
   echo "$0 tcl-tip: fetches proposals"
@@ -164,24 +164,24 @@ function sqlite-wasm() {
   echo "==== sqlite-wasm...done ==="
 }
 
-### These fossils are rarely updated. ###
 function sqlite-docsrc() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} docsrc.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} docsrc.fossil
   echo "==== sqlite-docsrc...done ==="
 }
 
-function sqlite-tests() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqllogictest.fossil 
-  echo "==== sqlite-tests...done ==="
-}
-
 function sqlite-althttpd() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} althttpd.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} althttpd.fossil
   echo "==== sqlite-althttpd...done ==="
 }
 
+### These fossils are rarely updated. ###
+function sqlite-tests() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqllogictest.fossil
+  echo "==== sqlite-tests...done ==="
+}
+
 function sqlite-cloud() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil 
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cloudsqlite.fossil
   echo "==== sqlite-cloudsqlite...done ==="
 }
 
@@ -196,6 +196,7 @@ function sqlite-all() {
   ${t}-docsrc
   sleep 5
   ${t}-wasm
+  sleep 5
   ${t}-althttpd # shifted from rarely()
 #  ${t}-tests # shifted to rarely()
 #  ${t}-cloud # shifted to rarely()
