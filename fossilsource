@@ -50,8 +50,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "=== Rarely-updated stuff"
   echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
-  echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-althttpd, sqlite-cloud,"
-  echo " and cwal. This list will need modifying on occasion"
+  echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
+  echo "This list will need modifying on occasion."
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
   echo "$0 {all}: fetches fossil all, sqlite all"
@@ -108,6 +108,7 @@ function pikchr() {
   echo "==== pikchr...done ===="
 }
 
+# Rarely updated
 function pikmojicon() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikmojicon.fossil
   echo "==== pikmojicon...done ===="
@@ -314,7 +315,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd ..
     ;;
 # All sqlite-related stuff
-"sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm") 
+    "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm")
       cd sqlite
       "${t}"
       cd -
