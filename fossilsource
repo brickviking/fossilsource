@@ -148,6 +148,11 @@ function fuel {
   echo "==== fuel...done ==="
 }
 
+function fresh {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} 
+  echo "==== fresh...done ==="
+}
+
 ##### sqlite-hosted or sqlite-related projects
 function sqlite-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
@@ -250,6 +255,8 @@ function rarely() {
   fsl
   pikchr
   pikmojicon
+  cd ../Fresh
+  fresh # Added 28-2-2024
   cd ..
 }
 
@@ -304,6 +311,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd fossil-scm
       fossil-book
       cd -
+    ;;
+# Some non-fossil stuff (hosted in a fossil)
+    "fresh|Fresh")
+     cd Fresh
+     fresh
+     cd -
     ;;
 
 # All wanderinghorse stuff

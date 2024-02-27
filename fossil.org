@@ -31,7 +31,13 @@ anything else. Hey, if it works, ... right?
 #+END_EXPORT
 
 
+:CONTENTS:
+
+:END:
 * Notes
+:PROPERTIES:
+:TOC:      :include all :depth 2
+:END:
 
 We should probably make sure the fossil directory and the sqlite directories exist before we try to
 tangle code into them. Extracting source from here is as easy as `C-c C-v t`.
@@ -330,6 +336,11 @@ function fuel {
   echo "==== fuel...done ==="
 }
 
+function fresh {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} 
+  echo "==== fresh...done ==="
+}
+
 ##### sqlite-hosted or sqlite-related projects
 function sqlite-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
@@ -432,6 +443,8 @@ function rarely() {
   fsl
   pikchr
   pikmojicon
+  cd ../Fresh
+  fresh # Added 28-2-2024
   cd ..
 }
 
@@ -486,6 +499,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd fossil-scm
       fossil-book
       cd -
+    ;;
+# Some non-fossil stuff (hosted in a fossil)
+    "fresh|Fresh")
+     cd Fresh
+     fresh
+     cd -
     ;;
 
 # All wanderinghorse stuff
@@ -988,5 +1007,4 @@ I'd love to thank the guys that created the sqlite project and all the other sat
 go along for the ride, the most well known being the fossil SCM, upon which development is
 based. You set up a fossil, put files into it, and they're then backed by a sqlite3 database inside
 the fossil, complete with all the other advantages that an all-in-one solution provides.
-
 
