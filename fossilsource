@@ -256,7 +256,7 @@ function rarely() {
   pikchr
   pikmojicon
   cd ../Fresh
-  fresh # Added 28-2-2024
+  fresh
   cd ..
 }
 
@@ -312,11 +312,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       fossil-book
       cd -
     ;;
+
 # Some non-fossil stuff (hosted in a fossil)
-    "fresh|Fresh")
+    "fresh"|"Fresh")
      cd Fresh
      fresh
-     cd -
+     cd ..
     ;;
 
 # All wanderinghorse stuff
