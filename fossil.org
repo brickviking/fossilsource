@@ -337,7 +337,7 @@ function fuel {
 }
 
 function fresh {
-o
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} Fresh.fossil
   echo "==== fresh...done ==="
 }
 
