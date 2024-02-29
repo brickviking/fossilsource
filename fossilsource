@@ -153,6 +153,11 @@ function fresh {
   echo "==== fresh...done ==="
 }
 
+function inskin { # Shortened from Inskinerator
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} inskinerator.fossil
+  echo "==== Inskinerator...done ==="
+}
+
 ##### sqlite-hosted or sqlite-related projects
 function sqlite-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
@@ -258,6 +263,10 @@ function rarely() {
   cd ../Fresh
   fresh
   cd ..
+# tangentsoft
+  cd /home/viking/src/perl/tangentsoft/inskinerator
+  inskin
+  cd -  # should land me back in /h/v/src/c
 }
 
 function all() { # These each have a cd in them
@@ -318,6 +327,13 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd Fresh
       fresh
       cd ..
+    ;;
+
+# and tangentsoft
+    "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
+      cd /home/viking/src/perl/hosts/tangentsoft/inskinerator
+      inskin
+      cd -
     ;;
 
 # All wanderinghorse stuff
