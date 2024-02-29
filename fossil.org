@@ -460,7 +460,7 @@ function rarely() {
   fresh
   cd ..
 # tangentsoft
-  cd /home/viking/src/perl/tangentsoft/inskinerator
+  cd /home/viking/src/perl/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
 }
@@ -527,7 +527,7 @@ else #iterate, chuck it in if keyword isn't recognised.
 
 # and tangentsoft
     "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
-      cd /home/viking/src/perl/hosts/tangentsoft/inskinerator
+      cd /home/viking/src/perl/hosts/tangentsoft
       inskin
       cd -
     ;;
