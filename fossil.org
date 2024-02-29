@@ -131,6 +131,7 @@ individual subdirectories.
   +  2.14 Added pikmojicon, rearranged locations as pikchr etc are libfossil, not fossil-scm
   +  2.15 Preliminary stubs put in for fossilmake/fossildoc
   +  2.16 Rearranged things a little, moved althttpd back from rarely
+  +  2.17 Added some stuff like fresh, fuel and inskinerator
 
 * Source files
 
@@ -176,6 +177,8 @@ how. As a result, I'll stick a stanza in for updating it from fossilsource.
 
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
+February 2024 sees inskinerator added, there's been several other internal changes too.
+
 Future plans: 
  + include a verbose switch.
  + add other switch processing.
@@ -206,6 +209,7 @@ Future plans:
 # v0.14 Added sqlite-cloudsqlite, tidied up help
 # v0.15 Put in fnc, should have been in there a while. Poor thing.
 # v0.16 Added in pikmojicon, pretty rarely used
+# v0.17 Added in inskinerator, makes skins for fossil
 #########
 # Notes #
 #########
@@ -235,13 +239,17 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 tk-code: fetches code"
   echo "$0 althttpd: fetches althttpd code"
   echo "$0 wasm: fetches wasm-related code"
+  echo "$0 ### tangentsoft projects"
+  echo "$0 inskin: fetches inskinerator code"
   echo "=== Rarely-updated stuff"
   echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
   echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
+  echo "$0 Also includes tangentsoft's inskinerator"
   echo "This list will need modifying on occasion."
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
+  echo "$0 remove inskinerator from rarely if project updates regularly"
   echo "$0 {all}: fetches fossil all, sqlite all"
 # Need a section in here for pull
   exit 0
