@@ -315,9 +315,9 @@ else #iterate, chuck it in if keyword isn't recognised.
 
 # Some non-fossil stuff (hosted in a fossil)
     "fresh"|"Fresh")
-     cd Fresh
-     fresh
-     cd ..
+      cd Fresh
+      fresh
+      cd ..
     ;;
 
 # All wanderinghorse stuff
@@ -336,24 +336,24 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd -
     ;;
     "althttpd"|"httpd") # whoops, is this duplicated with the above section?
-        cd sqlite
-        sqlite-althttpd
-        cd ..
+      cd sqlite
+      sqlite-althttpd
+      cd ..
     ;;
     "docsrc")
-        cd sqlite
-        sqlite-docsrc
-        cd ..
+      cd sqlite
+      sqlite-docsrc
+      cd ..
     ;;
     "wasm")
-        cd sqlite
-        sqlite-wasm
-        cd ..
+      cd sqlite
+      sqlite-wasm
+      cd ..
     ;;
     "cloud"|"cloudsqlite"|"sqlite-cloud")
-        cd sqlite
-        sqlite-cloud
-        cd ..
+      cd sqlite
+      sqlite-cloud
+      cd ..
     ;;
 # All tcl/tk-related stuff
     "tcl"|"tcl-all")
