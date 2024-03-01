@@ -178,6 +178,7 @@ how. As a result, I'll stick a stanza in for updating it from fossilsource.
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
 February 2024 sees inskinerator added, there's been several other internal changes too.
+March 2024 sees the flint project added (software behind the chisel hosting site).
 
 Future plans: 
  + include a verbose switch.
@@ -241,11 +242,13 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 wasm: fetches wasm-related code"
   echo "$0 ### tangentsoft projects"
   echo "$0 inskin: fetches inskinerator code"
+  echo "$0 ### chisel project"
+  echo "$0 flint: fetches the flint code for chisel"
   echo "=== Rarely-updated stuff"
   echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
   echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
-  echo "$0 Also includes tangentsoft's inskinerator"
+  echo "$0 Also includes tangentsoft's inskinerator and james' flint"
   echo "This list will need modifying on occasion."
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
@@ -332,6 +335,7 @@ function cson {
 
 ###### end of wanderinghorse stuff
 
+#### Some non-fossil-project (but fossil-related) ####
 # Shell-based front end to fossil, append to rarely. Hasn't been updated since 2019.
 function fsl {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fsl.fossil
@@ -342,6 +346,11 @@ function fsl {
 function fuel {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-fuel.fossil
   echo "==== fuel...done ==="
+}
+
+function flint {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} flint.fossil
+  echo "==== flint...done ==="
 }
 
 function fresh {
@@ -463,6 +472,9 @@ function rarely() {
   cd /home/viking/src/perl/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
+  cd /h3/viking/src/php/hosts/james
+  flint
+  cd -
 }
 
 function all() { # These each have a cd in them
@@ -524,7 +536,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       fresh
       cd ..
     ;;
-
+# the host software for chisel
+    "flint")
+      cd /h3/viking/src/php/hosts/james
+      flint
+      cd -
+    ;;
 # and tangentsoft
     "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
       cd /home/viking/src/perl/hosts/tangentsoft
