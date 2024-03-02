@@ -1031,7 +1031,7 @@ doctree for fossil-book and sqlite-docs, with a suitable upload to my local foss
 docs. As for other docs, I'll have to trawl through the other projects to find them, if they're not
 already wrapped up inside fossil wikis. If they're there, then do I bother to crowbar them out or leave
 them in their original wrappers? Thinking about it for ten seconds leads me to the conclusion that
-fossil wikis are generally best if anything is embedded in the text such as TH1 or pikchr.`
+fossil wikis are generally best if anything is embedded in the text such as TH1 or pikchr.
 
 Again, I'll make this non-executable for the moment until I have some code in here.
 
