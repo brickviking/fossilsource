@@ -53,8 +53,9 @@ good looking at the moment.
 
 ** Relevancy of certain packages (a.k.a. how often are they updated)
 
-Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for fuel,
-2019 for fsl)
+Decide whether to keep fsl and fuel in, as they haven't been updated in quite some time (2018 for 
+fuel, 2019 for fsl). The same holds for the flint project, which hasn't seen code updates since
+2012 aside from the licencing rebind in 2013.
 
 ** Update fossilsource to do initial fetching
 
@@ -88,16 +89,43 @@ something I have to SIAS.
   +  This would possibly be one of ~/fossils, ~/Repositories, ~/Documents/fossils or some variation
     on that. You can create a checkout anywhere on the filesystem, and just point it at the original
     fossil back home in fossils/, things will "just work"™.
-2) A few categories (my personal current choice).
+2) Scattergun approach, or a few categories (my personal current choice).
   +  I've subdivided ~/src/c/ into fossil-scm, sqlite, libfossil, tcl and tk. Some of the fossils
 live in each of those subdirectories, for example, fossil-scm holds anything related to fossil
-itself, sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
+itself (fossil-code, fossil-forums, fossil book, etc),
+ sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
 related fossils (libfossil, libfossil-forum and fsl/fnc), and of course tcl and tk have their own
-individual subdirectories.
+individual subdirectories. There's also some other stuff in /h3. It's the least organised and most baked-in approach for the moment.
 3) Everything has its own directory, separate from anything else, i.e.:
   +  ${HOME}/src/fossil-scm/fossil.fossil,
   +  ${HOME}/src/fossil-book/fossil-book.fossil,
   +  ${HOME}/src/cvstrac/cvstrac.fossil and so on.
+3a) or you could use the developer as a pathname component:
+  + ${HOME}/src/drh/fossil-scm/fossil.fossil
+  + ...
+
+**** Quick note to self - can fossil open be used with a remote url?
+
+Yes. Quoting from docs (fossil help open),
+#+BEGIN_QUOTE
+Usage: fossil open REPOSITORY ?VERSION? ?OPTIONS?
+
+Open a new connection to the repository name REPOSITORY. ...
+... snip ...
+REPOSITORY can be the filename for a repository that already exists on the
+local machine or it can be a URI for a remote repository.
+#+END_QUOTE
+
+This implies that we don't even have to store the fossils locally, also rendering the fossilsource
+script entirely moot. Well. That's going back to the days of SVN and CVS, where we called home to a
+central repository to sync data. Not that fossil _has_ to be configured that way, but it certainly
+can be used that way. There's less local serverstate then, but does mean any changes you make are
+to the canonical sites themselves, as opposed to a local copy that you have almost complete control
+over.
+
+Further testing indicates that running fossil open in this way actually runs a clone operation
+first, leaving a fossil.fossil in the directory you chose when you ran fossil open. Hm. Maybe the
+script isn't so superfluous after all. Huh.
 
 * Changelog
 
@@ -131,7 +159,7 @@ individual subdirectories.
   +  2.14 Added pikmojicon, rearranged locations as pikchr etc are libfossil, not fossil-scm
   +  2.15 Preliminary stubs put in for fossilmake/fossildoc
   +  2.16 Rearranged things a little, moved althttpd back from rarely
-  +  2.17 Added some stuff like fresh, fuel and inskinerator
+  +  2.17 Added some stuff like fresh, fuel, inskinerator and flint.
 
 * Source files
 
@@ -145,7 +173,6 @@ At the moment, I have the following fossils installed in my system, with one or 
 pushed to git repositories in my gitea instance.
 *** Fossil-scm and related
   +  fossil-scm, fossil-forum, fossil-book
-    
 
 ** fossilsource
 This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
