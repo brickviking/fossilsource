@@ -505,6 +505,13 @@ function rarely() {
   cd -
 }
 
+function others_all() {
+  # only one entry at the moment
+  cd /home/viking/src/perl/hosts/tangentsoft
+  inskin
+  cd - # should land me back in /h/v/src/c
+}
+
 function all() { # These each have a cd in them
 # Note: does not include fsl/libfossil
   fossil-all # code, forum, not book
@@ -512,6 +519,8 @@ function all() { # These each have a cd in them
   sqlite-all # code, forum, althttpd, not tests
   sleep 5
   tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
+  sleep 5
+  others-all # inskin (at this stage)
 }
 # Takes path arg
 
