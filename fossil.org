@@ -273,11 +273,13 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 ### chisel project"
   echo "$0 flint: fetches the flint code for chisel"
   echo "=== Rarely-updated stuff"
-  echo "$0 rarely: updates all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
+  echo "$0 rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
   echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
   echo "$0 Also includes tangentsoft's inskinerator and james' flint"
   echo "This list will need modifying on occasion."
+  echo "=== Very rarely updated stuff (less than yearly)"
+  echo "$0 veryrarely: includes the flint, fuel and fsl projects"
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
   echo "$0 remove inskinerator from rarely if project updates regularly"
@@ -482,7 +484,6 @@ function rarely() {
 # fossil stuff
   cd fossil-scm
   fossil-book
-  fuel # really really rare chance to update
 # sqlite stuff
   cd ../sqlite
   sqlite-tests
@@ -490,9 +491,9 @@ function rarely() {
 # wanderinghorse - a.k.a. libfossil
   cd ../libfossil
   cwal
-  fsl
   pikchr
-  pikmojicon
+  # fsl and pikmojicon moved to veryrarely
+# other stuff
   cd ../Fresh
   fresh
   cd ..
@@ -500,6 +501,16 @@ function rarely() {
   cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
+}
+
+function veryrarely() { # for stuff that hasn't updated in years
+  cd fossil-scm
+  fuel # really really rare chance to update
+  cd -
+  cd ../libfossil
+  fsl
+  pikmojicon
+  cd -
   cd /h3/viking/src/php/hosts/james
   flint
   cd -
@@ -546,12 +557,13 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMD="sync"
 #      dohelp
     ;;
-    "help"|"-h")
+    "help"|"-h"|"--help") # might as well support the long option too
       dohelp # exits
     ;;
-      # I should cover this if I want all the ones I don't normally cover
-    "rarely") rarely ;;
-    "all") all ;; # Yeah, I know I said it above, but here I specify it.
+# Each one of these handles path changing for itself
+    "rarely"|"veryrarely"|"all")
+      "${t}"
+    ;;
     "fossil"|"sqlite"|"tcl"|"libfossil")
       "${t}"-all
     ;;
