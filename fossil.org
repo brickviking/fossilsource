@@ -507,7 +507,7 @@ function veryrarely() { # for stuff that hasn't updated in years
   cd fossil-scm
   fuel # really really rare chance to update
   cd -
-  cd ../libfossil
+  cd libfossil
   fsl
   pikmojicon
   cd -
