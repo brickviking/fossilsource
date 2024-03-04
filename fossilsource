@@ -277,7 +277,7 @@ function rarely() {
   fresh
   cd ..
 # tangentsoft
-  cd /home/viking/src/perl/tangentsoft
+  cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
   cd /h3/viking/src/php/hosts/james

@@ -212,6 +212,7 @@ Future plans:
  + add other switch processing.
  + (perhaps) add initial cloning.
  + expand to include git projects such as emacs and git itself.
+ + add a new category "exceptionally rarely", for projects not updated in years (flint, fuel?).
 
 ======== Beginning of fossilsource ========
 
@@ -496,7 +497,7 @@ function rarely() {
   fresh
   cd ..
 # tangentsoft
-  cd /home/viking/src/perl/tangentsoft
+  cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
   cd /h3/viking/src/php/hosts/james
