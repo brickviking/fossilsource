@@ -270,6 +270,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 wasm: fetches wasm-related code"
   echo "$0 ### tangentsoft projects"
   echo "$0 inskin: fetches inskinerator code"
+  echo "$0 tangentsoft-fossil: fetches local fossil for tangentsoft"
   echo "$0 ### chisel project"
   echo "$0 flint: fetches the flint code for chisel"
   echo "=== Rarely-updated stuff"
@@ -393,6 +394,10 @@ function inskin { # Shortened from Inskinerator
   echo "==== Inskinerator...done ==="
 }
 
+function tangentsoft-fossil() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tangentsoft.fossil
+}
+
 ##### sqlite-hosted or sqlite-related projects
 function sqlite-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sqlite.fossil
@@ -501,6 +506,9 @@ function rarely() {
   cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
+  cd /home/viking/src/c/hosts/tangentsoft/
+  tangentsoft-fossil
+  cd -
 }
 
 function veryrarely() { # for stuff that hasn't updated in years
@@ -516,11 +524,14 @@ function veryrarely() { # for stuff that hasn't updated in years
   cd -
 }
 
-function others_all() {
+function others-all() {
   # only one entry at the moment
   cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd - # should land me back in /h/v/src/c
+  cd /home/viking/src/c/hosts/tangentsoft/
+  tangentsoft-fossil
+  cd -
 }
 
 function all() { # These each have a cd in them
@@ -595,6 +606,11 @@ else #iterate, chuck it in if keyword isn't recognised.
     "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
       cd /home/viking/src/perl/hosts/tangentsoft
       inskin
+      cd -
+    ;;
+    "tangentsoft"|"tangentsoft-fossil")
+      cd /home/viking/src/c/hosts/tangentsoft
+      tangentsoft-fossil
       cd -
     ;;
 
