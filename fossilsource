@@ -283,13 +283,10 @@ function rarely() {
   cd ../Fresh
   fresh
   cd ..
-# tangentsoft
+# tangentsoft (not tangentsoft-fossil)
   cd /home/viking/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
-  cd /home/viking/src/c/hosts/tangentsoft/
-  tangentsoft-fossil
-  cd -
 }
 
 function veryrarely() { # for stuff that hasn't updated in years
@@ -305,7 +302,7 @@ function veryrarely() { # for stuff that hasn't updated in years
   cd -
 }
 
-function others-all() {
+function tangentsoft-all() {
   # only one entry at the moment
   cd /home/viking/src/perl/hosts/tangentsoft
   inskin
@@ -323,7 +320,10 @@ function all() { # These each have a cd in them
   sleep 5
   tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
   sleep 5
-  others-all # inskin (at this stage)
+  # tangentsoft-all has two paths, so we're not using it here
+  cd /home/viking/src/c/hosts/tangentsoft/
+  tangentsoft-fossil # doesn't include inskinerator (under rarely)
+  cd -
 }
 # Takes path arg
 
@@ -389,7 +389,12 @@ else #iterate, chuck it in if keyword isn't recognised.
       inskin
       cd -
     ;;
-    "tangentsoft"|"tangentsoft-fossil")
+    "tangentsoft-fossil")
+      cd /home/viking/src/c/hosts/tangentsoft
+      tangentsoft-fossil
+      cd -
+    ;;
+    "tangentsoft-all") 
       cd /home/viking/src/c/hosts/tangentsoft
       tangentsoft-fossil
       cd -
