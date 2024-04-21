@@ -221,7 +221,7 @@ Future plans:
  + include a verbose switch.
  + add other switch processing.
  + (perhaps) add initial cloning.
- + expand to include git projects such as emacs and git itself.
+ + expand to include git projects such as emacs and git itself. There's already a scmsource project for fetching source code for the other SCMs such as svn/hg.
  + add a new category "exceptionally rarely", for projects not updated in years (flint, fuel?).
 
 ======== Beginning of fossilsource ========
