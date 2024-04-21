@@ -72,6 +72,11 @@ yourfossilname.fossil`), and make sure that fossilsource can update them later. 
 concept of where I have the fossils is most definitely baked in, and this would need to change in
 any event. That'll be a point for "Future Directions" too.
 
+If we elect to fetch initial fossils, we run into the problem of having to *have* fossil so we can
+clone all the remaining fossils that I have direct access to. That we have to leave up to the user
+of this script, or indeed this repository. Thankfully it's easy to grab a copy, as they have it up
+for grabs at =http://fossil-scm/fossil/uv/download/html=.
+
 *** Do we then create a set of directories where each of the major categories are stored?
 
 This partially depends upon if you cluster your fossils together, rather than giving each fossil its
@@ -82,6 +87,10 @@ command, oblivious to where they may be stored. In the end, if the fossil has en
 just fine if you're just updating. I don't know if that also works for starting up a ui or server on
 a particular fossil that doesn't live in the directory you're in at the moment. That might be
 something I have to SIAS.
+
+Another option is simply to ask the user where they wish to put that respective fossil. It's up to
+them whether they collect all fossils into one place, or cluster them like I've done. This is more
+likely to need at least some clue of what to do. This isn't exactly git or svn, after all.
 
 **** List of possible variations
 
@@ -160,6 +169,7 @@ script isn't so superfluous after all. Huh.
   +  2.15 Preliminary stubs put in for fossilmake/fossildoc
   +  2.16 Rearranged things a little, moved althttpd back from rarely
   +  2.17 Added some stuff like fresh, fuel, inskinerator and flint.
+  +  2.18 Expanded on Adding Clone Flag section and following section..
 
 * Source files
 
