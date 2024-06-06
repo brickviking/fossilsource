@@ -97,7 +97,7 @@ likely to need at least some clue of what to do. This isn't exactly git or svn, 
 1) One single place, somewhere in ${HOME}.
   +  This would possibly be one of ~/fossils, ~/Repositories, ~/Documents/fossils or some variation
     on that. You can create a checkout anywhere on the filesystem, and just point it at the original
-    fossil back home in fossils/, things will "just work"™.
+    fossil back home in fossils/, things will "just work™".
 2) Scattergun approach, or a few categories (my personal current choice).
   +  I've subdivided ~/src/c/ into fossil-scm, sqlite, libfossil, tcl and tk. Some of the fossils
 live in each of those subdirectories, for example, fossil-scm holds anything related to fossil
