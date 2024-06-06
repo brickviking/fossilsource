@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2023-08-18 Friday 10:51>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon
-#+REVISION: 2.16
+#+REVISION: 2.18
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
