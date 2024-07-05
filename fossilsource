@@ -21,6 +21,7 @@
 # v0.17 Added in inskinerator, makes skins for fossil
 # v0.18 Made note about veryrarely (created for chisel and the like)
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp.
+# v0.20 Added wapp to rarely after cursory examination.
 #########
 # Notes #
 #########
