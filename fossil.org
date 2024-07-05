@@ -209,7 +209,7 @@ about and somewhat streamline the process. Simply issuing a command like
 
 ,#BEGIN_QUOTE
 fossilsource sqlite
-,#BEGIN_QUOTE
+,#END_QUOTE
 
 will update the fossils for sqlite itself, the sqlite forums, and other projects fairly closely
 related to sqlite itself.
