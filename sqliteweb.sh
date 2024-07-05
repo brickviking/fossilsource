@@ -9,7 +9,9 @@
 # v0.1.6 Added wasm/js server. This should by rights not be in all,
 #        but I'll leave it there for now, as there's recent traffic.
 # v0.1.7 TODO: Added althttpd fossil and streamlined the case switch.
-SQLITEHOME="/home/viking/src/c/sqlite"
+# v0.1.8 Changed default home for tangled script
+
+SQLITEHOME="${HOME}/src/c/sqlite"
 
 # First the source code
 code() {

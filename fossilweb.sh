@@ -3,11 +3,12 @@
 # v0.1.0 Starts up what we choose
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
+# v0.1.4 Changed default home for tangled script
 
 # TODO: we need to bring this back up to date. It's been a really long
 #       time since July 2022
 # Forget it, server mode works far better.
-FOSSILHOME="/home/viking/src/c/fossil-scm"
+FOSSILHOME="${HOME}/src/c/fossil-scm"
 
 # First the source code
 code() {

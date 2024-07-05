@@ -32,7 +32,7 @@
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
 
-FOSHOME="/home/viking/src/c/"
+FOSHOME="${HOME}/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0: help page"
@@ -294,7 +294,7 @@ function rarely() {
   fresh
   cd ..
 # tangentsoft (not tangentsoft-fossil)
-  cd /home/viking/src/perl/hosts/tangentsoft
+  cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
 }
@@ -307,17 +307,17 @@ function veryrarely() { # for stuff that hasn't updated in years
   fsl
   pikmojicon
   cd -
-  cd /h3/viking/src/php/hosts/james
+  cd ${HOME}/src/php/hosts/james
   flint
   cd -
 }
 
 function tangentsoft-all() {
   # only one entry at the moment
-  cd /home/viking/src/perl/hosts/tangentsoft
+  cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
   cd - # should land me back in /h/v/src/c
-  cd /home/viking/src/c/hosts/tangentsoft/
+  cd ${HOME}/src/c/hosts/tangentsoft/
   tangentsoft-fossil
   cd -
 }
@@ -331,7 +331,7 @@ function all() { # These each have a cd in them
   tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
   sleep 5
   # tangentsoft-all has two paths, so we're not using it here
-  cd /home/viking/src/c/hosts/tangentsoft/
+  cd ${HOME}/src/c/hosts/tangentsoft/
   tangentsoft-fossil # doesn't include inskinerator (under rarely)
   cd -
 }
@@ -389,23 +389,23 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
 # the host software for chisel (very rarely updated)
     "flint")
-      cd /h3/viking/src/php/hosts/james
+      cd ${HOME}/src/php/hosts/james
       flint
       cd -
     ;;
 # and tangentsoft
     "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
-      cd /home/viking/src/perl/hosts/tangentsoft
+      cd ${HOME}/src/perl/hosts/tangentsoft
       inskin
       cd -
     ;;
     "tangentsoft-fossil")
-      cd /home/viking/src/c/hosts/tangentsoft
+      cd ${HOME}/src/c/hosts/tangentsoft
       tangentsoft-fossil
       cd -
     ;;
     "tangentsoft-all") 
-      cd /home/viking/src/c/hosts/tangentsoft
+      cd ${HOME}/src/c/hosts/tangentsoft
       tangentsoft-fossil
       cd -
     ;;

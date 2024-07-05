@@ -104,7 +104,7 @@ live in each of those subdirectories, for example, fossil-scm holds anything rel
 itself (fossil-code, fossil-forums, fossil book, etc),
  sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
 related fossils (libfossil, libfossil-forum and fsl/fnc), and of course tcl and tk have their own
-individual subdirectories. There's also some other stuff in /h3. It's the least organised and most baked-in approach for the moment.
+individual subdirectories. It's the least organised and most baked-in approach for the moment.
 3) Everything has its own directory, separate from anything else, i.e.:
   +  ${HOME}/src/fossil-scm/fossil.fossil,
   +  ${HOME}/src/fossil-book/fossil-book.fossil,
@@ -229,7 +229,7 @@ Future plans:
 ======== Beginning of fossilsource ========
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
-#+BEGIN_SRC bash -i :tangle /home/viking/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
+#+BEGIN_SRC bash -i :tangle ~/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
@@ -264,7 +264,7 @@ Future plans:
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
 
-FOSHOME="/home/viking/src/c/"
+FOSHOME="${HOME}/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0: help page"
@@ -526,7 +526,7 @@ function rarely() {
   fresh
   cd ..
 # tangentsoft (not tangentsoft-fossil)
-  cd /home/viking/src/perl/hosts/tangentsoft
+  cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
   cd -  # should land me back in /h/v/src/c
 }
@@ -539,17 +539,17 @@ function veryrarely() { # for stuff that hasn't updated in years
   fsl
   pikmojicon
   cd -
-  cd /h3/viking/src/php/hosts/james
+  cd ${HOME}/src/php/hosts/james
   flint
   cd -
 }
 
 function tangentsoft-all() {
   # only one entry at the moment
-  cd /home/viking/src/perl/hosts/tangentsoft
+  cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
   cd - # should land me back in /h/v/src/c
-  cd /home/viking/src/c/hosts/tangentsoft/
+  cd ${HOME}/src/c/hosts/tangentsoft/
   tangentsoft-fossil
   cd -
 }
@@ -563,7 +563,7 @@ function all() { # These each have a cd in them
   tcl-all    # code (tcl/tk), TCL Improvement Proposals (tip)
   sleep 5
   # tangentsoft-all has two paths, so we're not using it here
-  cd /home/viking/src/c/hosts/tangentsoft/
+  cd ${HOME}/src/c/hosts/tangentsoft/
   tangentsoft-fossil # doesn't include inskinerator (under rarely)
   cd -
 }
@@ -621,23 +621,23 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
 # the host software for chisel (very rarely updated)
     "flint")
-      cd /h3/viking/src/php/hosts/james
+      cd ${HOME}/src/php/hosts/james
       flint
       cd -
     ;;
 # and tangentsoft
     "inskin"|"Inskin"|"inskinerator"|"Inskinerator")
-      cd /home/viking/src/perl/hosts/tangentsoft
+      cd ${HOME}/src/perl/hosts/tangentsoft
       inskin
       cd -
     ;;
     "tangentsoft-fossil")
-      cd /home/viking/src/c/hosts/tangentsoft
+      cd ${HOME}/src/c/hosts/tangentsoft
       tangentsoft-fossil
       cd -
     ;;
     "tangentsoft-all") 
-      cd /home/viking/src/c/hosts/tangentsoft
+      cd ${HOME}/src/c/hosts/tangentsoft
       tangentsoft-fossil
       cd -
     ;;
@@ -716,13 +716,14 @@ of the other individual shell scripts.
 
 ======== Beginning of fossilserve ========
 
-#+BEGIN_SRC bash /home/viking/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
+#+BEGIN_SRC bash ~/src/bash/fossil/fossilserve :tangle fossilserve :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 Initial release
 # we don't exactly need a home, just a straight up fossil invoke
 # from the / we can invoke a server (in a new tab) for every fossil we have
 #
 # TODO: we don't test for already-running fossil. -test is now ancient.
+# v0.2 Changed default home for tangled script
 
 if [[ "$1" == "-test" ]]; then
   fossil-test server --port 8100 / &
@@ -744,17 +745,18 @@ to try that. fossil tends to spawn its subprocesses in a separate tab each time.
 
 ======== Beginning of fossilweb.sh (superceded) ========
 
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilweb.sh :tangle-mode (identity #o755)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/fossilweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
 # v0.1.0 Starts up what we choose
 # v0.1.2 Removed book from "all" as this very rarely gets updated
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
+# v0.1.4 Changed default home for tangled script
 
 # TODO: we need to bring this back up to date. It's been a really long
 #       time since July 2022
 # Forget it, server mode works far better.
-FOSSILHOME="/home/viking/src/c/fossil-scm"
+FOSSILHOME="${HOME}/src/c/fossil-scm"
 
 # First the source code
 code() {
@@ -826,7 +828,7 @@ with their running costs, alongside the encryption and compression source that t
 
 ======== Beginning of sqliteweb.sh (superceded) ========
 
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/sqliteweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
 # v0.0.2 Sqlite fossil servers adjusted to start on 8200/10/20/30
@@ -838,7 +840,9 @@ with their running costs, alongside the encryption and compression source that t
 # v0.1.6 Added wasm/js server. This should by rights not be in all,
 #        but I'll leave it there for now, as there's recent traffic.
 # v0.1.7 TODO: Added althttpd fossil and streamlined the case switch.
-SQLITEHOME="/home/viking/src/c/sqlite"
+# v0.1.8 Changed default home for tangled script
+
+SQLITEHOME="${HOME}/src/c/sqlite"
 
 # First the source code
 code() {
@@ -934,7 +938,7 @@ with a front end on port 8100 that points to every fossil on my system.
 
 ======== Beginning of tclweb.sh ========
 
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/tclweb.sh :tangle-mode (identity #o755)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/tclweb.sh :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
 # v0.1.0 Starts up what we choose
@@ -942,9 +946,10 @@ with a front end on port 8100 that points to every fossil on my system.
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 # v0.1.4 name change about three versions ago to suit tcl instead of fossil
 # v0.1.5 made notes about starting on ports 8300/10/20
+# v0.1.6 Changed default home for tangled script
 
-TCLHOME="/home/viking/src/c/tcl"
-TKHOME="/home/viking/src/c/tk"
+TCLHOME="${HOME}/src/c/tcl"
+TKHOME="${HOME}/src/c/tk"
 
 # First the source code
 tcl-code() {
@@ -1032,7 +1037,7 @@ My concept is as follows:
 
 ======== Beginning of fossilgitcreate (doesn't do anything yet) ========
 
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilgitcreate :tangle-mode (identity #o644)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/fossilgitcreate :tangle-mode (identity #o644)
 #!/bin/bash
 # Creates new fossil from git tree. There'll be a corresponding one for fossilgitadd. Soon.
 #
@@ -1079,7 +1084,7 @@ does.
 I'll make this non-executable for the moment until I have some code in here.
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossilmake :tangle-mode (identity #o644)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/fossilmake :tangle-mode (identity #o644)
 #!/bin/bash
 #
 # v0.0.1 Absolute first cut at fossilmake
@@ -1102,7 +1107,7 @@ fossil wikis are generally best if anything is embedded in the text such as TH1 
 Again, I'll make this non-executable for the moment until I have some code in here.
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
-#+BEGIN_SRC bash :tangle /home/viking/src/bash/fossil/fossildoc :tangle-mode (identity #o644)
+#+BEGIN_SRC bash :tangle ~/src/bash/fossil/fossildoc :tangle-mode (identity #o644)
 #!/bin/bash
 #
 # v0.0.1 Absolute first cut at fossildoc

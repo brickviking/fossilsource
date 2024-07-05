@@ -5,9 +5,10 @@
 # v0.1.3 TODO: Add code to check for already running servers, dump if so
 # v0.1.4 name change about three versions ago to suit tcl instead of fossil
 # v0.1.5 made notes about starting on ports 8300/10/20
+# v0.1.6 Changed default home for tangled script
 
-TCLHOME="/home/viking/src/c/tcl"
-TKHOME="/home/viking/src/c/tk"
+TCLHOME="${HOME}/src/c/tcl"
+TKHOME="${HOME}/src/c/tk"
 
 # First the source code
 tcl-code() {
