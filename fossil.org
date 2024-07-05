@@ -229,7 +229,7 @@ Future plans:
 ======== Beginning of fossilsource ========
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
-#+BEGIN_SRC bash -i :tangle ~/src/bash/fossil/fossilsource :tangle-mode (identity #o755)
+#+BEGIN_SRC bash -i :tangle fossilsource :tangle-mode (identity #o755)
 #!/bin/bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
