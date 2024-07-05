@@ -177,7 +177,7 @@ script isn't so superfluous after all. Huh.
 
 These files are responsible for updating source fossil files, or starting up the internal content
 web servers related to fossil, sqlite, tcl and tk and some other projects. The main ones you want to
-look at are fossilsource and fossilweb, as the others are only there from earlier stages of the
+look at are fossilsource and fossilserve, as the others are only there from earlier stages of the
 project.
 
 ** fossils covered to date
