@@ -24,9 +24,9 @@ Why not? Often if you have fossil files you want to keep up to date, you'll be r
 or some variant of that. This script attempts to update any existing fossils you've told it 
 about and somewhat streamline the process. Simply issuing a command like 
 
-,```
+```
 fossilsource sqlite
-,```
+```
 
 will update the fossils for sqlite itself, the sqlite forums, and other projects fairly closely
 related to sqlite itself.
