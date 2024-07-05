@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-07-05 Fri 17:51>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.20
+#+REVISION: 2.21
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -136,6 +136,119 @@ Further testing indicates that running fossil open in this way actually runs a c
 first, leaving a fossil.fossil in the directory you chose when you ran fossil open. Hm. Maybe the
 script isn't so superfluous after all. Huh.
 
+* REAMDE
+  :PROPERTIES:
+  :header-args: org :tangle README.org
+  :TOC:      :include all :depth 3
+  :END:
+
+This is the initial cut at this file, which should parse perfectly well on Github, although it
+might not be very well rendered by the fossil binary itself, as fossil doesn't care what an org
+file is.
+
+It's likely to see a lot of changes, as I refine things said in here.
+
+#+BEGIN_SRC org -i
+,* Introduction
+
+This is a very simple wrapper script to update already-downloaded fossil files. Changes can be
+made to the variables inside the script, which will help drive how fossil will update your
+existing stored fossil files.
+
+Fossil, at least the SCM program, is a way to store versions of files in a single place along
+with relevant documentation, issue reporting, and even online chat, provided by one binary and 
+one storage file (in a modified sqlite3 format) per project.
+
+,* Variables and requirements
+
+First off, you'll need to install the fossil binary. This is available at =https://fossil-scm.org//home/uv/download.html=, grab whatever works best for you.
+The next thing is a small or maybe large stash of fossils you wish to update on at least a
+semi-regular basis. I've chosen fairly simple places where you can store these, but though these 
+are my preferences, nothing's stopping you from changing the script to tell it where to find
+your own fossil files so it can keep them up to date.
+
+,* Very short list of Frequently Asked Questions
+
+,** Why?
+
+Why not? Often if you have fossil files you want to keep up to date, you'll be running fossil pull 
+or some variant of that. This script attempts to update any existing fossils you've told it 
+about and somewhat streamline the process. Simply issuing a command like 
+
+,```
+fossilsource sqlite
+,```
+
+will update the fossils for sqlite itself, the sqlite forums, and other projects fairly closely
+related to sqlite itself.
+
+,** What do you cover?
+
+I cover updating fossil files once they've been fetched and installed onto your own machine.
+This is as simple as choosing a place to put your several fossil files.
+
+,** What don't you cover?
+
+I don't cover initial fetching of the fossils; that's best done by yourself once you've chosen 
+what subset of the existing fossilized programs you want to keep up to date. However, this is a
+fairly complete list of the publically-available sources stored in fossil format that I know about.
+
+I also don't cover keeping source up to date once you have run `fossil open ...`, again, that's
+up to you. I don't educate you how to use fossil, that's already been addressed by the fossil-scm
+website, that has some excellent documentation on the subject of keeping stuff up to date.
+
+,** What will you add?
+
+Given the last point, I /may/ add initial cloning of the fossils at some stage in the future once
+I have answered several questions to my satisfaction; this includes things like where best to 
+store them (a personal decision in most cases), what to download, and when to keep them up to date.
+
+,** When will <fill-in-blank-here> be updated?
+
+That's up to the project maintainer. Some projects haven't been updated since 2009, some
+are in nearly hourly flux. It's very dependent upon how often stuff changes in the source code
+and how often the developers want to push out changes. I do have the `rarely` and `veryrarely`
+categories for this reason; the stuff covered in `rarely` updates on perhaps a monthly basis 
+every three months, the stuff in `veryrarely` doesn't even change that often; some projects
+are finished and won't see any further development. Some projects might have even moved on to
+other homes without leaving a notice on the website.
+
+,** What are the -forum fossils I see mentioned here such as sqlite-forum, fossil-forum?
+
+Those are places where discussion about the related source code (whether sqlite, fossil or other) happens, that has been split
+off from the main project and stored into its own fossil. If you want to report a problem at the
+project's forums, it's best to go to the parent forum instead of trying to reply at the downloaded
+forum fossils. These fossils are merely a way to get the discussions locally so you can read them on your 
+local machine without taking up extra bandwidth until you actually need to report a problem or
+make other comments.
+
+,** What if I don't want all the fossils, but just some of them?
+
+You can edit what fossils you want to keep updated by looking at the respective -all functions,
+for example sqlite-all (or simply sqlite) cover all the sqlite-related fossils (assuming you have
+them), the tcl covers tcl, tk, and tips as well as the wapp project. If you want to trim back the
+number of projects in each of these categories (perhaps to leave out the -forum fossils or the
+less-updated fossils) then feel free.
+
+These projects should all be capable of being individually updated in the same manner as you now
+do with fossil, but if you have tailored this script to your needs, you will no longer need to
+`cd place; fossil pull` or `fossil pull <project-name>` to see changes, especially if you have
+more than one or two fossil projects you like to keep up to date with.
+
+`** How do I tailor this script to my needs, considering you'll be making changes too?
+
+You open it up in an editor, and you compare it with the changes that I've made, like any
+responsible developer will do for themselves.
+
+`** What's this fossil.org document I see?
+
+It's the source file for all the other relevant bash scripts I have here, such as the fossilsource
+program itself, and fossilserve. The rest (the *.sh files) serve as examples of how I used to do
+things before I dramatically simplified them into simply fossilserve. It's stored in org format,
+and is best used with a recent-ish copy of Emacs from the past decade or so, although Emacsen
+as far back as Emacs-23 will probably open it fine, given the right installation.
+#+END_SRC
+
 * Changelog
 
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
@@ -172,6 +285,7 @@ script isn't so superfluous after all. Huh.
   +  2.18 Expanded on Adding Clone Flag section and following section.
   +  2.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp.
   +  2.20 Added wapp to rarely after cursory examination.
+  +  2.21 Added REAMDE. Points if you know the reference.
 
 * Source files
 
@@ -218,6 +332,8 @@ In April 2023, fnc was added in, though it had been on my system a while. Poor t
 
 February 2024 sees inskinerator added, there's been several other internal changes too.
 March 2024 sees the flint project added (software behind the chisel hosting site).
+July 2024 sees a REAMDE. Finally. It's about time. The reason is because if I host this on github,
+then I'll need a file that renders in Github's website to introduce the fossilsource project.
 
 Future plans: 
  + include a verbose switch.
@@ -255,6 +371,7 @@ This is covered somewhat by the veryrarely category.
 # v0.18 Made note about veryrarely (created for chisel and the like)
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp to tcl.
 # v0.20 Added wapp to rarely after cursory examination.
+# v0.21 Added REAMDE, no changes to this source as a result.
 #########
 # Notes #
 #########

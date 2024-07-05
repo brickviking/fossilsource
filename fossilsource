@@ -22,6 +22,7 @@
 # v0.18 Made note about veryrarely (created for chisel and the like)
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp to tcl.
 # v0.20 Added wapp to rarely after cursory examination.
+# v0.21 Added REAMDE, no changes to this source as a result.
 #########
 # Notes #
 #########
