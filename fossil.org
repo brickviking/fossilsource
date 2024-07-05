@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-07-05 Fri 17:51>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.21
+#+REVISION: 2.22
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -48,6 +48,38 @@ issues.
 Creating a pdf from this document is as easy as—in emacs, anyhow—`C-c C-e l l`, which will export
 your file to a .tex file, then you can run pdflatex on this file to produce a pdf. It's not very
 good looking at the moment.
+
+* Licence
+
+At the moment, this project falls under the MIT licence, as it's the most permissive of the 
+available licences I wish to support.
+
+#+BEGIN_SRC text -i :tangle LICENCE
+MIT Licence
+
+Copyright (c) 2024 Brickviking
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicence, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+#+END_SRC
+
+Hopefully this should sort things out. I'll change this over to SRC once I grab the first commit
+from the new github project.
 
 * TODO-things
 
@@ -286,6 +318,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp.
   +  2.20 Added wapp to rarely after cursory examination.
   +  2.21 Added REAMDE. Points if you know the reference.
+  +  2.22 Added a LICENCE.
 
 * Source files
 
@@ -372,6 +405,7 @@ This is covered somewhat by the veryrarely category.
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp to tcl.
 # v0.20 Added wapp to rarely after cursory examination.
 # v0.21 Added REAMDE, no changes to this source as a result.
+# v0.22 Added LICENCE, no changes to this source as a result.
 #########
 # Notes #
 #########
