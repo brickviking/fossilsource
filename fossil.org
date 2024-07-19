@@ -247,12 +247,12 @@ other homes without leaving a notice on the website.
 
 ,** What are the -forum fossils I see mentioned here such as sqlite-forum, fossil-forum?
 
-Those are places where discussion about the related source code (whether sqlite, fossil or other) happens, that has been split
-off from the main project and stored into its own fossil. If you want to report a problem at the
-project's forums, it's best to go to the parent forum instead of trying to reply at the downloaded
-forum fossils. These fossils are merely a way to get the discussions locally so you can read them on your 
-local machine without taking up extra bandwidth until you actually need to report a problem or
-make other comments.
+Those are places where discussion about the related source code (whether sqlite, fossil or other)
+happens, that has been split off from the main project and stored into its own fossil. If you want
+to report a problem at the project's forums, it's best to go to the parent forum instead of trying
+to reply at the downloaded forum fossils. These fossils are merely a way to get the discussions
+locally so you can read them on your local machine without taking up extra bandwidth until you
+actually need to report a problem or make other comments.
 
 ,** What if I don't want all the fossils, but just some of them?
 
