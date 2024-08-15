@@ -319,7 +319,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.20 Added wapp to rarely after cursory examination.
   +  2.21 Added REAMDE. Points if you know the reference.
   +  2.22 Added a LICENCE.
-
+  +  2.23 Tweaked help, correcting the references to chisel.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -401,11 +401,12 @@ This is covered somewhat by the veryrarely category.
 # v0.15 Put in fnc, should have been in there a while. Poor thing.
 # v0.16 Added in pikmojicon, pretty rarely used
 # v0.17 Added in inskinerator, makes skins for fossil
-# v0.18 Made note about veryrarely (created for chisel and the like)
+# v0.18 Made note about veryrarely (created for chisel project files and the like)
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp to tcl.
 # v0.20 Added wapp to rarely after cursory examination.
 # v0.21 Added REAMDE, no changes to this source as a result.
 # v0.22 Added LICENCE, no changes to this source as a result.
+# v0.23 Tweaked help, correcting the references to chisel.
 #########
 # Notes #
 #########
@@ -441,7 +442,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 inskin: fetches inskinerator code"
   echo "$0 tangentsoft-fossil: fetches local fossil for tangentsoft"
   echo "### chisel project"
-  echo "$0 flint: fetches the flint code for chisel"
+  echo "$0 flint: fetches the flint code for chisel server"
   echo "=== Rarely-updated stuff"
   echo "$0 rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
@@ -449,7 +450,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 Also includes tangentsoft's inskinerator and james' flint"
   echo "This list will need modifying on occasion."
   echo "=== Very rarely updated stuff (less than yearly)"
-  echo "$0 veryrarely: includes the chisel, flint, fuel and fsl projects"
+  echo "$0 veryrarely: includes the flint, fuel and fsl projects"
   echo "======= TODO"
   echo "$0 fsl: fetch from the fsl project"
   echo "$0 remove inskinerator from rarely if project updates regularly"
