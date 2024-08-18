@@ -25,6 +25,7 @@
 # v0.21 Added REAMDE, no changes to this source as a result.
 # v0.22 Added LICENCE, no changes to this source as a result.
 # v0.23 Tweaked help, correcting the references to chisel.
+# v0.24 Silenced pushd/popd
 #########
 # Notes #
 #########
@@ -340,7 +341,7 @@ function all() { # These each have a cd in them
 }
 # Takes path arg
 
-pushd "${FOSHOME}"
+pushd "${FOSHOME}" >/dev/null
 # Let's add something to FOSCMD to make the operation specific
 # the caseloop below processes in order. -u needs to be first if
 # we want to sync unversioned artifacts
@@ -470,4 +471,4 @@ else #iterate, chuck it in if keyword isn't recognised.
     esac # end of case ${t}
   done
 fi
-popd
+popd >/dev/null
