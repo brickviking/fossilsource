@@ -26,6 +26,7 @@
 # v0.22 Added LICENCE, no changes to this source as a result.
 # v0.23 Tweaked help, correcting the references to chisel.
 # v0.24 Silenced pushd/popd
+# v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
 #########
 # Notes #
 #########
@@ -41,6 +42,8 @@ FOSHOME="${HOME}/src/c/"
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "Welcome to the $0 help page"
   echo "$0 {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely"
+  echo "$0 common: fetches {fossil,sqlite}-{code,forum} and tcl/tk."
+  echo "$0   leaves out things in rarely/veryrarely"
   echo "### fossil stuff"
   echo "$0 fossil-[code|forum|book]: fetches named section"
   echo "$0 fossil: fetches code and forum"
@@ -326,6 +329,29 @@ function tangentsoft-all() {
   cd -
 }
 
+# Meant to be like all, but misses out sqlite docs, tips and other stuff
+function common() {
+  cd fossil-scm # Yes, the directory name has -scm appended
+  fossil-all # this changes dir at end of fossil-all
+  # sqlite
+  cd sqlite
+  t="sqlite"
+  cd ${t}
+  ${t}-code
+  sleep 5
+  ${t}-forum
+  sleep 5
+  ${t}-althttpd
+  sleep 5
+  # now tcl/tk
+  cd ../tcl
+  tcl-code
+  sleep 5
+  cd ../tk
+  tk-code
+  cd .. # gets us back to ${MYHOME}
+}
+
 function all() { # These each have a cd in them
 # Note: does not include fsl/libfossil
   fossil-all # code, forum, not book
@@ -367,7 +393,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       dohelp # exits
     ;;
 # Each one of these handles path changing for itself
-    "rarely"|"veryrarely"|"all")
+    "rarely"|"veryrarely"|"all"|"common")
       "${t}"
     ;;
     "fossil"|"sqlite"|"tcl"|"libfossil")
