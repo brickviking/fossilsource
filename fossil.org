@@ -424,7 +424,7 @@ FOSHOME="${HOME}/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "Welcome to the $0 help page"
-  echo "$0 {all}: fetches fossil, sqlite, tcl"
+  echo "$0 {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely"
   echo "### fossil stuff"
   echo "$0 fossil-[code|forum|book]: fetches named section"
   echo "$0 fossil: fetches code and forum"
