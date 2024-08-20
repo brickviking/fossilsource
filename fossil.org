@@ -193,7 +193,8 @@ one storage file (in a modified sqlite3 format) per project.
 
 ,* Variables and requirements
 
-First off, you'll need to install the fossil binary. This is available at =https://fossil-scm.org//home/uv/download.html=, grab whatever works best for you.
+First off, you'll need to install the fossil binary. This is available at
+=https://fossil-scm.org//home/uv/download.html=, grab whatever works best for you.
 The next thing is a small or maybe large stash of fossils you wish to update on at least a
 semi-regular basis. I've chosen fairly simple places where you can store these, but though these 
 are my preferences, nothing's stopping you from changing the script to tell it where to find
