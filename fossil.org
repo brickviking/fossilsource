@@ -717,9 +717,9 @@ function tangentsoft-all() {
 
 # Meant to be like all, but misses out sqlite docs, tips and other stuff
 function common() {
-  cd fossil-scm # Yes, the directory name has -scm appended
+  # First fossil
   fossil-all # this changes dir at end of fossil-all
-  # sqlite
+  # then sqlite - can't use sqlite-all as it includes too much
   cd sqlite
   t="sqlite"
   cd ${t}
