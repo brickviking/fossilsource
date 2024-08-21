@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-07-05 Fri 17:51>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.25
+#+REVISION: 2.26
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -323,6 +323,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.23 Tweaked help, correcting the references to chisel.
   +  2.24 Silenced pushd/popd.
   +  2.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
+  +  2.26 Fixes to above for some mistakes with cd.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -413,6 +414,7 @@ This is covered somewhat by the veryrarely category.
 # v0.23 Tweaked help, correcting the references to chisel.
 # v0.24 Silenced pushd/popd
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
+# v0.26 Fixes to above for some mistakes with cd.
 #########
 # Notes #
 #########

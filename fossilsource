@@ -27,6 +27,7 @@
 # v0.23 Tweaked help, correcting the references to chisel.
 # v0.24 Silenced pushd/popd
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
+# v0.26 Fixes to above for some mistakes with cd.
 #########
 # Notes #
 #########
