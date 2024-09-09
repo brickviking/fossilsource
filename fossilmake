@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # v0.0.1 Absolute first cut at fossilmake
+# v0.1 Working updater, creator and installer
 # A prototype maker of fossil projects
 
 MYNAME=fossilmake
