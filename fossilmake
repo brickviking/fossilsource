@@ -4,3 +4,85 @@
 # A prototype maker of fossil projects
 
 MYNAME=fossilmake
+
+# Variables? What variables?
+# My default is /home/viking/src/bash/fossil/fossilmake
+FOSSILSRC="${FOSSILSRC:-${HOME}/src/c/fossil-scm/fossil/}"
+FOSSILINSTALLHOME="/usr/local" # default unless changed
+
+# Functions
+function helpFossil() {
+  cd "${FOSSILSRC}"
+  echo "Welcome to fossilmake, a program to fetch, make and install fossil."
+  echo "Usage: fossilmake {-h|--help|-d|--clean|-g|--get|-m|--make|-i|--install}"
+  echo "  -h   shows this help message"
+  echo "  -d   clean (not distclean) removes all compiled output"
+  echo "  -D   distclean removes all compiled output and configure scripts"
+  echo "  -g   fetches latest fossil source code"
+  echo "  -m   makes fossil with already-configured tree"
+  echo "  -i    installs fossil once you've made it"
+  cd -
+}
+
+# Merely cleans compiled output, not a full distclean
+function cleanFossil() {
+  cd "${FOSSILSRC}"
+  make clean
+  cd -
+}
+
+function distcleanFossil() {
+  cd "${FOSSILSRC}"
+  make distclean
+  cd -
+}
+
+function getFossil() {
+  cd "${FOSSILSRC}"
+  make clean # We do this so we have a clean codebase
+  # I make use of a previously-written script here.
+  fossilsource fossil-code  # First fetch the fossil
+  fossil up    # then update source from the fossil
+  cd -
+}
+
+function makeFossil() {
+  cd "${FOSSILSRC}"
+  make -j4 prefix="${FOSSILINSTALLHOME}"
+  cd -
+}
+
+function installFossil() {
+  cd "${FOSSILSRC}"
+  # Don't forget to kill all running fossil servers
+  sudo make prefix="${FOSSILINSTALLHOME}" install
+  # You may want to restart the fossil server after this
+  cd -
+}
+
+# Main function
+
+if [[ -z $1 ]]; then
+  helpFossil
+else
+case "$1" in "-g"|"--get") getFossil # does "make clean" first for a clean codebase
+    ;;
+    "-d"|"--clean") cleanFossil
+    ;;
+    "-D"|"--distclean") distcleanFossil
+    ;;
+    "-m"|"--make") makeFossil
+    ;;
+    "-i"|"--install") installFossil
+    ;;
+    "-mi"|"--makeinstall") # kind of obvious
+        makeFossil
+        installFossil
+    ;;
+    "-h"|"--help") helpFossil # call this case out specifically
+    ;;
+    # Anything else gets the usage message
+    "*") helpFossil
+    ;;
+esac
+fi
