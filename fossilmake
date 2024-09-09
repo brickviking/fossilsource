@@ -14,7 +14,7 @@ FOSSILINSTALLHOME="/usr/local" # default unless changed
 # Functions
 function helpFossil() {
   cd "${FOSSILSRC}"
-  echo "Welcome to fossilmake, a program to fetch, make and install fossil."
+  echo "Welcome to fossilmake, a program to update, make and install fossil."
   echo "Usage: fossilmake {-h|--help|-d|--clean|-g|--get|-m|--make|-i|--install}"
   echo "  -h   shows this help message"
   echo "  -d   clean (not distclean) removes all compiled output"
