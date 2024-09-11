@@ -28,6 +28,7 @@
 # v0.24 Silenced pushd/popd
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
 # v0.26 Fixes to above for some mistakes with cd.
+# v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
 #########
 # Notes #
 #########
@@ -49,7 +50,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 fossil-[code|forum|book]: fetches named section"
   echo "$0 fossil: fetches code and forum"
   echo "### wanderinghorse stuff"
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
+  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and fnc"
   echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
   echo "### sqlite stuff"
   echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)"
@@ -113,10 +114,12 @@ function libfossil-code() {
   echo "==== libfossil...done ==="
 }
 
-function libfossil-forum {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
-  echo "==== libfossil-forum...done ==="
-}
+# Commented out for now (removal soon), as forums have been merged to master
+# https://fossil.wanderinghorse.net/r/libfossil/forumpost/c58421800f
+# function libfossil-forum {
+#  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
+#  echo "==== libfossil-forum...done ==="
+# }
 
 # ncurses client for fossil
 function fnc {
@@ -139,7 +142,7 @@ function pikmojicon() {
 function libfossil-all {
   cd libfossil
   libfossil-code
-  libfossil-forum
+#  libfossil-forum
   fnc
   cd -
 }
@@ -442,9 +445,9 @@ else #iterate, chuck it in if keyword isn't recognised.
 
 # All wanderinghorse stuff
     "libfossil-all")
-      libfossil-all # should do libfossil-code and libfossil-forum
+      libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..

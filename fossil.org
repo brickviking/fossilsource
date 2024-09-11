@@ -89,6 +89,9 @@ Decide whether to keep fsl and fuel in, as they haven't been updated in quite so
 fuel, 2019 for fsl). The same holds for the flint project, which hasn't seen code updates since
 2012 aside from the licencing rebind in 2013.
 
+The libfossil-forum repo has had its contents merged with the parent repo, and now lives with the
+libfossil repository instead of being called out separately (a la sqlite/fossil).
+
 ** Update fossilsource to do initial fetching
 
 That's rather going to depend upon what use people have for the respective code. If you don't need
@@ -135,7 +138,7 @@ likely to need at least some clue of what to do. This isn't exactly git or svn, 
 live in each of those subdirectories, for example, fossil-scm holds anything related to fossil
 itself (fossil-code, fossil-forums, fossil book, etc),
  sqlite holds stuff relating to sqlite but not fossil or tcl/tk, libfossil holds its own
-related fossils (libfossil, libfossil-forum and fsl/fnc), and of course tcl and tk have their own
+related fossils (libfossil and fsl/fnc), and of course tcl and tk have their own
 individual subdirectories. It's the least organised and most baked-in approach for the moment.
 3) Everything has its own directory, separate from anything else, i.e.:
   +  ${HOME}/src/fossil-scm/fossil.fossil,
@@ -324,6 +327,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.24 Silenced pushd/popd.
   +  2.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
   +  2.26 Fixes to above for some mistakes with cd.
+  +  2.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -355,8 +359,9 @@ Sqlite files are stored in ${HOME}/src/c/sqlite/:
 
 Tcl and Tk files are stored in ${HOME}/src/c/tcl and tk respectively.
 
-libfossil is in ${HOME}/src/c/libfossil, which contains the sourcecode and forum fossils.  The code
-is currently in the process of being converted to parse parameters.
+libfossil is in ${HOME}/src/c/libfossil, which contains the sourcecode and fnc fossils.  The code
+is currently in the process of being converted to parse parameters. The forums for libfossil were
+cut over at the end of June 2024, so people now go to the libfossil page to access the forums.
 
 As of March 2023, several outlier projects were added, such as fsl, pikchr, cvstrac (direct fossil
 predecessor), wapp and tips (tcl/tk project). I also added the fuel project, but it hasn't been
@@ -415,6 +420,7 @@ This is covered somewhat by the veryrarely category.
 # v0.24 Silenced pushd/popd
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
 # v0.26 Fixes to above for some mistakes with cd.
+# v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
 #########
 # Notes #
 #########
@@ -436,7 +442,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$0 fossil-[code|forum|book]: fetches named section"
   echo "$0 fossil: fetches code and forum"
   echo "### wanderinghorse stuff"
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code), fnc and libfossil-forum"
+  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and fnc"
   echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
   echo "### sqlite stuff"
   echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)"
@@ -500,10 +506,12 @@ function libfossil-code() {
   echo "==== libfossil...done ==="
 }
 
-function libfossil-forum {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
-  echo "==== libfossil-forum...done ==="
-}
+# Commented out for now (removal soon), as forums have been merged to master
+# https://fossil.wanderinghorse.net/r/libfossil/forumpost/c58421800f
+# function libfossil-forum {
+#  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libfossil-forum.fossil
+#  echo "==== libfossil-forum...done ==="
+# }
 
 # ncurses client for fossil
 function fnc {
@@ -526,7 +534,7 @@ function pikmojicon() {
 function libfossil-all {
   cd libfossil
   libfossil-code
-  libfossil-forum
+#  libfossil-forum
   fnc
   cd -
 }
@@ -829,9 +837,9 @@ else #iterate, chuck it in if keyword isn't recognised.
 
 # All wanderinghorse stuff
     "libfossil-all")
-      libfossil-all # should do libfossil-code and libfossil-forum
+      libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"libfossil-forum"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
