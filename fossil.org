@@ -3,9 +3,9 @@
 #+TITLE: fossil scripts
 #+SUBTITLE: for source code maintenance and forum viewing on localhost
 #+AUTHOR: brickviking
-#+DATE: <2024-09-17 Tue 23:05>
+#+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.29
+#+REVISION: 2.30
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -329,6 +329,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
   +  2.28 Reworked hashbang for portability reasons. Added version and function.
   +  2.29 Shortened up the $0, making it into a var and shortening it.
+  +  2.30 Reworked the help display, removed redundancies.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -424,7 +425,10 @@ This is covered somewhat by the veryrarely category.
 # v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
 # v0.28 Reworked hashbang for portability reasons. Added version and function.
 # v0.29 Shortened up the $0, making it into a var and shortening it.
-#########
+# v0.30 Reworked the help display, removed redundancies.
+FOSVERSION=0.30
+
+########
 # Notes #
 #########
 # Really needs to be run from the source directory first.
@@ -433,7 +437,6 @@ This is covered somewhat by the veryrarely category.
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing.
-FOSVERSION=0.29
 FOSHOME="${HOME}/src/c/"
 
 # Doesn't fit, but it's short.
@@ -441,43 +444,43 @@ ME="$(basename ${0})"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "Welcome to the $ME help page for version ${FOSVERSION}."
-  echo "$ME -h|help|--help: this help page."
-  echo "$ME -v|version|--version: provides version of this program."
-  echo "$ME {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
-  echo "$ME common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
-  echo "             leaves out things in rarely/veryrarely." # Space left here for reason
+  echo "${ME} {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
+  echo "   -h|help|--help: this help page."
+  echo "   -v|version|--version: provides version of this program."
+  echo "   common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
+  echo "It leaves out things in rarely/veryrarely,"
+  echo "plus a few less-updated parts of sqlite/fossil-space"
   echo "### fossil stuff."
-  echo "$ME fossil-[code|forum|book]: fetches named section."
-  echo "$ME fossil: fetches code and forum."
+  echo "   fossil-[code|forum|book]: fetches named section."
+  echo "   fossil: fetches code and forum."
   echo "### wanderinghorse stuff."
-  echo "$ME libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
-  echo "$ME [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
+  echo "   libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
+  echo "   [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
   echo "### sqlite stuff."
-  echo "$ME sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
-  echo "$ME sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
-  echo "     sqlite code, forum, docsrc, wasm, althttpd or test scripts."
-  echo "$ME althttpd: fetches althttpd code."
-  echo "$ME wasm: fetches wasm-related code."
+  echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
+  echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
+  echo "       sqlite code, forum, docsrc, wasm, althttpd or test scripts."
+  echo "   althttpd: fetches althttpd code."
+  echo "   wasm: fetches wasm-related code."
   echo "### tcl/tk."
-  echo "$ME tcl-code: fetches code."
-  echo "$ME tcl-tip: fetches proposals."
-  echo "$ME tk-code: fetches code."
+  echo "    tcl-code: fetches code."
+  echo "    tcl-tip: fetches proposals."
+  echo "    tk-code: fetches code."
   echo "### tangentsoft projects."
-  echo "$ME inskin: fetches inskinerator code."
-  echo "$ME tangentsoft-fossil: fetches local fossil for tangentsoft."
+  echo "    inskin: fetches inskinerator code."
+  echo "    tangentsoft-fossil: fetches local fossil for tangentsoft."
   echo "### chisel project."
-  echo "$ME flint: fetches the flint code for chisel server."
+  echo "    flint: fetches the flint code for chisel server."
   echo "=== Rarely-updated stuff."
-  echo "$ME rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
-  echo "$ME Currently, this includes the following fossil, lifossil and sqlite projects:"
-  echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
-  echo "$ME Also includes tangentsoft's inskinerator and james' flint."
+  echo "    rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
+  echo "Currently, this includes the following fossil, lifossil and sqlite projects:"
+  echo "      fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
+  echo "Also includes tangentsoft's inskinerator and james' flint."
   echo "This list will need modifying on occasion."
   echo "=== Very rarely updated stuff (less than yearly)."
-  echo "$ME veryrarely: includes the flint, fuel and fsl projects."
+  echo "   veryrarely: includes the flint, fuel and fsl projects."
   echo "======= TODO."
-  echo "$ME fsl: fetch from the fsl project."
-  echo "$ME remove inskinerator from rarely if project updates regularly."
+  echo "   remove inskinerator from rarely if project updates regularly."
 # Need a section in here for pull
   exit 0
 }
