@@ -290,33 +290,32 @@ as far back as Emacs-23 will probably open it fine, given the right installation
 + 1.0 Initial fossil.sh created, as version 0.0.1, pretty much just fetched fossil-scm source
       code.
   + 1.1 expanded to fossilsource.sh, includes forums, added fossil book a while later.
-  + 1.2 included fossilweb.sh, initially starts up servers to access fossil source and forums
-  + 1.3-1.4 changes
-  + 1.5 added sqlite source code fetching and forums to fossilsource.sh
-  + 1.6 added sqlite web server to fossilweb.sh
-  +  1.7 split off sqliteweb stuff into its own script (sqliteweb.sh)
-+  2.0 expanded fossilsource to create functions for fetching individual components.
-  +  2.1 added docsrc (sqlite) to fossilsource.sh and sqliteweb.sh
-  +  2.2 added sqllogictests to fossilsource.sh and sqliteweb.sh
-
+  + 1.2 included fossilweb.sh, initially starts up servers to access fossil source and forums.
+  + 1.3-1.4 changes.
+  + 1.5 added sqlite source code fetching and forums to fossilsource.sh.
+  + 1.6 added sqlite web server to fossilweb.sh.
+  +  1.7 split off sqliteweb stuff into its own script (sqliteweb.sh).
+  +  2.0 expanded fossilsource to create functions for fetching individual components.
+  +  2.1 added docsrc (sqlite) to fossilsource.sh and sqliteweb.sh.
+  +  2.2 added sqllogictests to fossilsource.sh and sqliteweb.sh.
   +  2.3 Initial cut of a fossil.org containing document, now that these scripts are getting big
     enough.
   +  2.4 Added org-auto-tangle, prodded help switch into fossilsource.sh and extra switches into
-    tclweb.sh
-  +  2.5 Added libfossil
-  +  2.6 Corrected some mistakes
-  +  2.7 Added wasm to fossilsource, changed things around a wee bit
-  +  2.8 Also added althttpd to sqliteweb, tidied up case switch on $@
+    tclweb.sh.
+  +  2.5 Added libfossil.
+  +  2.6 Corrected some mistakes.
+  +  2.7 Added wasm to fossilsource, changed things around a wee bit.
+  +  2.8 Also added althttpd to sqliteweb, tidied up case switch on $@.
   +  2.9 Added pikchr to fossilsource, putting it into rarely. Tweaked REVISION in header.
-  +  2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource.  
+  +  2.10 Added fsl to fossilsource, made note of its "rarely" status in fossilsource.
      +  Also added fuel - Dead. Dodo. Won't compile here. Weirdly enough, I seem to have got it
         compiled at some stage, though I've no idea how.
   +  2.11 Tidying up fnc, moved fnc from rarely into libfossil section.
   +  2.12 Added a new function to cover cloudsqlite.
-  +  2.13 Forgot to tack on some lines for fnc/fsl et al, mainly the ====done stuff
-  +  2.14 Added pikmojicon, rearranged locations as pikchr etc are libfossil, not fossil-scm
-  +  2.15 Preliminary stubs put in for fossilmake/fossildoc
-  +  2.16 Rearranged things a little, moved althttpd back from rarely
+  +  2.13 Forgot to tack on some lines for fnc/fsl et al, mainly the ====done stuff.
+  +  2.14 Added pikmojicon, rearranged locations as pikchr etc are libfossil, not fossil-scm.
+  +  2.15 Preliminary stubs put in for fossilmake/fossildoc.
+  +  2.16 Rearranged things a little, moved althttpd back from rarely.
   +  2.17 Added some stuff like fresh, fuel, inskinerator and flint.
   +  2.18 Expanded on Adding Clone Flag section and following section.
   +  2.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp.
@@ -328,7 +327,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
   +  2.26 Fixes to above for some mistakes with cd.
   +  2.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
-  +  2.28 Reworked hashbang for portability reasons.
+  +  2.28 Reworked hashbang for portability reasons. Added version and function.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -392,90 +391,96 @@ This is covered somewhat by the veryrarely category.
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
 #+BEGIN_SRC bash -i :tangle fossilsource :tangle-mode (identity #o755)
 #!/usr/bin/env bash
-# v0.1 iterate through my fossils
-# v0.2 Add in some git projects
-# v0.3 Added in some more sqlite-related items
-# v0.3a TODO: split this up like fossilweb.sh
-# v0.4 still working on new fossilstuff function - not live yet
+# v0.1 iterate through my fossils.
+# v0.2 Add in some git projects.
+# v0.3 Added in some more sqlite-related items.
+# v0.3a TODO: split this up like fossilweb.sh.
+# v0.4 still working on new fossilstuff function - not live yet.
 # v0.5 newfossilstuff got the axe. I've got to build a function to
-#      cycle through $1
-# v0.6 I added tips to Tcl (Tcl Improvement Proposals)
-# v0.6a Added extra line between downloads
-# v0.7 add libfossil, correct mistakes
-# v0.8 create a rarely section for docsrc, book and others
-# v0.9 Added sqlite-wasm to the rarely section, also added althttpd
+#      cycle through $1.
+# v0.6 I added tips to Tcl (Tcl Improvement Proposals).
+# v0.6a Added extra line between downloads.
+# v0.7 add libfossil, correct mistakes.
+# v0.8 create a rarely section for docsrc, book and others.
+# v0.9 Added sqlite-wasm to the rarely section, also added althttpd.
 # v0.10 Moved sqlite-wasm back out of rarely, due to activity.
-# v0.11 Added pikchr into rarely
+# v0.11 Added pikchr into rarely.
 # v0.12 Adding params to fossil.
 # v0.13 Changed out MYHOME and other vars to FOSHOME etc.
-# v0.14 Added sqlite-cloudsqlite, tidied up help
+# v0.14 Added sqlite-cloudsqlite, tidied up help.
 # v0.15 Put in fnc, should have been in there a while. Poor thing.
-# v0.16 Added in pikmojicon, pretty rarely used
-# v0.17 Added in inskinerator, makes skins for fossil
-# v0.18 Made note about veryrarely (created for chisel project files and the like)
+# v0.16 Added in pikmojicon, pretty rarely used.
+# v0.17 Added in inskinerator, makes skins for fossil.
+# v0.18 Made note about veryrarely (created for chisel project files and the like).
 # v0.19 Shifted help strings for althttpd and wasm back to sqlite/ and added wapp to tcl.
 # v0.20 Added wapp to rarely after cursory examination.
 # v0.21 Added REAMDE, no changes to this source as a result.
 # v0.22 Added LICENCE, no changes to this source as a result.
 # v0.23 Tweaked help, correcting the references to chisel.
-# v0.24 Silenced pushd/popd
+# v0.24 Silenced pushd/popd.
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
 # v0.26 Fixes to above for some mistakes with cd.
 # v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
-# v0.28 Reworked hashbang for portability reasons.
+# v0.28 Reworked hashbang for portability reasons. Added version and function.
 #########
 # Notes #
 #########
-# Really needs to be run from the source directory first
+# Really needs to be run from the source directory first.
 # fossil has source code, forums, pikchr and a book.
-# sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness
-# tcl and tk each have source code, and tcl has proposals (tcl-tip)
-# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
-# leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
+# sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness.
+# tcl and tk each have source code, and tcl has proposals (tcl-tip).
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
+# leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing.
 FOSVERSION=0.28
 FOSHOME="${HOME}/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
-  echo "Welcome to the $0 help page"
-  echo "$0 {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely"
+  echo "Welcome to the $0 help page for version ${FOSVERSION}."
+  echo "$0 -h|help|--help: this help page."
+  echo "$0 -v|version|--version: provides version of this program."
+  echo "$0 {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
   echo "$0 common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
-  echo "$0   leaves out things in rarely/veryrarely"
-  echo "### fossil stuff"
-  echo "$0 fossil-[code|forum|book]: fetches named section"
-  echo "$0 fossil: fetches code and forum"
-  echo "### wanderinghorse stuff"
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and fnc"
-  echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc"
-  echo "### sqlite stuff"
-  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)"
+  echo "$0   leaves out things in rarely/veryrarely."
+  echo "### fossil stuff."
+  echo "$0 fossil-[code|forum|book]: fetches named section."
+  echo "$0 fossil: fetches code and forum."
+  echo "### wanderinghorse stuff."
+  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
+  echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
+  echo "### sqlite stuff."
+  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
   echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
-  echo "     sqlite code, forum, docsrc, wasm, althttpd or test scripts"
-  echo "$0 althttpd: fetches althttpd code"
-  echo "$0 wasm: fetches wasm-related code"
-  echo "### tcl/tk"
-  echo "$0 tcl-code: fetches code"
-  echo "$0 tcl-tip: fetches proposals"
-  echo "$0 tk-code: fetches code"
-  echo "### tangentsoft projects"
-  echo "$0 inskin: fetches inskinerator code"
-  echo "$0 tangentsoft-fossil: fetches local fossil for tangentsoft"
-  echo "### chisel project"
-  echo "$0 flint: fetches the flint code for chisel server"
-  echo "=== Rarely-updated stuff"
-  echo "$0 rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all"
+  echo "     sqlite code, forum, docsrc, wasm, althttpd or test scripts."
+  echo "$0 althttpd: fetches althttpd code."
+  echo "$0 wasm: fetches wasm-related code."
+  echo "### tcl/tk."
+  echo "$0 tcl-code: fetches code."
+  echo "$0 tcl-tip: fetches proposals."
+  echo "$0 tk-code: fetches code."
+  echo "### tangentsoft projects."
+  echo "$0 inskin: fetches inskinerator code."
+  echo "$0 tangentsoft-fossil: fetches local fossil for tangentsoft."
+  echo "### chisel project."
+  echo "$0 flint: fetches the flint code for chisel server."
+  echo "=== Rarely-updated stuff."
+  echo "$0 rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
   echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
   echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
-  echo "$0 Also includes tangentsoft's inskinerator and james' flint"
+  echo "$0 Also includes tangentsoft's inskinerator and james' flint."
   echo "This list will need modifying on occasion."
-  echo "=== Very rarely updated stuff (less than yearly)"
-  echo "$0 veryrarely: includes the flint, fuel and fsl projects"
-  echo "======= TODO"
-  echo "$0 fsl: fetch from the fsl project"
-  echo "$0 remove inskinerator from rarely if project updates regularly"
+  echo "=== Very rarely updated stuff (less than yearly)."
+  echo "$0 veryrarely: includes the flint, fuel and fsl projects."
+  echo "======= TODO."
+  echo "$0 fsl: fetch from the fsl project."
+  echo "$0 remove inskinerator from rarely if project updates regularly."
 # Need a section in here for pull
   exit 0
 }
 
+function doversion() {
+  echo "$0 version ${FOSVERSION}"
+  exit 0
+}
 ##### fossil-scm and related stuff
 function fossil-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
@@ -786,8 +791,10 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMD="sync"
 #      dohelp
     ;;
-    "help"|"-h"|"--help") # might as well support the long option too
+    "help"|"-h"|"--help")
       dohelp # exits
+    ;;
+    "-v"|"version"|"--version") doversion  # exits
     ;;
 # Each one of these handles path changing for itself
     "rarely"|"veryrarely"|"all"|"common")
@@ -864,7 +871,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
     "wasm")
       cd sqlite
-      sqlite-wasm
+o
       cd ..
     ;;
     "cloud"|"cloudsqlite"|"sqlite-cloud")
