@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # v0.1 iterate through my fossils
 # v0.2 Add in some git projects
 # v0.3 Added in some more sqlite-related items
@@ -29,6 +29,7 @@
 # v0.25 Adding "common" to cover {fossil,sqlite}-{code,forum} and tcl/tk.
 # v0.26 Fixes to above for some mistakes with cd.
 # v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
+# v0.28 Reworked hashbang for portability reasons.
 #########
 # Notes #
 #########
@@ -38,7 +39,7 @@
 # tcl and tk each have source code, and tcl has proposals (tcl-tip)
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing
-
+FOSVERSION=0.28
 FOSHOME="${HOME}/src/c/"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
