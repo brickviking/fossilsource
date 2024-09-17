@@ -52,7 +52,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "$ME -v|version|--version: provides version of this program."
   echo "$ME {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
   echo "$ME common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
-  echo "$ME   leaves out things in rarely/veryrarely."
+  echo "             leaves out things in rarely/veryrarely." # Space left here for reason
   echo "### fossil stuff."
   echo "$ME fossil-[code|forum|book]: fetches named section."
   echo "$ME fossil: fetches code and forum."
