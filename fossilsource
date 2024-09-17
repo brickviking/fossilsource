@@ -87,6 +87,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   veryrarely: includes the flint, fuel and fsl projects."
   echo "======= TODO."
   echo "   remove inskinerator from rarely if project updates regularly."
+  echo "For more projects (that vary in update frequency), check the chisel"
+  echo "hosting site at chiselapp.com."
 # Need a section in here for pull
   exit 0
 }
