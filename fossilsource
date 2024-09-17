@@ -30,6 +30,7 @@
 # v0.26 Fixes to above for some mistakes with cd.
 # v0.27 Finally removed libfossil-forum, as forum has been merged into libfossil repo.
 # v0.28 Reworked hashbang for portability reasons. Added version and function.
+# v0.29 Shortened up the $0, making it into a var and shortening it.
 #########
 # Notes #
 #########
@@ -39,54 +40,57 @@
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
 # Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing.
-FOSVERSION=0.28
+FOSVERSION=0.29
 FOSHOME="${HOME}/src/c/"
+
+# Doesn't fit, but it's short.
+ME="$(basename ${0})"
 # Obligatory help function
 function dohelp() { # needed renaming, as "help" already exists somewhere else
-  echo "Welcome to the $0 help page for version ${FOSVERSION}."
-  echo "$0 -h|help|--help: this help page."
-  echo "$0 -v|version|--version: provides version of this program."
-  echo "$0 {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
-  echo "$0 common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
-  echo "$0   leaves out things in rarely/veryrarely."
+  echo "Welcome to the $ME help page for version ${FOSVERSION}."
+  echo "$ME -h|help|--help: this help page."
+  echo "$ME -v|version|--version: provides version of this program."
+  echo "$ME {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
+  echo "$ME common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
+  echo "$ME   leaves out things in rarely/veryrarely."
   echo "### fossil stuff."
-  echo "$0 fossil-[code|forum|book]: fetches named section."
-  echo "$0 fossil: fetches code and forum."
+  echo "$ME fossil-[code|forum|book]: fetches named section."
+  echo "$ME fossil: fetches code and forum."
   echo "### wanderinghorse stuff."
-  echo "$0 libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
-  echo "$0 [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
+  echo "$ME libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
+  echo "$ME [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
   echo "### sqlite stuff."
-  echo "$0 sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
-  echo "$0 sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
+  echo "$ME sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
+  echo "$ME sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
   echo "     sqlite code, forum, docsrc, wasm, althttpd or test scripts."
-  echo "$0 althttpd: fetches althttpd code."
-  echo "$0 wasm: fetches wasm-related code."
+  echo "$ME althttpd: fetches althttpd code."
+  echo "$ME wasm: fetches wasm-related code."
   echo "### tcl/tk."
-  echo "$0 tcl-code: fetches code."
-  echo "$0 tcl-tip: fetches proposals."
-  echo "$0 tk-code: fetches code."
+  echo "$ME tcl-code: fetches code."
+  echo "$ME tcl-tip: fetches proposals."
+  echo "$ME tk-code: fetches code."
   echo "### tangentsoft projects."
-  echo "$0 inskin: fetches inskinerator code."
-  echo "$0 tangentsoft-fossil: fetches local fossil for tangentsoft."
+  echo "$ME inskin: fetches inskinerator code."
+  echo "$ME tangentsoft-fossil: fetches local fossil for tangentsoft."
   echo "### chisel project."
-  echo "$0 flint: fetches the flint code for chisel server."
+  echo "$ME flint: fetches the flint code for chisel server."
   echo "=== Rarely-updated stuff."
-  echo "$0 rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
-  echo "$0 Currently, this includes the following fossil, lifossil and sqlite projects:"
+  echo "$ME rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
+  echo "$ME Currently, this includes the following fossil, lifossil and sqlite projects:"
   echo " fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
-  echo "$0 Also includes tangentsoft's inskinerator and james' flint."
+  echo "$ME Also includes tangentsoft's inskinerator and james' flint."
   echo "This list will need modifying on occasion."
   echo "=== Very rarely updated stuff (less than yearly)."
-  echo "$0 veryrarely: includes the flint, fuel and fsl projects."
+  echo "$ME veryrarely: includes the flint, fuel and fsl projects."
   echo "======= TODO."
-  echo "$0 fsl: fetch from the fsl project."
-  echo "$0 remove inskinerator from rarely if project updates regularly."
+  echo "$ME fsl: fetch from the fsl project."
+  echo "$ME remove inskinerator from rarely if project updates regularly."
 # Need a section in here for pull
   exit 0
 }
 
 function doversion() {
-  echo "$0 version ${FOSVERSION}"
+  echo "$ME version ${FOSVERSION}"
   exit 0
 }
 ##### fossil-scm and related stuff
