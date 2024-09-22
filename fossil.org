@@ -337,6 +337,10 @@ web servers related to fossil, sqlite, tcl and tk and some other projects. The m
 look at are fossilsource and fossilserve, as the others are only there from earlier stages of the
 project.
 
+I've also added a utility fossilcommit function, as I (strangely enough) have repositories
+under both git and fossil management. It makes for an interesting time when I'm running commits for
+both, as I have to commit first (to git) then to fossil.
+
 ** fossils covered to date
 At the moment, I have the following fossils installed in my system, with one or two of them being
 pushed to git repositories in my gitea instance.
@@ -948,6 +952,23 @@ fi
 
 ======== End of fossilserve ========
 
+** fossilcommit
+#+BEGIN_SRC bash -i :tangle fossilcommit :tangle-mode (identity #o755)
+#!/usr/bin/env bash
+#
+# v0.1 Initial copy from .bash_history.
+#
+# Attempts to make a fossil commit with the last git message.
+# I got sick of looking this up, so I turned it into its own command.
+#
+# This needs a .fslckout and a .git in the project's root dir to work properly.
+# It also needs a checked-out git tree and fossil. This takes no args.
+#
+# Only bug so far is that it doesn't check that fossil's actually out of  sync.
+
+fossil commit -m "$(git --no-pager log -n 1 | sed -e 's/^    //g' | tail -n +5)"
+
+#+END_SRC
 ** fossilweb.sh
 
 This has been replaced with a front end on 8100 that points to every fossil on my system.

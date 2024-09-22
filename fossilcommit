@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# v0.1 Initial copy from .bash_history.
+#
+# Attempts to make a fossil commit with the last git message.
+# I got sick of looking this up, so I turned it into its own command.
+#
+# This needs a .fslckout and a .git in the project's root dir to work properly.
+# It also needs a checked-out git tree and fossil. This takes no args.
+#
+# Only bug so far is that it doesn't check that fossil's actually out of  sync.
+
+fossil commit -m "$(git --no-pager log -n 1 | sed -e 's/^    //g' | tail -n +5)"
