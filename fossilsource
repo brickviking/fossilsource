@@ -32,7 +32,8 @@
 # v0.28 Reworked hashbang for portability reasons. Added version and function.
 # v0.29 Shortened up the $0, making it into a var and shortening it.
 # v0.30 Reworked the help display, removed redundancies.
-FOSVERSION=0.30
+# v0.31 Added a fossilcommit utility function. (No functional changes to fossilsource)
+FOSVERSION=0.31
 
 ########
 # Notes #

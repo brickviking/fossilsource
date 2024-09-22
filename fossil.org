@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.30
+#+REVISION: 2.31
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -330,6 +330,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.28 Reworked hashbang for portability reasons. Added version and function.
   +  2.29 Shortened up the $0, making it into a var and shortening it.
   +  2.30 Reworked the help display, removed redundancies.
+  +  2.31 Added a fossilcommit utility function.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -430,7 +431,8 @@ This is covered somewhat by the veryrarely category.
 # v0.28 Reworked hashbang for portability reasons. Added version and function.
 # v0.29 Shortened up the $0, making it into a var and shortening it.
 # v0.30 Reworked the help display, removed redundancies.
-FOSVERSION=0.30
+# v0.31 Added a fossilcommit utility function. (No functional changes to fossilsource)
+FOSVERSION=0.31
 
 ########
 # Notes #
