@@ -488,7 +488,9 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
 }
 
 function doversion() {
-  echo "$ME version ${FOSVERSION}"
+  echo "$ME version: ${FOSVERSION}"
+  # This should really check we even _have_ a fossil first.
+  echo "fossil version: $(fossil version)"
   exit 0
 }
 ##### fossil-scm and related stuff
