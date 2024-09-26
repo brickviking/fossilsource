@@ -1456,6 +1456,10 @@ or two of the fossils on their own ports.
 There's also enough other fossils on my system that aren't covered by either of these XyZserve.sh 
 scripts, and that doesn't bother me. Everything's covered by the fossilserve instead.
 
+One other thing to seriously consider is initial cloning of the fossils that aren't already on my
+system. I've got a small list of them here, but there are literally thousands up on chiselapp in
+various stages of "We're done" to "We just copied at x point and didn't do anything else".
+
 Thinking on something Stephan said in one of his forum posts on the many forums he's a part of, got
 me thinking about a simple script to handle making some of the extracted code bases I do have here.
 Simple stuff like pikchr and the like is pretty much wander in, make and copy to destination. With
