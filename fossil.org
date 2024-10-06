@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.31
+#+REVISION: 2.32
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -331,6 +331,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.29 Shortened up the $0, making it into a var and shortening it.
   +  2.30 Reworked the help display, removed redundancies.
   +  2.31 Added a fossilcommit utility function.
+  +  2.32 Added comment to fossilmake's installFossil about privileges.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -1326,6 +1327,7 @@ I'll make this executable now I have some code in here.
 #
 # v0.0.1 Absolute first cut at fossilmake
 # v0.1 Working updater, creator and installer
+# v0.1.1 Added comment to fossilmake's installFossil about privileges.
 # A prototype maker of fossil projects
 
 MYNAME=fossilmake
@@ -1345,7 +1347,7 @@ function helpFossil() {
   echo "  -D   distclean removes all compiled output and configure scripts"
   echo "  -g   fetches latest fossil source code"
   echo "  -m   makes fossil with already-configured tree"
-  echo "  -i    installs fossil once you've made it"
+  echo "  -i    installs fossil once you've made it. This may require privileges"
   cd -
 }
 
@@ -1380,7 +1382,8 @@ function makeFossil() {
 function installFossil() {
   cd "${FOSSILSRC}"
   # Don't forget to kill all running fossil servers
-  sudo make prefix="${FOSSILINSTALLHOME}" install
+  # Don't forget to run this with privileges if you install to a place you don't "own"
+  make prefix="${FOSSILINSTALLHOME}" install
   # You may want to restart the fossil server after this
   cd -
 }

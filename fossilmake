@@ -2,6 +2,7 @@
 #
 # v0.0.1 Absolute first cut at fossilmake
 # v0.1 Working updater, creator and installer
+# v0.1.1 Added comment to fossilmake's installFossil about privileges.
 # A prototype maker of fossil projects
 
 MYNAME=fossilmake
@@ -21,7 +22,7 @@ function helpFossil() {
   echo "  -D   distclean removes all compiled output and configure scripts"
   echo "  -g   fetches latest fossil source code"
   echo "  -m   makes fossil with already-configured tree"
-  echo "  -i    installs fossil once you've made it"
+  echo "  -i    installs fossil once you've made it. This may require privileges"
   cd -
 }
 
@@ -56,7 +57,8 @@ function makeFossil() {
 function installFossil() {
   cd "${FOSSILSRC}"
   # Don't forget to kill all running fossil servers
-  sudo make prefix="${FOSSILINSTALLHOME}" install
+  # Don't forget to run this with privileges if you install to a place you don't "own"
+  make prefix="${FOSSILINSTALLHOME}" install
   # You may want to restart the fossil server after this
   cd -
 }
