@@ -421,7 +421,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMD="sync"
 #      dohelp
     ;;
-    "-s")
+    "-s"|"--sync")
     # Sync needs remote perms - only works for projects supporting it
       FOSCMD="sync"
     ;;
@@ -481,6 +481,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "fossilsource")
       cd ${HOME}/src/bash
       fossilsource-code
+    ;;
 # All wanderinghorse stuff
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
