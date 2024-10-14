@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.32
+#+REVISION: 2.33
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -332,6 +332,7 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.30 Reworked the help display, removed redundancies.
   +  2.31 Added a fossilcommit utility function.
   +  2.32 Added comment to fossilmake's installFossil about privileges.
+  +  2.33 Added stash commandline param. Only works with fossils you can push to.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -433,7 +434,8 @@ This is covered somewhat by the veryrarely category.
 # v0.29 Shortened up the $0, making it into a var and shortening it.
 # v0.30 Reworked the help display, removed redundancies.
 # v0.31 Added a fossilcommit utility function. (No functional changes to fossilsource)
-FOSVERSION=0.31
+# v0.32 Added sync command. Only works for fossils you can push to.
+FOSVERSION=0.32
 
 ########
 # Notes #
@@ -809,6 +811,10 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMDPARAMS=("-u" "-v" "--verily" "-R")
       FOSCMD="sync"
 #      dohelp
+    ;;
+    "-s")
+    # Sync needs remote perms
+      FOSCMD="sync"
     ;;
     "help"|"-h"|"--help")
       dohelp # exits
