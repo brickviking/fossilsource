@@ -332,7 +332,8 @@ as far back as Emacs-23 will probably open it fine, given the right installation
   +  2.30 Reworked the help display, removed redundancies.
   +  2.31 Added a fossilcommit utility function.
   +  2.32 Added comment to fossilmake's installFossil about privileges.
-  +  2.33 Added stash commandline param. Only works with fossils you can push to.
+  +  2.33 Added sync commandline param. Only works with fossils you can push to.
+  +  2.34 Added fossilsource repo.
 * Source files
 
 These files are responsible for updating source fossil files, or starting up the internal content
@@ -435,7 +436,8 @@ This is covered somewhat by the veryrarely category.
 # v0.30 Reworked the help display, removed redundancies.
 # v0.31 Added a fossilcommit utility function. (No functional changes to fossilsource)
 # v0.32 Added sync command. Only works for fossils you can push to.
-FOSVERSION=0.32
+# v0.33 Added fossilsource repo.
+FOSVERSION=0.33
 
 ########
 # Notes #
@@ -478,6 +480,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "### tangentsoft projects."
   echo "    inskin: fetches inskinerator code."
   echo "    tangentsoft-fossil: fetches local fossil for tangentsoft."
+  echo "### Flying-brick project."
+  echo "    fossilsource: fetches this codebase for this script"
   echo "### chisel project."
   echo "    flint: fetches the flint code for chisel server."
   echo "=== Rarely-updated stuff."
@@ -611,6 +615,13 @@ function inskin { # Shortened from Inskinerator
 
 function tangentsoft-fossil() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tangentsoft.fossil
+}
+
+# And of course, my own pet project, fossilsource. Needs renaming so I don't
+# trip over my own bash script.
+function fossilsource-code() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil-bvscripts.fossil
+  echo "==== fossilsource...done ==="
 }
 
 ##### sqlite-hosted or sqlite-related projects
@@ -813,7 +824,7 @@ else #iterate, chuck it in if keyword isn't recognised.
 #      dohelp
     ;;
     "-s")
-    # Sync needs remote perms
+    # Sync needs remote perms - only works for projects supporting it
       FOSCMD="sync"
     ;;
     "help"|"-h"|"--help")
@@ -868,7 +879,10 @@ else #iterate, chuck it in if keyword isn't recognised.
       tangentsoft-fossil
       cd -
     ;;
-
+# My own fossilsource - I'll use chiselapp
+    "fossilsource")
+      cd ${HOME}/src/bash
+      fossilsource-code
 # All wanderinghorse stuff
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
@@ -1266,7 +1280,6 @@ popd
 
 ======== End of tclweb.sh ========
 
-
 ** fossilgitcreate
 This little scriptlet will hopefully duplicate a git repo, seeing as there isn't an obvious way
 to run fossil git import yet, as it hasn't been fully developed.
@@ -1312,7 +1325,6 @@ Further notes for extra lines in the script:
   + adding them to fossil one by one
   + with the commit message duplicating the one held by git.
 + close out the fossil, as the last git commit should now be at HEAD
-
 
 ** fossilmake
 
@@ -1422,7 +1434,6 @@ esac
 fi
 
 #+END_SRC
-
 
 ** fossildoc
 
