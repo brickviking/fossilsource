@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.33
+#+REVISION: 2.34
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -437,7 +437,8 @@ This is covered somewhat by the veryrarely category.
 # v0.31 Added a fossilcommit utility function. (No functional changes to fossilsource)
 # v0.32 Added sync command. Only works for fossils you can push to.
 # v0.33 Added fossilsource repo.
-FOSVERSION=0.33
+# v0.34 Added jimtcl. This isn't always kept up to the same place as the git repo.
+FOSVERSION=0.34
 
 ########
 # Notes #
@@ -477,6 +478,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "    tcl-code: fetches code."
   echo "    tcl-tip: fetches proposals."
   echo "    tk-code: fetches code."
+  echo "### jimtcl."
+  echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
   echo "### tangentsoft projects."
   echo "    inskin: fetches inskinerator code."
   echo "    tangentsoft-fossil: fetches local fossil for tangentsoft."
@@ -717,6 +720,12 @@ function tcl-all() {
   cd .. # gets us back to ${MYHOME}
 }
 
+# Updates jimtcl's fossil
+function jimtcl() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jimtcl.fossil
+  echo "==== jimtcl code...done ==="
+}
+
 # these don't get updated very often, if at all
 function rarely() {
 # fossil stuff
@@ -937,6 +946,11 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd tk; pwd
       "${t}"
       cd -
+    ;;
+    "jimtcl")
+    cd ${HOME}/src/tcl/hosts/msteveb/jimtcl
+    "${t}"
+    cd -
     ;;
     esac # end of case ${t}
   done
