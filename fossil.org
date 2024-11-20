@@ -796,7 +796,7 @@ function common() {
 }
 
 function all() { # These each have a cd in them
-# Note: does not include fsl/libfossil
+# Note: does not include fsl
   fossil-all # code, forum, not book
   sleep 5
   sqlite-all # code, forum, althttpd, not tests
@@ -807,7 +807,9 @@ function all() { # These each have a cd in them
   cd ${HOME}/src/c/hosts/tangentsoft/
   tangentsoft-fossil # doesn't include inskinerator (under rarely)
   cd -
-}
+  sleep 5
+  libfossil-all # added this as it doesn't make much sense to leave it out
+  }
 # Takes path arg
 
 pushd "${FOSHOME}" >/dev/null
