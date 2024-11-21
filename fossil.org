@@ -950,7 +950,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd -
     ;;
     "jimtcl")
-    cd ${HOME}/src/tcl/hosts/msteveb/jimtcl
+    cd ${HOME}/src/tcl/hosts/msteveb/
     "${t}"
     cd -
     ;;
