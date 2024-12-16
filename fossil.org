@@ -443,7 +443,7 @@ FOSVERSION=0.34
 ########
 # Notes #
 #########
-# Really needs to be run from the source directory first.
+# This really needs to be run from the source directory first.
 # fossil has source code, forums, pikchr and a book.
 # sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness.
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
