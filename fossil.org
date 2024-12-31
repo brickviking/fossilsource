@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.34
+#+REVISION: 2.35
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -438,7 +438,8 @@ This is covered somewhat by the veryrarely category.
 # v0.32 Added sync command. Only works for fossils you can push to.
 # v0.33 Added fossilsource repo.
 # v0.34 Added jimtcl. This isn't always kept up to the same place as the git repo.
-FOSVERSION=0.34
+# v0.35 Added bash completion script. No functional change to fossilsource itself.
+FOSVERSION=0.35
 
 ########
 # Notes #
@@ -962,6 +963,70 @@ popd >/dev/null
 
 #+END_SRC
 
+======== End of fossilsource ========
+
+** Fossilsource bash-completion
+This is the bash-complete script for the fossilsource command. Unfortunately it's got the same
+name as its parent script, but I'm not entirely sure it needs to be.
+
+======== Beginning of fossilsource ========
+#+BEGIN_SRC bash -i :tangle fossilsource-bashcomplete :tangle-mode (identity #o755)
+_fossilsource_module() {
+    local cur prev OPTS
+
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    OPTS="help
+    -h
+    --help
+    -s
+    --sync
+    -u
+    --unversioned
+    all
+    althttpd
+    common
+    cson
+    cwal
+    flint
+    fnc
+    fossil
+    fossil-code
+    fossil-forum
+    fossil-book
+    fossilsource
+    fsl
+    inskin
+    libfossil
+    libfossil-all
+    libfossil-code
+    libfossil-forum
+    pikchr
+    pikmojicon
+    rarely
+    sqlite
+    sqlite-code
+    sqlite-forum
+    sqlite-docsrc
+    sqlite-tests
+    sqlite-althttpd
+    sqlite-wasm
+    sqlite-cloud
+    tangentsoft-fossil
+    tcl-code
+    tcl-tip
+    tk-code
+    veryrarely
+    wasm"
+    COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
+    return 0
+}
+
+complete -F _fossilsource_module fossilsource
+
+#+END_SRC
 ======== End of fossilsource ========
 
 ** fossilserve

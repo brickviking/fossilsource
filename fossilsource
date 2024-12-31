@@ -36,12 +36,13 @@
 # v0.32 Added sync command. Only works for fossils you can push to.
 # v0.33 Added fossilsource repo.
 # v0.34 Added jimtcl. This isn't always kept up to the same place as the git repo.
-FOSVERSION=0.34
+# v0.35 Added bash completion script. No functional change to fossilsource itself.
+FOSVERSION=0.35
 
 ########
 # Notes #
 #########
-# Really needs to be run from the source directory first.
+# This really needs to be run from the source directory first.
 # fossil has source code, forums, pikchr and a book.
 # sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness.
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
