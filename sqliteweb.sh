@@ -47,6 +47,11 @@ althttpd() {
   fossil server --port 8250 althttpd.fossil &
 }
 
+sds() {
+  echo -ne "Starting SQLite System.Data.Sqlite server: "
+  fossil server --port 8260 sds.fossil &
+}
+
 # Everything
 all() {
   code
@@ -61,6 +66,8 @@ all() {
   sleep 5
   althttpd
   sleep 5
+  sds
+  sleep 5
 }
 
 # Better provide help, can't call it help because of the builtin
@@ -74,6 +81,7 @@ dohelp() {
   echo "tests: sql logic test harness"
   echo "wasm: sqlite3 wasm/js code reference"
   echo "althttpd: sqlite3 althttpd reference"
+  echo "sds: System.Data.SQLite instance"
   exit 0
 }
 
@@ -85,7 +93,7 @@ if [ ${#*} -lt 1 ]; then # I want it all
 else #iterate, chuck it in if keyword isn't recognised.
   for t in ${*}; do
     case $t in "-h"|"--help") dohelp ;;
-      "code"|"forum"|"docsrc"|"tests"|"wasm"|"althttpd") "${t}" ;;
+      "code"|"forum"|"docsrc"|"tests"|"wasm"|"althttpd"|"sds") "${t}" ;;
       "all") all ;; # Streamlined a bit
       *) dohelp ;; # This exits, no matter what the state of other ${*}
     esac
