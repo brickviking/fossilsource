@@ -1,15 +1,16 @@
 #!/bin/bash
-# v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120
-# v0.0.2 Sqlite fossil servers adjusted to start on 8200/10/20/30
-# v0.1.0 Starts up what we choose
-# v0.1.2 Removed book from "all" as this very rarely gets updated
-# v0.1.3 TODO: Add code to check for already running servers, dump if so
-# v0.1.4 name change about three versions ago to suit sqlite instead of fossil
+# v0.0.1 FossilWeb - brings up all fossil servers on 8100/8110/8120.
+# v0.0.2 Sqlite fossil servers adjusted to start on 8200/10/20/30.
+# v0.1.0 Starts up what we choose.
+# v0.1.2 Removed book from "all" as this very rarely gets updated.
+# v0.1.3 TODO: Add code to check for already running servers, dump if so.
+# v0.1.4 name change about three versions ago to suit sqlite instead of fossil.
 # v0.1.5 Added, then removed TCL Improvement Proposals (TIP), shifted to tclweb.sh
 # v0.1.6 Added wasm/js server. This should by rights not be in all,
 #        but I'll leave it there for now, as there's recent traffic.
 # v0.1.7 TODO: Added althttpd fossil and streamlined the case switch.
-# v0.1.8 Changed default home for tangled script
+# v0.1.8 Changed default home for tangled script.
+# v0.1.9 Added System.Data.SQLite project.
 
 SQLITEHOME="${HOME}/src/c/sqlite"
 
