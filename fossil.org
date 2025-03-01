@@ -171,6 +171,29 @@ Further testing indicates that running fossil open in this way actually runs a c
 first, leaving a fossil.fossil in the directory you chose when you ran fossil open. Hm. Maybe the
 script isn't so superfluous after all. Huh.
 
+** Update fossilsource to possibly update the checkouts too
+This might require a little more futzing with fossil to dig out a unique checkout directory. 
+ I could readily use =-s= as a param. It'd look a bit like the following excerpt:
+
+#+BEGIN_EXAMPLE bash -i
+bash$ fossilsource -s fossil  # This should update the checked-out fossil source tree
+#+END_EXAMPLE
+
+In the event where there is more than one checkout on a fossil repository, then perhaps the user
+should be asked which checkout they want to update.
+
+That could well look like this:
+#+BEGIN_EXAMPLE bash -i
+bash$ fossilsource -s fossil  # This should update the checked-out fossil source tree
+Warning: fossil has multiple checkouts. Please select which checkout you
+wish to update, or 0 to cancel the update:
+0) cancel update
+1) /home/user/src/c/fossil-scm/fossil
+2) /opt/sourcecode/fossil-scm/ancient-fossil
+#+END_EXAMPLE
+
+The other problem where the user doesn't have a checkout will have to be addressed separately.
+At the moment, I'd have to punt to the user, saying "There is no active checkout, cancelling update."
 * REAMDE
   :PROPERTIES:
   :header-args: org :tangle README.org
