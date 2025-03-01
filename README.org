@@ -45,12 +45,12 @@ fairly complete list of the publically-available sources stored in fossil format
 
 I also don't cover keeping source up to date once you have run `fossil open ...`, again, that's
 up to you. I don't educate you how to use fossil, that's already been addressed by the fossil-scm
-website, that has some excellent documentation on the subject of keeping stuff up to date.
+website; that has some excellent documentation on the subject of keeping stuff up to date.
 
 ** What will you add?
 
 Given the last point, I /may/ add initial cloning of the fossils at some stage in the future once
-I have answered several questions to my satisfaction; this includes things like where best to 
+I have answered several questions to my satisfaction; this includes things like where best to
 store them (a personal decision in most cases), what to download, and when to keep them up to date.
 
 ** When will <fill-in-blank-here> be updated?
@@ -58,15 +58,15 @@ store them (a personal decision in most cases), what to download, and when to ke
 That's up to the project maintainer. Some projects haven't been updated since 2009, some
 are in nearly hourly flux. It's very dependent upon how often stuff changes in the source code
 and how often the developers want to push out changes. I do have the `rarely` and `veryrarely`
-categories for this reason; the stuff covered in `rarely` updates on perhaps a monthly basis 
+categories for this reason; the stuff covered in `rarely` updates on perhaps a monthly basis
 every three months, the stuff in `veryrarely` doesn't even change that often; some projects
 are finished and won't see any further development. Some projects might have even moved on to
 other homes without leaving a notice on the website.
 
 ** What are the -forum fossils I see mentioned here such as sqlite-forum, fossil-forum?
 
-Those are places where discussion about the related source code (whether sqlite, fossil or other)
-happens, that has been split off from the main project and stored into its own fossil. If you want
+Forums have discussions about the related source code (whether sqlite, fossil or other).
+Some of these are split off from the main project and stored into their own fossil. If you want
 to report a problem at the project's forums, it's best to go to the parent forum instead of trying
 to reply at the downloaded forum fossils. These fossils are merely a way to get the discussions
 locally so you can read them on your local machine without taking up extra bandwidth until you
@@ -75,10 +75,10 @@ actually need to report a problem or make other comments.
 ** What if I don't want all the fossils, but just some of them?
 
 You can edit what fossils you want to keep updated by looking at the respective -all functions,
-for example sqlite-all (or simply sqlite) cover all the sqlite-related fossils (assuming you have
-them), the tcl covers tcl, tk, and tips as well as the wapp project. If you want to trim back the
-number of projects in each of these categories (perhaps to leave out the -forum fossils or the
-less-updated fossils) then feel free.
+for example sqlite-all (or simply sqlite) covers all the sqlite-related fossils (assuming you have
+them), the tcl category includes tcl, tk, and tips as well as the wapp project. If you want to trim
+back the number of projects in each of these categories (perhaps to leave out the -forum fossils
+or the less-updated fossils) then feel free to edit the file.
 
 These projects should all be capable of being individually updated in the same manner as you now
 do with fossil, but if you have tailored this script to your needs, you will no longer need to
@@ -94,6 +94,7 @@ responsible developer will do for themselves.
 
 It's the source file for all the other relevant bash scripts I have here, such as the fossilsource
 program itself, and fossilserve. The rest (the *.sh files) serve as examples of how I used to do
-things before I dramatically simplified them into simply fossilserve. It's stored in org format,
-and is best used with a recent-ish copy of Emacs from the past decade or so, although Emacsen
-as far back as Emacs-23 will probably open it fine, given the right installation.
+things before I dramatically simplified them into simply fossilserve. As well, I've included this
+README so I only have one place to go to edit things. All of this is stored in org format, and is
+best used with a recent-ish copy of Emacs from the past decade or so, although Emacsen as far back
+as Emacs-23 will probably open it fine, given the right installation.
