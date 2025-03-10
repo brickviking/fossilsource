@@ -72,6 +72,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
   echo "       sqlite code, forum, docsrc, wasm, althttpd or test scripts."
   echo "   althttpd: fetches althttpd code."
+  echo "   docsrc: fetches sqlite-docsrc code."
   echo "   wasm: fetches wasm-related code."
   echo "### tcl/tk."
   echo "    tcl-code: fetches code."
@@ -504,9 +505,14 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd ..
     ;;
 # All sqlite-related stuff
-    "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm")
+    "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm")
       cd sqlite
       "${t}"
+      cd -
+    ;;
+    "docsrc") # this fills in the hole
+      cd sqlite
+      sqlite-"${t}"
       cd -
     ;;
     "althttpd"|"httpd") # whoops, is this duplicated with the above section?
