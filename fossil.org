@@ -463,7 +463,8 @@ This is covered somewhat by the veryrarely category.
 # v0.33 Added fossilsource repo.
 # v0.34 Added jimtcl. This isn't always kept up to the same place as the git repo.
 # v0.35 Added bash completion script. No functional change to fossilsource itself.
-FOSVERSION=0.35
+# v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
+FOSVERSION=0.36
 
 ########
 # Notes #
@@ -866,6 +867,10 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
     "help"|"-h"|"--help")
       dohelp # exits
+    ;;
+# this should really not be run on its own
+    "--verbose")
+      FOSCMDPARAMS=("--verbose" "-R")
     ;;
     "-v"|"version"|"--version") doversion  # exits
     ;;
