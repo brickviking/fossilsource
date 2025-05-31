@@ -1597,7 +1597,7 @@ fossilweb.sh, sqliteweb.sh, and tclweb.sh have all been pretty much superseded b
 just shows a directory of all my fossils and lets me choose, instead of running up an individual
 server on a separate port for the thing I want. As this may not be what you want, I provide the
 other scripts here as a model on which to create your own. I haven't quite kept these up to date the
-same way as fossilserve. It's something I should get to, in case you do acually want to just run one
+same way as fossilserve. It's something I should get to, in case you do actually want to just run one
 or two of the fossils on their own ports.
 
 There's also enough other fossils on my system that aren't covered by either of these XyZserve.sh 
@@ -1617,8 +1617,9 @@ I could jokingly call it fossilmake.
 
 * Postscript and credits
 
-I'd love to thank the guys that created the sqlite project and all the other satellite projects that
-go along for the ride, the most well known being the fossil SCM, upon which development is
-based. You set up a fossil, put files into it, and they're then backed by a sqlite3 database inside
-the fossil, complete with all the other advantages that an all-in-one solution provides.
+I'd love to thank the guys that created the SQLite project and all the other satellite projects that
+go along for the ride, the most well known being the Fossil SCM, upon which development of
+everything else is based. You set up a fossil, put files into it, and they're then backed by a
+sqlite3 database inside the fossil, complete with all the other advantages that an all-in-one
+solution provides.
 
