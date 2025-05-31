@@ -38,7 +38,8 @@
 # v0.34 Added jimtcl. This isn't always kept up to the same place as the git repo.
 # v0.35 Added bash completion script. No functional change to fossilsource itself.
 # v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
-FOSVERSION=0.36
+# v0.37 Add tclconfig and tea(ish) projects.
+FOSVERSION=0.37
 
 ########
 # Notes #
@@ -68,6 +69,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "### wanderinghorse stuff."
   echo "   libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
   echo "   [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
+  echo "   teaish: fetches the tea(ish) spinoff project."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
   echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
@@ -79,6 +81,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "    tcl-code: fetches code."
   echo "    tcl-tip: fetches proposals."
   echo "    tk-code: fetches code."
+  echo "    tclconfig: fetches code for tclconfig."
   echo "### jimtcl."
   echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
   echo "### tangentsoft projects."
@@ -170,8 +173,11 @@ function pikmojicon() {
 function libfossil-all {
   cd libfossil
   libfossil-code
+  sleep 2
 #  libfossil-forum
   fnc
+  sleep 2
+  teaish  # may get moved to rarely
   cd -
 }
 
@@ -185,6 +191,12 @@ function cwal {
 function cson {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cson.fossil
   echo "==== cson...done ==="
+}
+
+# rough remake of tclconfig from the tcl project mentioned elsewhere
+function teaish {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} teaish.fossil
+  echo "==== teaish...done ==="
 }
 
 ###### end of wanderinghorse stuff
@@ -307,6 +319,12 @@ function tk-code() {
   echo "==== tk code...done ==="
 }
 
+# helps to configure TCL extensions for compiling
+function tclconfig() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} tclconfig.fossil
+  echo "==== tclconfig...done ==="
+}
+
 # Updates both tcl and tk sources
 function tcl-all() {
   cd tcl
@@ -315,6 +333,8 @@ function tcl-all() {
   tcl-tips   # TCL Improvement Proposals, rarely updated
   sleep 5
   wapp
+  sleep 5
+  tclconfig  # may put into rarely
   sleep 5
   cd ../tk
   tk-code
@@ -504,7 +524,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
@@ -544,7 +564,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "tcl"|"tcl-all")
       tcl-all
     ;;
-    "tcl-code"|"tcl-tips"|"wapp")
+    "tcl-code"|"tcl-tips"|"wapp"|"tclconfig")
       cd tcl
       "${t}"
       cd -
@@ -555,7 +575,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd -
     ;;
     "tk-code")
-      cd tk; pwd
+      cd tk; pwd # TODO: why was this here?
       "${t}"
       cd -
     ;;
