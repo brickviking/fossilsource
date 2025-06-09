@@ -519,6 +519,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "fossilsource")
       cd ${HOME}/src/bash
       fossilsource-code
+      cd -
     ;;
 # All wanderinghorse stuff
     "libfossil-all")
