@@ -502,6 +502,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   libfossil{-all}: fetches libfossil (libfossil-code) and fnc."
   echo "   [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
   echo "   teaish: fetches the tea(ish) spinoff project."
+  echo "   c-pp: c-minus pre-processor."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
   echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
@@ -629,6 +630,11 @@ function cson {
 function teaish {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} teaish.fossil
   echo "==== teaish...done ==="
+}
+
+function c-pp {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} c-pp.fossil
+  echo "==== c-pp...done ==="
 }
 
 ###### end of wanderinghorse stuff
@@ -809,6 +815,7 @@ function veryrarely() { # for stuff that hasn't updated in years
   cd -
   cd libfossil
   fsl
+  c-pp
   pikmojicon
   cd -
   cd ${HOME}/src/php/hosts/james
@@ -957,7 +964,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish"|"c-pp")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
