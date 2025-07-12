@@ -360,6 +360,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.34 Added fossilsource repo.
   +  2.35 Tweaks to phrases.
   +  2.36 Added tclconfig and tea(ish) to list of repositories.
+  +  2.37 Added LuaSQLite (sqlite-lua), also added to rarely.
 
 * Source files
 
@@ -417,6 +418,8 @@ then I'll need a file that renders in Github's website to introduce the fossilso
 May 2025 will see tclconfig added to the tcl subproject, as well as the spinoff code for tea(ish),
 which will go under the wanderinghorse fossil collection.
 
+July 2025 sees the addition of the LuaSQLite project.
+
 Future plans: 
  + include a verbose switch.
  + add other switch processing.
@@ -471,7 +474,8 @@ This is covered somewhat by the veryrarely category.
 # v0.35 Added bash completion script. No functional change to fossilsource itself.
 # v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
 # v0.37 Add tclconfig and tea(ish) projects.
-FOSVERSION=0.37
+# v0.38 Add sqlite-lua project, and added that to rarely.
+FOSVERSION=0.38
 
 ########
 # Notes #
@@ -505,8 +509,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   c-pp: c-minus pre-processor."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
-  echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud}, fetches:"
-  echo "       sqlite code, forum, docsrc, wasm, althttpd or test scripts."
+  echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud|lua}, fetches:"
+  echo "       sqlite code, forum, docsrc, wasm, althttpd, cloud, lua or test scripts."
   echo "   althttpd: fetches althttpd code."
   echo "   docsrc: fetches sqlite-docsrc code."
   echo "   wasm: fetches wasm-related code."
@@ -527,7 +531,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "=== Rarely-updated stuff."
   echo "    rarely: updates almost all the stuff not touched by [{fossil|sqlite|libfossil}-]all."
   echo "Currently, this includes the following fossil, lifossil and sqlite projects:"
-  echo "      fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, and cwal."
+  echo "      fossil-book, pikchr, pikmojicon, fsl, sqlite-tests, sqlite-cloud, sqlite-lua and cwal."
   echo "Also includes tangentsoft's inskinerator and james' flint."
   echo "This list will need modifying on occasion."
   echo "=== Very rarely updated stuff (less than yearly)."
@@ -715,6 +719,11 @@ function sqlite-cloud() {
   echo "==== sqlite-cloudsqlite...done ==="
 }
 
+function sqlite-lua() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} lua.fossil
+  echo "==== sqlite-lua...done ==="
+}
+
 # Does everything not in "rarely" section
 function sqlite-all() {
   t="sqlite"
@@ -794,6 +803,9 @@ function rarely() {
   cd ../sqlite
   sqlite-tests
   sqlite-cloud
+  cd /h3/viking/src/c/sqlite
+  sqlite-lua
+  cd -  # should return to ${HOME}/src/c
 # wanderinghorse - a.k.a. libfossil
   cd ../libfossil
   cwal
@@ -975,6 +987,11 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"
       cd -
     ;;
+    "sqlite-lua")
+      cd /h3/viking/src/c/sqlite
+      "${t}"
+      cd -
+    ;;
     "docsrc") # this fills in the hole
       cd sqlite
       sqlite-"${t}"
@@ -985,7 +1002,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       sqlite-althttpd
       cd ..
     ;;
-    "docsrc")
+    "docsrc")  # Why is this a duplicate?
       cd sqlite
       sqlite-docsrc
       cd ..
