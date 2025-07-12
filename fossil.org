@@ -418,7 +418,7 @@ then I'll need a file that renders in Github's website to introduce the fossilso
 May 2025 will see tclconfig added to the tcl subproject, as well as the spinoff code for tea(ish),
 which will go under the wanderinghorse fossil collection.
 
-July 2025 sees the addition of the LuaSQLite project.
+July 2025 sees the addition of the c-pp project and the LuaSQLite project.
 
 Future plans: 
  + include a verbose switch.
@@ -474,7 +474,7 @@ This is covered somewhat by the veryrarely category.
 # v0.35 Added bash completion script. No functional change to fossilsource itself.
 # v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
 # v0.37 Add tclconfig and tea(ish) projects.
-# v0.38 Add sqlite-lua project, and added that to rarely.
+# v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
 FOSVERSION=0.38
 
 ########
