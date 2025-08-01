@@ -40,7 +40,8 @@
 # v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
 # v0.37 Add tclconfig and tea(ish) projects.
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
-FOSVERSION=0.38
+# v0.39
+FOSVERSION=0.39
 
 ########
 # Notes #
@@ -60,6 +61,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "Welcome to the $ME help page for version ${FOSVERSION}."
   echo "${ME} {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
   echo "   -h|help|--help: this help page."
+  echo "   -u: synchronise /uv data (unversioned files)."
   echo "   -v|version|--version: provides version of this program."
   echo "   common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
   echo "It leaves out things in rarely/veryrarely,"
