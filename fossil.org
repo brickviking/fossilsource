@@ -361,7 +361,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.35 Tweaks to phrases.
   +  2.36 Added tclconfig and tea(ish) to list of repositories.
   +  2.37 Added c-pp and LuaSQLite (sqlite-lua), also added to (very)rarely.
-  +  2.38 Added =-u= to dohelp().
+  +  2.38 Added =-u= and =-s= to dohelp().
 
 * Source files
 
@@ -479,7 +479,7 @@ This is covered somewhat by the veryrarely category.
 # v0.36 Add --verbose switch. Can't use "-v" as it's already used for "version".
 # v0.37 Add tclconfig and tea(ish) projects.
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
-# v0.39
+# v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
 FOSVERSION=0.39
 
 ########
@@ -500,6 +500,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "Welcome to the $ME help page for version ${FOSVERSION}."
   echo "${ME} {all}: fetches all fossil, all sqlite, all tcl except rarely/veryrarely."
   echo "   -h|help|--help: this help page."
+  echo "   -s: sync - needs remote permission."
   echo "   -u: synchronise /uv data (unversioned files)."
   echo "   -v|version|--version: provides version of this program."
   echo "   common: fetches {fossil,sqlite}-{code,forum}, althttpd and tcl/tk."
