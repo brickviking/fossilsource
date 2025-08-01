@@ -421,8 +421,11 @@ which will go under the wanderinghorse fossil collection.
 
 July 2025 sees the addition of the c-pp project and the LuaSQLite project.
 
+August 2025 adds the =-u= into dohelp, as I hadn't listed it before, even though I had used it.
+
 Future plans: 
  + include a verbose switch.
+ + add the ability to update source trees obtained with =fossil open=.
  + add other switch processing.
  + (perhaps) add initial cloning.
  + expand to include git projects such as emacs and git itself. There's already a scmsource project
