@@ -41,7 +41,8 @@
 # v0.37 Add tclconfig and tea(ish) projects.
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
 # v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
-FOSVERSION=0.39
+# v0.40 Added System.Data.SQLite (sds).
+FOSVERSION=0.40
 
 ########
 # Notes #
@@ -77,10 +78,11 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   c-pp: c-minus pre-processor."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
-  echo "   sqlite-{code|forum|docsrc|tests|althttpd|wasm|cloud|lua}, fetches:"
-  echo "       sqlite code, forum, docsrc, wasm, althttpd, cloud, lua or test scripts."
+  echo "   sqlite-{code|forum|docsrc|tests|althttpd|sds|wasm|cloud|lua}, fetches:"
+  echo "       sqlite code, forum, docsrc, sds, wasm, althttpd, cloud, lua or test scripts."
   echo "   althttpd: fetches althttpd code."
   echo "   docsrc: fetches sqlite-docsrc code."
+  echo "   sds: fetches System.Data.SQLite code"
   echo "   wasm: fetches wasm-related code."
   echo "### tcl/tk."
   echo "    tcl-code: fetches code."
@@ -292,6 +294,12 @@ function sqlite-lua() {
   echo "==== sqlite-lua...done ==="
 }
 
+# fetches System.Data.SQLite
+function sqlite-sds() {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sds.fossil
+  echo "==== System.Data.SQLite (sds)...done ==="
+}
+
 # Does everything not in "rarely" section
 function sqlite-all() {
   t="sqlite"
@@ -307,6 +315,7 @@ function sqlite-all() {
   ${t}-althttpd # shifted from rarely()
 #  ${t}-tests # shifted to rarely()
 #  ${t}-cloud # shifted to rarely()
+  ${t}-sds
   unset $t
   cd .. # gets us back to ${MYHOME}
 }
@@ -550,7 +559,7 @@ else #iterate, chuck it in if keyword isn't recognised.
       cd ..
     ;;
 # All sqlite-related stuff
-    "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm")
+    "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm"|"sqlite-sds")
       cd sqlite
       "${t}"
       cd -
@@ -573,6 +582,11 @@ else #iterate, chuck it in if keyword isn't recognised.
     "docsrc")  # Why is this a duplicate?
       cd sqlite
       sqlite-docsrc
+      cd ..
+    ;;
+    "sds") 
+      cd sqlite
+      sqlite-sds
       cd ..
     ;;
     "wasm")
