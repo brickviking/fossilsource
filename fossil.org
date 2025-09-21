@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.36
+#+REVISION: 2.39
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -173,10 +173,10 @@ script isn't so superfluous after all. Huh.
 
 ** Update fossilsource to possibly update the checkouts too
 This might require a little more futzing with fossil to dig out a unique checkout directory. 
- I could readily use =-s= as a param. It'd look a bit like the following excerpt:
+ I could readily use =-c= as a param (checkout). It'd look a bit like the following excerpt:
 
 #+BEGIN_EXAMPLE bash -i
-bash$ fossilsource -s fossil  # This should update the checked-out fossil source tree
+bash$ fossilsource -c fossil  # This should update the checked-out fossil source tree
 #+END_EXAMPLE
 
 In the event where there is more than one checkout on a fossil repository, then perhaps the user
@@ -184,7 +184,7 @@ should be asked which checkout they want to update.
 
 That could well look like this:
 #+BEGIN_EXAMPLE bash -i
-bash$ fossilsource -s fossil  # This should update the checked-out fossil source tree
+bash$ fossilsource -c fossil  # This should update the checked-out fossil source tree
 Warning: fossil has multiple checkouts. Please select which checkout you
 wish to update, or 0 to cancel the update:
 0) cancel update
@@ -362,6 +362,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.36 Added tclconfig and tea(ish) to list of repositories.
   +  2.37 Added c-pp and LuaSQLite (sqlite-lua), also added to (very)rarely.
   +  2.38 Added =-u= and =-s= to dohelp().
+  +  2.39 Tweaked master document, added examples to retrieve checkout directories.
 
 * Source files
 
@@ -380,10 +381,14 @@ pushed to git repositories in my gitea instance.
 *** Fossil-scm and related
   +  fossil-scm, fossil-forum, fossil-book
 
-** fossilsource
-This fetches all the code that's currently supplied as .fossil files from sqlite.org, including the
-sqlite-related files. Additionally, tcl and tk are available too. As of November 2022, that's the
-following files stored in ${HOME}/src/c/fossil-scm:
+** fossilsource Changelog and source file
+
+This fetches all the code that's currently supplied as .fossil files from sqlite.org, including
+sqlite-related files. Fossil itself can also be retrieved from fossil-scm.org. The libfossil library
+is a recoding of fossil into a library form. Additionally, tcl and tk are available too.
+
+*** Changelog
+Beginning in November 2022, this script can fetch the following files stored in ${HOME}/src/c/fossil-scm:
  + fossil-scm source: (fossil.fossil)
  + fossil-scm forum: (fossilforum.fossil)
  + fossil-scm book: (fossil-book.fossil)
@@ -412,7 +417,7 @@ how. As a result, I'll stick a stanza in for updating it from fossilsource.
 In April 2023, fnc was added in, though it had been on my system a while. Poor thing.
 
 February 2024 sees inskinerator added, there's been several other internal changes too.
-March 2024 sees the flint project added (software behind the chisel hosting site).
+March 2024 sees the flint project added; this is the software behind the chisel hosting site.
 July 2024 sees a REAMDE. Finally. It's about time. The reason is because if I host this on github,
 then I'll need a file that renders in Github's website to introduce the fossilsource project.
 
@@ -425,14 +430,30 @@ August 2025 adds the =-u= into dohelp, as I hadn't listed it before, even though
 
 Future plans: 
  + include a verbose switch.
- + add the ability to update source trees obtained with =fossil open=.
+ + add the ability to update source trees obtained with =fossil open= with a =-c= (checkout) switch .
  + add other switch processing.
- + (perhaps) add initial cloning.
- + expand to include git projects such as emacs and git itself. There's already a scmsource project
+ + (perhaps) add initial cloning (=-i= ?).
+ + expand to include git projects such as emacs and git itself. There's already an scmsource project
      for fetching source code for the other SCMs such as svn/hg.
  + add a new category "exceptionally rarely", for projects not updated in years (flint, fuel?). 
 This is covered somewhat by the veryrarely category.
 
+Regarding the future task of updating the checkouts, useful sql queries look like this to retrieve just a path:
+
+#+BEGIN_EXAMPLE bash -i
+bash$ fossil sqlite "select name from config where name like '%ckout:%';" -R <whatever-repo>
+#+END_EXAMPLE
+
+This example displays both the path and local datetime() (an sqlite3 function) of last checkout:
+
+#+BEGIN_EXAMPLE bash -i
+bash$ fossil sqlite ".mode box" "select name,datetime(mtime,'unixepoch','localtime') as date from config where name like '%ckout:%';" -R <whatever-repo>
+#+END_EXAMPLE
+
+One wrinkle with this is that the user then has to choose from multiple results if there are
+multiple checkouts open on the repo.
+
+*** Source file
 ======== Beginning of fossilsource ========
 
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
