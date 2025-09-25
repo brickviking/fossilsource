@@ -1127,6 +1127,7 @@ _fossilsource_module() {
     --unversioned
     all
     althttpd
+    c-pp
     common
     cson
     cwal
@@ -1139,13 +1140,16 @@ _fossilsource_module() {
     fossilsource
     fsl
     inskin
+    jimtcl
     libfossil
     libfossil-all
     libfossil-code
     libfossil-forum
+    lua
     pikchr
     pikmojicon
     rarely
+    sds
     sqlite
     sqlite-code
     sqlite-forum
@@ -1157,6 +1161,7 @@ _fossilsource_module() {
     tangentsoft-fossil
     tcl-code
     tcl-tip
+    teaish
     tk-code
     veryrarely
     wasm"
