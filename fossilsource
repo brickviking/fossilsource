@@ -389,9 +389,9 @@ function rarely() {
   pikchr
   # fsl and pikmojicon moved to veryrarely
 # other stuff
-  cd ../Fresh
-  fresh
-  cd ..
+#  cd ../Fresh #Commented out as I don't get this any more
+ # fresh
+ # cd ..
 # tangentsoft (not tangentsoft-fossil)
   cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
