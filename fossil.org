@@ -119,7 +119,7 @@ any event. That'll be a point for "Future Directions" too.
 If we elect to fetch initial fossils, we run into the problem of having to *have* fossil so we can
 clone all the remaining fossils that I have direct access to. That we have to leave up to the user
 of this script, or indeed this repository. Thankfully it's easy to grab a copy, as they have it up
-for grabs at =http://fossil-scm/fossil/uv/download/html=.
+for grabs at =https://fossil-scm.org/fossil/uv/download.html=.
 
 *** Do we then create a set of directories where each of the major categories are stored?
 
