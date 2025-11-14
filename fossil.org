@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2024-09-17 Tue 23:48>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.40
+#+REVISION: 2.41
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -373,6 +373,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.38 Added =-u= and =-s= to dohelp().
   +  2.39 Tweaked master document, added examples to retrieve checkout directories.
   +  2.40 Added in System.Data.SQLite.
+  +  2.41 Numerous fixes, especially to rarely/veryrarely.
 
 * Source files
 
@@ -514,7 +515,8 @@ multiple checkouts open on the repo.
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
 # v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
 # v0.40 Added System.Data.SQLite (sds).
-FOSVERSION=0.40
+# v0.41 Fixes to rarely and veryrarely
+FOSVERSION=0.41
 
 ########
 # Notes #
@@ -592,7 +594,7 @@ function doversion() {
   echo "fossil version: $(fossil version)"
   exit 0
 }
-##### fossil-scm and related stuff
+##### fossil-scm and related stuff, these presume we start from ${FOSHOME}
 function fossil-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
   echo "==== fossil-code...done ==="
@@ -772,7 +774,7 @@ function sqlite-sds() {
   echo "==== System.Data.SQLite (sds)...done ==="
 }
 
-# Does everything not in "rarely" section
+# Does everything not in "rarely" section, presumes we're in ${FOSHOME}
 function sqlite-all() {
   t="sqlite"
   cd ${t}
@@ -848,22 +850,25 @@ function rarely() {
 # fossil stuff
   cd fossil-scm
   fossil-book
+  cd -
 # sqlite stuff
-  cd ../sqlite
+  cd sqlite
   sqlite-tests
   sqlite-cloud
-  cd /h3/viking/src/c/sqlite
-  sqlite-lua
-  cd -  # should return to ${HOME}/src/c
+  cd -
 # wanderinghorse - a.k.a. libfossil
-  cd ../libfossil
+  cd libfossil
   cwal
   pikchr
+  cd -
   # fsl and pikmojicon moved to veryrarely
 # other stuff
 #  cd ../Fresh #Commented out as I don't get this any more
- # fresh
- # cd ..
+#  fresh
+#  cd ..
+  cd /h3/viking/src/c/sqlite
+  sqlite-lua
+  cd -  # should return to ${HOME}/src/c
 # tangentsoft (not tangentsoft-fossil)
   cd ${HOME}/src/perl/hosts/tangentsoft
   inskin

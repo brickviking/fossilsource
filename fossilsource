@@ -42,7 +42,8 @@
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
 # v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
 # v0.40 Added System.Data.SQLite (sds).
-FOSVERSION=0.40
+# v0.41 Fixes to rarely and veryrarely
+FOSVERSION=0.41
 
 ########
 # Notes #
@@ -120,7 +121,7 @@ function doversion() {
   echo "fossil version: $(fossil version)"
   exit 0
 }
-##### fossil-scm and related stuff
+##### fossil-scm and related stuff, these presume we start from ${FOSHOME}
 function fossil-code() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} fossil.fossil
   echo "==== fossil-code...done ==="
@@ -300,7 +301,7 @@ function sqlite-sds() {
   echo "==== System.Data.SQLite (sds)...done ==="
 }
 
-# Does everything not in "rarely" section
+# Does everything not in "rarely" section, presumes we're in ${FOSHOME}
 function sqlite-all() {
   t="sqlite"
   cd ${t}
@@ -376,22 +377,25 @@ function rarely() {
 # fossil stuff
   cd fossil-scm
   fossil-book
+  cd -
 # sqlite stuff
-  cd ../sqlite
+  cd sqlite
   sqlite-tests
   sqlite-cloud
-  cd /h3/viking/src/c/sqlite
-  sqlite-lua
-  cd -  # should return to ${HOME}/src/c
+  cd -
 # wanderinghorse - a.k.a. libfossil
-  cd ../libfossil
+  cd libfossil
   cwal
   pikchr
+  cd -
   # fsl and pikmojicon moved to veryrarely
 # other stuff
 #  cd ../Fresh #Commented out as I don't get this any more
- # fresh
- # cd ..
+#  fresh
+#  cd ..
+  cd /h3/viking/src/c/sqlite
+  sqlite-lua
+  cd -  # should return to ${HOME}/src/c
 # tangentsoft (not tangentsoft-fossil)
   cd ${HOME}/src/perl/hosts/tangentsoft
   inskin
