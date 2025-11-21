@@ -16,13 +16,18 @@ FOSSILINSTALLHOME="/usr/local" # default unless changed
 function helpFossil() {
   cd "${FOSSILSRC}"
   echo "Welcome to fossilmake, a program to update, make and install fossil."
+  echo "Also requires that you have the following:"
+  echo "  An install of fossil's source code."
+  echo "  The fossilsource program, also available from fossilsource's repo."
   echo "Usage: fossilmake {-h|--help|-d|--clean|-g|--get|-m|--make|-i|--install}"
-  echo "  -h   shows this help message"
-  echo "  -d   clean (not distclean) removes all compiled output"
-  echo "  -D   distclean removes all compiled output and configure scripts"
-  echo "  -g   fetches latest fossil source code"
-  echo "  -m   makes fossil with already-configured tree"
-  echo "  -i    installs fossil once you've made it. This may require privileges"
+  echo "  -h   shows this help message."
+  echo "  -d   clean (not distclean) removes all compiled output."
+  echo "  -D   distclean removes all compiled output and configure scripts."
+  echo "  -g   fetches latest fossil source code."
+  echo "  -m   makes fossil with already-configured tree."
+  echo "  -i    installs fossil once you've made it. This may require privileges."
+  echo " Experimental options:
+  echo "  -mi   makes and then installs fossil. This may also require privileges."
   cd -
 }
 
