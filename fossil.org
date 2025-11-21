@@ -1612,7 +1612,7 @@ function helpFossil() {
   echo "  -g   fetches latest fossil source code."
   echo "  -m   makes fossil with already-configured tree."
   echo "  -i    installs fossil once you've made it. This may require privileges."
-  echo " Experimental options:
+  echo " Experimental options:"
   echo "  -mi   makes and then installs fossil. This may also require privileges."
   cd -
 }
