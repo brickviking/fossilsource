@@ -43,7 +43,8 @@
 # v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
 # v0.40 Added System.Data.SQLite (sds).
 # v0.41 Fixes to rarely and veryrarely
-FOSVERSION=0.41
+# v0.42 Added forums, as I use that a bit
+FOSVERSION=0.42
 
 ########
 # Notes #
@@ -85,6 +86,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   docsrc: fetches sqlite-docsrc code."
   echo "   sds: fetches System.Data.SQLite code"
   echo "   wasm: fetches wasm-related code."
+  echo "### forum stuff (may need expanding if more are added)"
+  echo "    forum|forums: grabs forum-related fossils."
   echo "### tcl/tk."
   echo "    tcl-code: fetches code."
   echo "    tcl-tip: fetches proposals."
@@ -448,6 +451,17 @@ function common() {
   cd .. # gets us back to ${MYHOME}
 }
 
+# Added because I do this a lot.  This will need expanding once we have more forums.
+function forums() {
+  cd fossil-scm # Presumes we're in ${FOSHOME}
+  fossil-forum
+  # now off to the second one
+  cd ../sqlite
+  sqlite-forum
+  # and back home
+  cd ..
+}
+
 function all() { # These each have a cd in them
 # Note: does not include fsl
   fossil-all # code, forum, not book
@@ -506,6 +520,9 @@ else #iterate, chuck it in if keyword isn't recognised.
     ;;
     "fossil"|"sqlite"|"tcl"|"libfossil")
       "${t}"-all
+    ;;
+    "forum"|"forums")
+      forums
     ;;
 # All fossil-related stuff
     "fossil-forum"|"fossil-code"|"fossil-book"|"fuel")
