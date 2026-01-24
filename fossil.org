@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2025-11-21 Fri 13:37>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.42
+#+REVISION: 2.43
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -443,6 +443,8 @@ August 2025 adds the =-u= into dohelp, as I hadn't listed it before, even though
 
 September 2025 adds System.Data.SQLite (sds).
 
+January 2026 added the small libwhut library source.
+
 Future plans: 
  + include a verbose switch.
  + add the ability to update source trees obtained with =fossil open= with a =-c= (checkout) switch .
@@ -517,9 +519,10 @@ multiple checkouts open on the repo.
 # v0.38 Added c-pp and LuaSQLite projects, and added that to rarely.
 # v0.39 Added '-s' and '-u' into the help. Previously not mentioned.
 # v0.40 Added System.Data.SQLite (sds).
-# v0.41 Fixes to rarely and veryrarely
-# v0.42 Added forums, as I use that a bit
-FOSVERSION=0.42
+# v0.41 Fixes to rarely and veryrarely.
+# v0.42 Added forums, as I use that a bit.
+# v0.43 Added libwhut.
+FOSVERSION=0.43
 
 ########
 # Notes #
@@ -553,6 +556,7 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
   echo "   teaish: fetches the tea(ish) spinoff project."
   echo "   c-pp: c-minus pre-processor."
+  echo "   whut|libwhut: utility toolkit."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
   echo "   sqlite-{code|forum|docsrc|tests|althttpd|sds|wasm|cloud|lua}, fetches:"
@@ -664,6 +668,8 @@ function libfossil-all {
   fnc
   sleep 2
   teaish  # may get moved to rarely
+  sleep 2
+  whut
   cd -
 }
 
@@ -688,6 +694,11 @@ function teaish {
 function c-pp {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} c-pp.fossil
   echo "==== c-pp...done ==="
+}
+
+function whut {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libwhut.fossil
+    echo "==== libwhut...done ==="
 }
 
 ###### end of wanderinghorse stuff
@@ -1049,10 +1060,14 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish"|"c-pp")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish"|"c-pp"|"whut")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
+    ;;
+    "libwhut")  # same as whut above, but we have to call it slightly differently
+    cd libfossil
+    ${t##lib}
     ;;
 # All sqlite-related stuff
     "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm"|"sqlite-sds")
@@ -1169,6 +1184,7 @@ _fossilsource_module() {
     libfossil-all
     libfossil-code
     libfossil-forum
+    libwhut
     lua
     pikchr
     pikmojicon
@@ -1188,7 +1204,8 @@ _fossilsource_module() {
     teaish
     tk-code
     veryrarely
-    wasm"
+    wasm
+    whut"
     COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
     return 0
 }
