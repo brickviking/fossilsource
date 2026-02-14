@@ -203,6 +203,7 @@ wish to update, or 0 to cancel the update:
 
 The other problem where the user doesn't have a checkout will have to be addressed separately.
 At the moment, I'd have to punt to the user, saying "There is no active checkout, cancelling update."
+or ask the user whether they wish to create a checkout underneath where that fossil is stored.
 * REAMDE
   :PROPERTIES:
   :header-args: org :tangle README.org
