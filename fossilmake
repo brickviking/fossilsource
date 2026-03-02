@@ -49,7 +49,7 @@ function getFossil() {
   make clean # We do this so we have a clean codebase
   # I make use of a previously-written script here.
   fossilsource fossil-code  # First fetch the fossil
-  fossil up    # then update source from the fossil
+  fossil up --nosync    # then update source from the fossil
   cd -
 }
 

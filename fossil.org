@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2025-11-21 Fri 13:37>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.43
+#+REVISION: 2.44
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -377,6 +377,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.41 Numerous fixes, especially to rarely/veryrarely.
   +  2.42 Tweaks to fossilmake. No code changes.
   +  2.43 Added forums, as I use that a bit.
+  +  2.44 Tweaked =fossilmake -g= so that it doesn't do a double network hit.
 
 * Source files
 
@@ -1618,6 +1619,9 @@ does.
 
 I'll make this executable now I have some code in here.
 
+Just a quick addition needed to update the fossil checkout from my local repo clone instead of
+running (effectively) a double =fossil update=.
+
 #+ATTR_LATEX: :options frame=single,backgroundcolor=\color{lightgray}
 #+BEGIN_SRC bash :tangle fossilmake :tangle-mode (identity #o755)
 #!/bin/bash
@@ -1671,7 +1675,7 @@ function getFossil() {
   make clean # We do this so we have a clean codebase
   # I make use of a previously-written script here.
   fossilsource fossil-code  # First fetch the fossil
-  fossil up    # then update source from the fossil
+  fossil up --nosync    # then update source from the fossil
   cd -
 }
 
