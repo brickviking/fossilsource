@@ -1,11 +1,11 @@
 # -*- mode: org; fill-column: 100; -*-
 # vim: set ai tw=100 
 #+TITLE: fossil scripts
-#+SUBTITLE: for source code maintenance and forum viewing on localhost
+#+SUBTITLE: for source code maintenance, compiling and forum viewing on localhost
 #+AUTHOR: brickviking
-#+DATE: <2025-11-21 Fri 13:37>
-#+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp
-#+REVISION: 2.44
+#+DATE: <2026-03-07 Sat 17:38>
+#+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp c-pp whut
+#+REVISION: 2.45
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -378,6 +378,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.42 Tweaks to fossilmake. No code changes.
   +  2.43 Added forums, as I use that a bit.
   +  2.44 Tweaked =fossilmake -g= so that it doesn't do a double network hit.
+  +  2.45 Added note for non-default remotes. No code changes yet.
 
 * Source files
 
@@ -456,6 +457,7 @@ Future plans:
      for fetching source code for the other SCMs such as svn/hg.
  + add a new category "exceptionally rarely", for projects not updated in years (flint, fuel?). 
 This is covered somewhat by the veryrarely category.
+ + sync with multiple remotes. At this stage, I only sync with the most recent remote stored.
 
 Regarding the future task of updating the checkouts, useful sql queries look like this to retrieve just a path:
 
@@ -1763,6 +1765,10 @@ or two of the fossils on their own ports.
 
 There's also enough other fossils on my system that aren't covered by either of these XyZserve.sh 
 scripts, and that doesn't bother me. Everything's covered by the fossilserve instead.
+
+Another small note should be made (for fossilsource) regarding syncing with additional remotes
+if more than one remote exists. At this stage, =fossilsource -s= only syncs with the most
+recently-used remote, without considering the remainder of remotes defined in the repository.
 
 One other thing to seriously consider is initial cloning of the fossils that aren't already on my
 system. I've got a small list of them here, but there are literally thousands up on chiselapp in
