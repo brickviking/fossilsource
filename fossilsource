@@ -45,7 +45,9 @@
 # v0.41 Fixes to rarely and veryrarely.
 # v0.42 Added forums, as I use that a bit.
 # v0.43 Added libwhut.
-FOSVERSION=0.43
+# v0.44 Removed jimtcl, he uses github and dropped fossil.
+
+FOSVERSION=0.44
 
 ########
 # Notes #
@@ -95,8 +97,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "    tcl-tip: fetches proposals."
   echo "    tk-code: fetches code."
   echo "    tclconfig: fetches code for tclconfig."
-  echo "### jimtcl."
-  echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
+#  echo "### jimtcl."
+#  echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
   echo "### tangentsoft projects."
   echo "    inskin: fetches inskinerator code."
   echo "    tangentsoft-fossil: fetches local fossil for tangentsoft."
@@ -378,11 +380,12 @@ function tcl-all() {
   cd .. # gets us back to ${MYHOME}
 }
 
-# Updates jimtcl's fossil
-function jimtcl() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jimtcl.fossil
-  echo "==== jimtcl code...done ==="
-}
+# Updates jimtcl's fossil - now canceled - he went to git.
+# function jimtcl() {
+#  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jimtcl.fossil
+#  echo "==== jimtcl code...done ==="
+# }
+
 
 # these don't get updated very often, if at all
 function rarely() {
@@ -652,11 +655,11 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"
       cd -
     ;;
-    "jimtcl")
-    cd ${HOME}/src/tcl/hosts/msteveb/
-    "${t}"
-    cd -
-    ;;
+#    "jimtcl")
+#    cd ${HOME}/src/tcl/hosts/msteveb/
+#    "${t}"
+#    cd -
+#    ;;
     esac # end of case ${t}
   done
 fi

@@ -5,7 +5,7 @@
 #+AUTHOR: brickviking
 #+DATE: <2026-03-07 Sat 17:38>
 #+TAGS: fossil libfossil fnc fsl fuel pikchr sqlite sqlitecloud forum bash tcl tk althttpd pikmojicon wapp c-pp whut
-#+REVISION: 2.45
+#+REVISION: 2.46
 #+OPTIONS: _:nil
 #+OPTIONS: toc:2
 #+OPTIONS: num:nil
@@ -379,6 +379,7 @@ as Emacs-23 will probably open it fine, given the right installation.
   +  2.43 Added forums, as I use that a bit.
   +  2.44 Tweaked =fossilmake -g= so that it doesn't do a double network hit.
   +  2.45 Added note for non-default remotes. No code changes yet.
+  +  2.46 Removed jimtcl, he uses github and dropped fossil.
 
 * Source files
 
@@ -526,7 +527,9 @@ multiple checkouts open on the repo.
 # v0.41 Fixes to rarely and veryrarely.
 # v0.42 Added forums, as I use that a bit.
 # v0.43 Added libwhut.
-FOSVERSION=0.43
+# v0.44 Removed jimtcl, he uses github and dropped fossil.
+
+FOSVERSION=0.44
 
 ########
 # Notes #
@@ -576,8 +579,8 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "    tcl-tip: fetches proposals."
   echo "    tk-code: fetches code."
   echo "    tclconfig: fetches code for tclconfig."
-  echo "### jimtcl."
-  echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
+#  echo "### jimtcl."
+#  echo "    jimtcl: fetches jimtcl fossil. Not always up to date."
   echo "### tangentsoft projects."
   echo "    inskin: fetches inskinerator code."
   echo "    tangentsoft-fossil: fetches local fossil for tangentsoft."
@@ -859,11 +862,12 @@ function tcl-all() {
   cd .. # gets us back to ${MYHOME}
 }
 
-# Updates jimtcl's fossil
-function jimtcl() {
-  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jimtcl.fossil
-  echo "==== jimtcl code...done ==="
-}
+# Updates jimtcl's fossil - now canceled - he went to git.
+# function jimtcl() {
+#  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jimtcl.fossil
+#  echo "==== jimtcl code...done ==="
+# }
+
 
 # these don't get updated very often, if at all
 function rarely() {
@@ -1133,11 +1137,11 @@ else #iterate, chuck it in if keyword isn't recognised.
       "${t}"
       cd -
     ;;
-    "jimtcl")
-    cd ${HOME}/src/tcl/hosts/msteveb/
-    "${t}"
-    cd -
-    ;;
+#    "jimtcl")
+#    cd ${HOME}/src/tcl/hosts/msteveb/
+#    "${t}"
+#    cd -
+#    ;;
     esac # end of case ${t}
   done
 fi
@@ -1183,7 +1187,6 @@ _fossilsource_module() {
     fossilsource
     fsl
     inskin
-    jimtcl
     libfossil
     libfossil-all
     libfossil-code
@@ -1213,6 +1216,9 @@ _fossilsource_module() {
     COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
     return 0
 }
+
+# removed jimtcl from above
+#    jimtcl
 
 complete -F _fossilsource_module fossilsource
 
