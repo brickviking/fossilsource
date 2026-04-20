@@ -56,8 +56,9 @@ FOSVERSION=0.44
 # fossil has source code, forums, pikchr and a book.
 # sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness.
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
-# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
+# libfossil has a number of little projects related to fossil or sqlite3.
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing.
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
 FOSHOME="${HOME}/src/c/"
 
 # Doesn't fit, but it's short.
@@ -489,7 +490,13 @@ function all() { # These each have a cd in them
   sleep 5
   libfossil-all # added this as it doesn't make much sense to leave it out
   }
-# Takes path arg
+
+# Takes path arg, currently broken while I figure out how to feed an
+# sqlite statement a variable's value.
+#function getfossilpath() {
+#    local input="${1}"
+#    fossil sqlite ".mode list" ".headers off" "select name,datetime(mtime,'unixepoch','localtime') as date from config where name like '%ckout:%' and name like ;" -R <whatever-repo>
+#}
 
 pushd "${FOSHOME}" >/dev/null
 # Let's add something to FOSCMD to make the operation specific
@@ -513,6 +520,14 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMD="sync"
 #      dohelp
     ;;
+#    "-p") # grab the next var from $2, if it's not blank
+#        if [ ]; then
+#          getfossilpath "$2"   # as yet uncoded
+#          shift 2 # Now we have to pop that switch AND value
+#        else
+#          getfossilpath
+#        fi
+#    ;;
     "-s"|"--sync")
     # Sync needs remote perms - only works for projects supporting it
       FOSCMD="sync"
@@ -594,6 +609,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libwhut")  # same as whut above, but we have to call it slightly differently
     cd libfossil
     ${t##lib}
+    cd ..  # Whoops, forgot this until now
     ;;
 # All sqlite-related stuff
     "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm"|"sqlite-sds")

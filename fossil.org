@@ -204,6 +204,10 @@ wish to update, or 0 to cancel the update:
 The other problem where the user doesn't have a checkout will have to be addressed separately.
 At the moment, I'd have to punt to the user, saying "There is no active checkout, cancelling update."
 or ask the user whether they wish to create a checkout underneath where that fossil is stored.
+** Add a possible =-p= switch to fossilsource
+This switch would take an optional argument, and display currently known paths for what's provided
+or display all known paths if nothing additional is provided.
+
 * REAMDE
   :PROPERTIES:
   :header-args: org :tangle README.org
@@ -449,6 +453,8 @@ September 2025 adds System.Data.SQLite (sds).
 
 January 2026 added the small libwhut library source.
 
+April 2026 notes the availability of s2 (a cwal sub-project) and sewal, but hasn't added them.
+
 Future plans: 
  + include a verbose switch.
  + add the ability to update source trees obtained with =fossil open= with a =-c= (checkout) switch .
@@ -538,8 +544,9 @@ FOSVERSION=0.44
 # fossil has source code, forums, pikchr and a book.
 # sqlite has source code, forums, docsrc, althttpd, wasm and a testing harness.
 # tcl and tk each have source code, and tcl has proposals (tcl-tip).
-# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
+# libfossil has a number of little projects related to fossil or sqlite3.
 # leave libfossil out of the main loop, but call them specifically, just like fossil-book, pikchr, sqlite-wasm and sqlite-testing.
+# Cannot get TH3 source without a commercial licence, so can't run tests for docsrc.
 FOSHOME="${HOME}/src/c/"
 
 # Doesn't fit, but it's short.
@@ -971,7 +978,13 @@ function all() { # These each have a cd in them
   sleep 5
   libfossil-all # added this as it doesn't make much sense to leave it out
   }
-# Takes path arg
+
+# Takes path arg, currently broken while I figure out how to feed an
+# sqlite statement a variable's value.
+#function getfossilpath() {
+#    local input="${1}"
+#    fossil sqlite ".mode list" ".headers off" "select name,datetime(mtime,'unixepoch','localtime') as date from config where name like '%ckout:%' and name like ;" -R <whatever-repo>
+#}
 
 pushd "${FOSHOME}" >/dev/null
 # Let's add something to FOSCMD to make the operation specific
@@ -995,6 +1008,14 @@ else #iterate, chuck it in if keyword isn't recognised.
       FOSCMD="sync"
 #      dohelp
     ;;
+#    "-p") # grab the next var from $2, if it's not blank
+#        if [ ]; then
+#          getfossilpath "$2"   # as yet uncoded
+#          shift 2 # Now we have to pop that switch AND value
+#        else
+#          getfossilpath
+#        fi
+#    ;;
     "-s"|"--sync")
     # Sync needs remote perms - only works for projects supporting it
       FOSCMD="sync"
@@ -1076,6 +1097,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libwhut")  # same as whut above, but we have to call it slightly differently
     cd libfossil
     ${t##lib}
+    cd ..  # Whoops, forgot this until now
     ;;
 # All sqlite-related stuff
     "sqlite-code"|"sqlite-forum"|"sqlite-docsrc"|"sqlite-tests"|"sqlite-althttpd"|"sqlite-wasm"|"sqlite-sds")
@@ -1761,6 +1783,13 @@ MYNAME=fossildoc
 These scripts are mostly finished with, and the conversion of fossilsource to parsing parameters is
 now done. Most of the hard work was already done in the sqliteweb.sh and fossilweb.sh scripts, so
 the improvements from those scripts have made their way back to fossilsource.
+
+One other nice-to-have function in fossilsource would be for it to cough up the currently-understood
+paths for each of the fossils. There's no such thing as poking the list of fossils appropriately stored
+in an sqlite database in the home directory. I would have to retrofit a small sqlite query against
+that database, and I'm not sure it'd be entirely right anyhow. Something to consider, perhaps.
+Ah yes, we could use =-p [something]= as the switch for it to print out the paths for anything extra
+provided on the commandline, or simply list every location currently known if nothing is provided.
 
 fossilweb.sh, sqliteweb.sh, and tclweb.sh have all been pretty much superseded by fossilserve, as it
 just shows a directory of all my fossils and lets me choose, instead of running up an individual
