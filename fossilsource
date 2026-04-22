@@ -46,8 +46,9 @@
 # v0.42 Added forums, as I use that a bit.
 # v0.43 Added libwhut.
 # v0.44 Removed jimtcl, he uses github and dropped fossil.
+# v0.45 Added jaccwabyt, sewal, whuuid, th1-sgb and cssminc.
 
-FOSVERSION=0.44
+FOSVERSION=0.45
 
 ########
 # Notes #
@@ -82,7 +83,12 @@ function dohelp() { # needed renaming, as "help" already exists somewhere else
   echo "   [fsl|fnc|pikchr|pikmojicon]: fetches fsl, pikchr, pikmojicon or fnc."
   echo "   teaish: fetches the tea(ish) spinoff project."
   echo "   c-pp: c-minus pre-processor."
+  echo "   jaccwabyt: JS lib for bindings between JS and C structs via WebAssembly."
   echo "   whut|libwhut: utility toolkit."
+  echo "   sewal: Scripting Engine Without a Language."
+  echo "   whuuid: C98 utility library to generate UUID-like strings."
+  echo "   th1-sgb: Stephan's fork of th1 scripting language."
+  echo "   cssminc: C98 javascript minifier."
   echo "### sqlite stuff."
   echo "   sqlite: fetches sqlite fossils (code, forum, docsrc, wasm, althttpd)."
   echo "   sqlite-{code|forum|docsrc|tests|althttpd|sds|wasm|cloud|lua}, fetches:"
@@ -174,6 +180,12 @@ function fnc {
   echo "==== fnc...done ==="
 }
 
+# Jaccwabyt - rarely updated
+function jaccwabyt {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} jaccwabyt.fossil
+  echo "==== jaccwabyt...done ==="
+}
+
 # Rarely updated
 function pikchr() {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} pikchr.fossil
@@ -196,6 +208,8 @@ function libfossil-all {
   teaish  # may get moved to rarely
   sleep 2
   whut
+  sleep 2
+  jaccwabyt
   cd -
 }
 
@@ -225,6 +239,26 @@ function c-pp {
 function whut {
   fossil ${FOSCMD} ${FOSCMDPARAMS[*]} libwhut.fossil
     echo "==== libwhut...done ==="
+}
+
+function whuuid {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} whuuid.fossil
+    echo "==== whuuid...done ==="
+}
+
+function sewal {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} sewal.fossil
+    echo "==== sewal...done ==="
+}
+
+function cssminc {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} cssminc.fossil
+    echo "==== cssminc...done ==="
+}
+
+function th1-sgb {
+  fossil ${FOSCMD} ${FOSCMDPARAMS[*]} th1-sgb.fossil
+    echo "==== th1-sgb...done ==="
 }
 
 ###### end of wanderinghorse stuff
@@ -403,6 +437,10 @@ function rarely() {
   cd libfossil
   cwal
   pikchr
+  whuuid
+  sewal
+  cssminc
+  th1-sgb
   cd -
   # fsl and pikmojicon moved to veryrarely
 # other stuff
@@ -601,7 +639,7 @@ else #iterate, chuck it in if keyword isn't recognised.
     "libfossil-all")
       libfossil-all # should do libfossil-code and fnc but not libfossil-forum
     ;;
-    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish"|"c-pp"|"whut")
+    "libfossil-code"|"cwal"|"cson"|"fsl"|"fnc"|"pikchr"|"pikmojicon"|"teaish"|"c-pp"|"whut"|"jaccwabyt"|"cssminc"|"whuuid"|"sewal"|"th1-sgb")
       cd libfossil
       ${t} # Seems a bit redundant to make this a full function call
       cd ..
